@@ -12,3 +12,14 @@ _div*
 # Allure
 /allure-results/
 /allure-report/
+
+# Debug and Temporary Logs
+*.log
+debug_output*
+debug-upload*
+test-results/
+screenshots/
+videos/
+*.pdf
+/test-results/
+/allure-report-temp/
