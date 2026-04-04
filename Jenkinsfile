@@ -2,25 +2,38 @@ pipeline {
     agent any
 
     environment {
-        // Ensure CI env var is set so our custom reporter doesn't try to open the browser popup
+        // Essential: Mark as CI so your custom 'AllureOpenReporter.js' 
+        // skips the browser pop-up automation during Jenkins runs
         CI = 'true'
     }
 
     stages {
-        stage('Install Dependencies') {
+        stage('🧹 Clean Results') {
             steps {
-                // For Linux agents use 'sh', for Windows agents use 'bat' or 'powershell'
                 script {
                     if (isUnix()) {
-                        sh 'npm ci'
+                        sh 'rm -rf allure-results allure-report'
                     } else {
-                        bat 'npm ci'
+                        bat 'if exist allure-results rmdir /s /q allure-results'
+                        bat 'if exist allure-report rmdir /s /q allure-report'
                     }
                 }
             }
         }
 
-        stage('Install Browsers') {
+        stage('📦 Install Dependencies') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'npm install'
+                    } else {
+                        bat 'npm install'
+                    }
+                }
+            }
+        }
+
+        stage('🌐 Install Browsers') {
             steps {
                 script {
                     if (isUnix()) {
@@ -32,7 +45,7 @@ pipeline {
             }
         }
 
-        stage('Run Playwright Tests') {
+        stage('🚀 Run Playwright Tests') {
             steps {
                 script {
                     // catchError allows the pipeline to continue to the Reporting stage even if tests fail
@@ -46,35 +59,16 @@ pipeline {
                 }
             }
         }
-
-        stage('Generate PDF Report') {
-            steps {
-                script {
-                    if (isUnix()) {
-                        sh 'node generate-pdf-report.js'
-                    } else {
-                        bat 'node generate-pdf-report.js'
-                    }
-                }
-            }
-        }
     }
 
     post {
         always {
-            // Archive the test results (HTML and PDF) so they are downloadable from the build page
-            archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+            // STEP: ALLURE REPORT PUBLISHING
+            // This requires the "Allure Jenkins Plugin" to be installed on your Jenkins server
+            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             
-            // Optional: Publish HTML Report (Requires "HTML Publisher" plugin in Jenkins)
-            // publishHTML([
-            //     allowMissing: false,
-            //     alwaysLinkToLastBuild: true,
-            //     keepAll: true,
-            //     reportDir: 'test-results',
-            //     reportFiles: 'report.html',
-            //     reportName: 'Playwright Test Report',
-            //     reportTitles: 'Automation Dashboard'
-            // ])
+            // Archive artifacts as backup (screenshots, videos, etc.)
+            archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
         }
     }
 }
