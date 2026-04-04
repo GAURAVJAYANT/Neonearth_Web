@@ -1,0 +1,122 @@
+{
+  "buttons": [
+    {
+      "text": "Personalize this Design",
+      "aria": null
+    },
+    {
+      "text": "Buy Now ($25.22)",
+      "aria": null
+    },
+    {
+      "text": "Add To Cart ($25.22)",
+      "aria": null
+    },
+    {
+      "text": "Buy Now ($25.22)",
+      "aria": null
+    },
+    {
+      "text": "Add To Cart ($25.22)",
+      "aria": null
+    },
+    {
+      "text": "×",
+      "aria": null
+    },
+    {
+      "text": "See all reviews",
+      "aria": null
+    },
+    {
+      "text": "Write a Review",
+      "aria": null
+    },
+    {
+      "text": "Most Recent",
+      "aria": "Sort reviews by Most Recent. Click to change sort order."
+    },
+    {
+      "text": "Most Recent",
+      "aria": null
+    },
+    {
+      "text": "Rating: High-Low",
+      "aria": null
+    },
+    {
+      "text": "Rating: Low-High",
+      "aria": null
+    },
+    {
+      "text": "Most Helpful",
+      "aria": null
+    },
+    {
+      "text": "All Ratings",
+      "aria": null
+    },
+    {
+      "text": "All Ratings",
+      "aria": null
+    },
+    {
+      "text": "5 Stars",
+      "aria": null
+    },
+    {
+      "text": "4 Stars",
+      "aria": null
+    },
+    {
+      "text": "3 Stars",
+      "aria": null
+    },
+    {
+      "text": "2 Stars",
+      "aria": null
+    },
+    {
+      "text": "1 Star",
+      "aria": null
+    },
+    {
+      "text": "Cancel",
+      "aria": null
+    },
+    {
+      "text": "Submit",
+      "aria": null
+    },
+    {
+      "text": "OK",
+      "aria": null
+    },
+    {
+      "text": "Subscribe Now",
+      "aria": null
+    }
+  ],
+  "texts": [
+    {
+      "tag": "P",
+      "class": null,
+      "text": "We offer a wide range of patterns, including abstract, geometric, nature-inspired designs, cultural motifs, and more. You can also upload your own design for a completely personalized tapestry."
+    },
+    {
+      "tag": "P",
+      "class": null,
+      "text": "Absolutely! You can easily upload your own design or choose from our collection of patterns to create a fully personalized tapestry. Use our design tool to preview your creation before placing an order."
+    },
+    {
+      "tag": "SPAN",
+      "class": null,
+      "text": "Drop files here to upload"
+    },
+    {
+      "tag": "SPAN",
+      "class": "qq-upload-button__message",
+      "text": "Upload photo"
+    }
+  ]
+}
