@@ -1,90 +1,47 @@
-const { BasePage } = require('./BasePage');
+const { expect } = require('@playwright/test');
 
-class HomePage extends BasePage {
-    constructor(page) {
-        super(page);
-        // Common Magento/E-commerce selectors
-        this.searchInput = "input[id='search'], input[name='q']";
-        this.searchBtn = "button[type='submit'][title='Search'], button.action.search";
-        this.searchResults = ".product-item-link";
-        // Mega Menu Selectors
-        this.menuItem = (name) => `//span[contains(@class, 'ui-menu-icon')]/following-sibling::span[normalize-space()='${name}'] | //a/span[normalize-space()='${name}']`;
-        this.subMenuLink = (name) => `//ul[contains(@class, 'submenu')]//a[span[normalize-space()='${name}']] | //ul[contains(@class, 'submenu')]//a[normalize-space()='${name}']`;
+class HomePage {
+  constructor(page) {
+    this.page = page;
+    this.menu = page.locator('nav.header-navigation-bar ul.header-navigation-list li.top-level-item a.top-level-link span.label-text', { hasText: 'Tapestries' });
+    this.product = page.locator('span.product-text', { hasText: 'Custom Wall Tapestry - Velvet Satin' });
+  }
+
+  async open() {
+    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
+  }
+
+  /** Hover the Tapestries menu, wait for dropdown, then click the Velvet Satin product */
+  async navigateToProduct() {
+    // Ensure the top‑level menu is visible
+    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
+    console.log('✅ Tapestries menu found');
+
+    // Use a real hover action which is usually more reliable than manual mouse moves
+    await this.menu.hover({ force: true });
+    await this.page.waitForTimeout(1000); // Give time for CSS/JS transitions
+    console.log('✅ Mouse hovered over Tapestries');
+
+    // Wait for the dropdown to become visible (using a more flexible selector if 'open' class is slow)
+    const dropdown = this.page.locator('.mega-menu-container, .dropdown-menu').filter({ hasText: 'Custom Wall Tapestry' }).first();
+    try {
+      await dropdown.waitFor({ state: 'visible', timeout: 10000 });
+      console.log('✅ Dropdown is visible');
+    } catch (e) {
+      console.log('⚠️ Dropdown not visible via standard hover, trying a click to open...');
+      await this.menu.click();
+      await dropdown.waitFor({ state: 'visible', timeout: 5000 });
     }
 
-    async navigateToCategory(categoryName, subCategoryName) {
-        console.log(`Navigating to ${categoryName} -> ${subCategoryName}`);
-        
-        const category = this.page.locator(this.menuItem(categoryName)).first();
-        await category.hover();
-        await this.page.waitForTimeout(500); // Wait for menu to appear
+    // Click the desired product inside the dropdown
+    await this.product.waitFor({ state: 'visible', timeout: 10000 });
+    await this.product.click({ force: true });
+    console.log('✅ Clicked Custom Wall Tapestry - Velvet Satin');
 
-        if (subCategoryName) {
-             const subCategory = this.page.locator(this.subMenuLink(subCategoryName)).first();
-             await subCategory.click();
-        } else {
-             await category.click();
-        }
-        await this.page.waitForLoadState('domcontentloaded');
-    }
-
-    async navigate() {
-        await this.page.goto('https://www.coversandall.com/', { waitUntil: 'domcontentloaded' });
-    }
-
-    async searchForProduct(productName) {
-        console.log(`Searching for: ${productName}`);
-        
-        // Handle Cookie Banner if present
-        const cookieBtn = this.page.locator('button:has-text("ACCEPT AND CLOSE"), button:has-text("Allow All")');
-        if (await cookieBtn.isVisible()) {
-            await cookieBtn.click();
-            await this.page.waitForTimeout(500);
-        }
-
-        // Try to click search icon first if input is not visible
-        const searchIcon = this.page.locator('.action.search, .header-search-icon, button[aria-label="Search"]');
-        if (await searchIcon.count() > 0 && await searchIcon.first().isVisible()) {
-             console.log('Clicking search icon to reveal input...');
-             await searchIcon.first().click();
-             await this.page.waitForTimeout(500);
-        }
-        
-        // Try multiple potential selectors
-        const searchSelectors = ['#search', '#search_mini_form input', 'input[name="q"]', '.header-search input'];
-        let input = null;
-
-        for (const selector of searchSelectors) {
-             const el = this.page.locator(selector).first();
-             if (await el.isVisible()) {
-                 input = el;
-                 console.log(`Found search input with selector: ${selector}`);
-                 break;
-             }
-        }
-
-        if (!input) {
-            console.log('Search input NOT found. Dumping body text...');
-             // Verify if we are on mobile layout
-            console.log(await this.page.locator('body').innerText());
-            throw new Error('Search input not found');
-        }
-
-        await input.fill(productName);
-        await this.page.keyboard.press('Enter');
-        await this.page.waitForLoadState('networkidle');
-    }
-
-    async selectFirstResult() {
-        console.log('Selecting first search result...');
-        const firstItem = this.page.locator(this.searchResults).first();
-        await firstItem.waitFor({ state: 'visible' });
-        const name = await firstItem.innerText();
-        console.log(`Clicking on product: ${name}`);
-        await firstItem.click();
-        await this.page.waitForLoadState('domcontentloaded');
-        return name;
-    }
+    // Verify navigation to the product page
+    await expect(this.page).toHaveURL(/custom-wall-tapestry-p/i, { timeout: 20000 });
+    console.log('✅ Navigated to Velvet Satin product page');
+  }
 }
 
 module.exports = { HomePage };
