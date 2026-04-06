@@ -171,21 +171,40 @@ test('Open NeonEarth Website - Hover and Click Velvet Satin', async ({ page }) =
   await page.waitForTimeout(3000);
   console.log('  Checkout page URL: ' + page.url());
 
-  // Step 7: Fill in shipping details using ID-based locators (most reliable)
-  // The form starts with First Name — email field only appears for new guest sessions
-  console.log('Step 7: Filling shipping form...');
-
-  // Email — optional, only shown for guest sessions (skip gracefully if absent)
+  // Step 7: Handle Login Popup (User Request)
+  console.log('Step 7: Handling Login Popup...');
   try {
-    const emailInput = page.locator('#email');
-    if (await emailInput.isVisible({ timeout: 5000 })) {
-      await emailInput.triple_click?.() ?? await emailInput.click({ clickCount: 3 });
-      await emailInput.fill('test@yopmail.com');
-      console.log('  Filled email');
+    const loginLink = page.locator('a.loginClick', { hasText: 'Login' });
+    if (await loginLink.isVisible({ timeout: 5000 })) {
+      await loginLink.click();
+      console.log('  Clicked Login link');
+      
+      const emailInput = page.locator('input[placeholder="Enter Email ID"]');
+      await emailInput.waitFor({ state: 'visible', timeout: 5000 });
+      await emailInput.fill('gaurav.jayant@gtoupbayport.com');
+      console.log('  Filled email: gaurav.jayant@gtoupbayport.com');
+      
+      await page.getByRole('button', { name: 'Continue' }).click();
+      console.log('  Clicked Continue');
+      
+      // Handle the case where it might ask for OTP or show a registration popup
+      // In guest flow, we might just want to close it if it lingers or proceed
+      await page.waitForTimeout(3000);
+      const closePopup = page.locator('label[aria-label="Close popup"] img, .newsletter-popup .close, .modal-popup .action-close').first();
+      if (await closePopup.isVisible({ timeout: 2000 })) {
+        await closePopup.click({ force: true });
+        console.log('  Closed login/registration popup to proceed with delivery info');
+      }
     } else {
-      console.log('  Email field not present (guest session already tracked)');
+      console.log('  Login link not found, proceeding as guest');
     }
-  } catch (e) { console.log('  Email field skipped: ' + e.message.split('\n')[0]); }
+  } catch (e) {
+    console.log('  Login popup step skipped or failed: ' + e.message.split('\n')[0]);
+  }
+
+  // Fill in shipping details using ID-based locators (most reliable)
+  // The form starts with First Name
+  console.log('Step 8: Filling shipping form...');
 
   // First Name
   const fNameInput = page.locator('#firstname');
