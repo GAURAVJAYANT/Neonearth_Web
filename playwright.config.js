@@ -47,10 +47,16 @@ module.exports = defineConfig({
 
   projects: [
     {
+      name: 'setup',
+      testMatch: /Login\.spec\.js/,
+    },
+    {
       name: 'chromium',
       use: {
         browserName: 'chromium',
+        storageState: 'playwright/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
   ],
 });

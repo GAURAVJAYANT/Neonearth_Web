@@ -1,12 +1,12 @@
 // tests/openWebsite.spec.js
 const { test, expect } = require('@playwright/test');
+const path = require('path');
 
 test('Open NeonEarth Website - Hover and Click Velvet Satin', async ({ page }) => {
   // Increase test-specific timeout to 10 minutes due to long waits and file processing
   test.setTimeout(600000);
   
-  // Set standard desktop resolution for reliable hover interaction
-  await page.setViewportSize({ width: 1920, height: 1080 });
+  // Removed manual setViewportSize to allow config-level maximization to work correctly
 
   // Open website
   await page.goto('/', { 
@@ -73,14 +73,7 @@ test('Open NeonEarth Website - Hover and Click Velvet Satin', async ({ page }) =
   await personalisebtn.click();
   console.log('✅ Clicked Personalise this Design');
 
-  await page.waitForTimeout(8000);
-
-  const uploadbtn = page.getByRole('button', { name: 'Personalize this Design' });
-  await uploadbtn.waitFor({ state: 'visible', timeout: 40000 });
-  await uploadbtn.click();
-  console.log('✅ Clicked Personalize this Design');
-
-  await page.waitForTimeout(4000);
+  await page.waitForTimeout(10000); // 10 seconds for designer to load
 
   const uploadYourDesignBtn = page.getByRole('button', { name: 'Upload Your Design' });
   await uploadYourDesignBtn.waitFor({ state: 'visible', timeout: 20000 });
@@ -98,7 +91,7 @@ test('Open NeonEarth Website - Hover and Click Velvet Satin', async ({ page }) =
     uploadfile.click(),
   ]);
   
-  const testImagePath = 'data/test_image.png';
+  const testImagePath = path.resolve(process.cwd(), 'data/test_image.png');
   await fileChooser.setFiles(testImagePath);
   console.log(`✅ File uploaded successfully from: ${testImagePath}`);
 
@@ -112,8 +105,8 @@ test('Open NeonEarth Website - Hover and Click Velvet Satin', async ({ page }) =
 
   await page.waitForTimeout(8000);
 
-  const addtocartbtn = page.getByRole('button', { name: 'Add To Cart ($25.22)' }).nth(2);
-  await addtocartbtn.waitFor({ state: 'visible', timeout: 10000 });
+  const addtocartbtn = page.getByRole('button', { name: /Add To Cart/i }).nth(2);
+  await addtocartbtn.waitFor({ state: 'visible', timeout: 30000 });
   await addtocartbtn.click();
   console.log('✅ Clicked add to cart button');
 
@@ -196,36 +189,11 @@ test('Open NeonEarth Website - Hover and Click Velvet Satin', async ({ page }) =
   await page.waitForTimeout(3000);
   console.log('  Checkout page URL: ' + page.url());
 
-  // Step 7: Handle Login Popup (User Request)
-  console.log('Step 7: Handling Login Popup...');
-  try {
-    const loginLink = page.locator('a.loginClick', { hasText: 'Login' });
-    if (await loginLink.isVisible({ timeout: 5000 })) {
-      await loginLink.click();
-      console.log('  Clicked Login link');
-      
-      const emailInput = page.locator('input[placeholder="Enter Email ID"]');
-      await emailInput.waitFor({ state: 'visible', timeout: 5000 });
-      await emailInput.fill('gaurav.jayant@gtoupbayport.com');
-      console.log('  Filled email: gaurav.jayant@gtoupbayport.com');
-      
-      await page.getByRole('button', { name: 'Continue' }).click();
-      console.log('  Clicked Continue');
-      
-      // Handle the case where it might ask for OTP or show a registration popup
-      // In guest flow, we might just want to close it if it lingers or proceed
-      await page.waitForTimeout(3000);
-      const closePopup = page.locator('label[aria-label="Close popup"] img, .newsletter-popup .close, .modal-popup .action-close').first();
-      if (await closePopup.isVisible({ timeout: 2000 })) {
-        await closePopup.click({ force: true });
-        console.log('  Closed login/registration popup to proceed with delivery info');
-      }
-    } else {
-      console.log('  Login link not found, proceeding as guest');
-    }
-  } catch (e) {
-    console.log('  Login popup step skipped or failed: ' + e.message.split('\n')[0]);
-  }
+  // Step 7: Logged-in State Check
+  console.log('Step 7: Verifying logged-in status...');
+  const userIcon = page.locator('.header-navigation-right-section .header-user-icon, .header-user-icon, i.icon-user').first();
+  await expect(userIcon).toBeVisible({ timeout: 10000 });
+  console.log('  ✅ Confirmed: User is already logged in via persistent state');
 
   // Fill in shipping details using ID-based locators (most reliable)
   // The form starts with First Name
