@@ -1,23 +1,15 @@
-const { spawn } = require('child_process');
+const { exec } = require('child_process');
 const os = require('os');
 const path = require('path');
 const fs = require('fs');
 
 class AllureOpenReporter {
-    // onBegin is called when Playwright starts any run (even from the Play button in VS Code)
     async onBegin(config, suite) {
         if (process.env.CI) return;
-
         console.log('\n🧹 Preparing for fresh test run...');
         const resultsDir = path.resolve('allure-results');
-
-        // We wipe the results folder at the start of EVERY run
-        // This stops old tests from showing up in your report!
         if (fs.existsSync(resultsDir)) {
             try {
-                // We keep the history folder if we want trends, but many users prefer a total wipe.
-                // To keep history trends only (without the old tests), we would preserve allure-results/history.
-                // However, the user asked for a "fresh report", so we will wipe it all.
                 fs.rmSync(resultsDir, { recursive: true, force: true });
                 console.log('🗑️  Wiped last results. Ready for a fresh report.');
             } catch (err) {
@@ -26,34 +18,52 @@ class AllureOpenReporter {
         }
     }
 
-    // onEnd is called when the run is finished
     async onEnd(result) {
+        console.log('🏁 Playwright execution finished. Hook: onEnd triggered.');
         if (process.env.CI) return;
 
-        console.log('\n==========================================');
-        console.log('🚀 FINAL REPORT AUTOMATION TRIGGER');
-        console.log('==========================================');
-
         const projectDir = process.cwd();
-        const allureCmd = os.platform() === 'win32' ? 'npx.cmd' : 'npx';
         const port = Math.floor(Math.random() * 999) + 9000;
+        const batchFilePath = path.join(projectDir, 'open_allure.bat');
+        
+        try {
+            const isWin = os.platform() === 'win32';
+            if (isWin) {
+                console.log(`🚀 Creating Allure trigger batch file (Port: ${port})...`);
+                
+                // Create a batch file that:
+                // 1. Clears JAVA_HOME completely
+                // 2. Runs npx allure serve
+                // 3. Deletes itself (optional, but cleaner)
+                const npxPath = 'C:\\Program Files\\nodejs\\npx.cmd';
+                const batchContent = `@echo off\n` +
+                    `SET JAVA_HOME=\n` +
+                    `echo Opening Allure Report on port ${port}...\n` +
+                    `"${npxPath}" allure serve allure-results -p ${port}\n`;
+                
+                fs.writeFileSync(batchFilePath, batchContent);
 
-        console.log(`🏗️  Opening Fresh Allure Dashboard (Port: ${port})...`);
+                // Run the batch file in a new minimized window
+                console.log(`  Executing: start /min "" "${batchFilePath}"`);
+                exec(`start /min "" "${batchFilePath}"`, { cwd: projectDir });
+                
+                // Note: We don't delete the batch file immediately as the 'start' command 
+                // needs time to read it. It can be cleaned up in next onBegin.
+            } else {
+                console.log(`🚀 Launching Allure on Linux/Mac (Port: ${port})...`);
+                const { spawn } = require('child_process');
+                const allureProcess = spawn('npx', ['allure', 'serve', 'allure-results', '-p', port.toString()], {
+                    cwd: projectDir,
+                    detached: true,
+                    stdio: 'ignore'
+                });
+                allureProcess.unref();
+            }
 
-        // Spawn 'allure serve' natively.
-        const args = ['allure', 'serve', 'allure-results', '-p', port.toString()];
-
-        const allureProcess = spawn(allureCmd, args, {
-            cwd: projectDir,
-            detached: true,
-            stdio: 'ignore',
-            shell: true
-        });
-
-        allureProcess.unref();
-
-        console.log('✅ Final Allure server triggered! Fresh report opening...');
-        console.log('==========================================\n');
+            console.log('✅ Allure trigger sent! If the browser still does not open, check if Java is installed.');
+        } catch (err) {
+            console.error('❌ Fatal error in Allure reporter:', err.message);
+        }
     }
 }
 

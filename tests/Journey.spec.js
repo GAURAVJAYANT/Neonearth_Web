@@ -5,10 +5,18 @@ const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 
 test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
+  test.setTimeout(600000);
   const homePage = new HomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
+
+  // Step 0: Clear Cache and Cookies
+  console.log('Step: Clearing browser cache and cookies...');
+  const client = await page.context().newCDPSession(page);
+  await client.send('Network.clearBrowserCache');
+  await client.send('Network.clearBrowserCookies');
+  console.log('✅ Cache and Cookies cleared');
 
   // Step 1 - 4: Open Website and Navigate to Product
   await homePage.open();

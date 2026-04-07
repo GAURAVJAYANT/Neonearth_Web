@@ -1,44 +1,48 @@
 const { expect } = require('@playwright/test');
+const path = require('path');
 
 class ProductPage {
   constructor(page) {
     this.page = page;
-    this.personaliseBtn = page.getByRole('img', { name: 'paintBrush' });
-    this.personalizeDialogBtn = page.getByRole('button', { name: 'Personalize this Design' });
-    this.uploadYourDesignBtn = page.getByRole('button', { name: 'Upload Your Design' });
+    this.personaliseBtn = page.getByRole('button', { name: /Personali[sz]e this Design/i });
+    this.uploadYourDesignBtn = page.getByRole('button', { name: /Upload Your Design/i });
     this.uploadFileText = page.getByText('Browse Files');
     this.previewBtn = page.getByRole('button', { name: 'Preview' });
     this.addToCartBtn = page.getByRole('button', { name: /Add To Cart/i });
   }
 
   async personalizeDesign() {
-    await this.personaliseBtn.waitFor({ state: 'visible', timeout: 10000 });
+    console.log('Step: Clicking Personalize this Design');
+    await this.personaliseBtn.waitFor({ state: 'visible', timeout: 15000 });
     await this.personaliseBtn.click();
-    console.log('✅ Clicked Personalise icon');
-    await this.page.waitForTimeout(8000);
-
-    await this.personalizeDialogBtn.waitFor({ state: 'visible', timeout: 40000 });
-    await this.personalizeDialogBtn.click();
     console.log('✅ Clicked Personalize this Design button');
-    await this.page.waitForTimeout(4000);
+    await this.page.waitForTimeout(8000); // Wait for customizer to open
   }
 
   async uploadImage(imagePath = 'data/test_image.png') {
+    console.log('Step: Selecting Upload Your Design choice');
     await this.uploadYourDesignBtn.waitFor({ state: 'visible', timeout: 20000 });
     await this.uploadYourDesignBtn.click();
     console.log('✅ Clicked Upload Your Design');
-    await this.page.waitForTimeout(4000);
+    await this.page.waitForTimeout(5000);
 
+    // Using the filechooser event pattern requested by the user
+    console.log('Step: Waiting for "Browse Files" button');
     await this.uploadFileText.waitFor({ state: 'visible', timeout: 50000 });
-    
+
     const [fileChooser] = await Promise.all([
       this.page.waitForEvent('filechooser'),
       this.uploadFileText.click(),
     ]);
+
+    const resolvedImagePath = path.resolve(process.cwd(), imagePath);
+    console.log(`Step: Uploading file from: ${resolvedImagePath}`);
+    await fileChooser.setFiles(resolvedImagePath);
     
-    await fileChooser.setFiles(imagePath);
-    console.log(`✅ File uploaded successfully from: ${imagePath}`);
-    await this.page.waitForTimeout(5000);
+    console.log(`✅ File uploaded successfully from: ${resolvedImagePath}`);
+
+    // Processing the Custom Design often takes a VERY long time on test servers
+    await this.page.waitForTimeout(10000); // 10 seconds for safety
   }
 
   async previewAndAddToCart() {
