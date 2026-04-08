@@ -14,19 +14,24 @@ class CheckoutPage {
   }
 
   async fillShippingDetails(details) {
+
+    console.log(details);
+
     const { firstName, lastName, phone, address, city, postcode, email } = details;
     
     // Email — optional, only shown for guest sessions (skip gracefully if absent)
     try {
       const emailInput = this.page.locator('#email');
       if (await emailInput.isVisible({ timeout: 5000 })) {
-        await emailInput.triple_click?.() ?? await emailInput.click({ clickCount: 3 });
+        await emailInput.click({ clickCount: 3 });
         await emailInput.fill(email || 'test@yopmail.com');
         console.log('  Filled email');
       } else {
         console.log('  Email field not present (guest session already tracked)');
       }
-    } catch (e) { console.log('  Email field skipped: ' + e.message.split('\n')[0]); }
+    } catch (e) {
+      console.log('  Email field skipped: ' + e.message.split('\n')[0]);
+    }
 
     // First Name
     await this.fNameInput.waitFor({ state: 'visible', timeout: 20000 });
@@ -77,19 +82,35 @@ class CheckoutPage {
     await this.page.waitForTimeout(1000);
   }
 
-  async fillStripePayment(cardInfo) {
-    const { cardNumber, expiry, cvc } = cardInfo;
-    console.log('Step 9: Filling Stripe payment info...');
-    try {
-      const stripeFrame = this.page.frameLocator('iframe[name^="__privateStripeFrame"]').first();
-      await stripeFrame.getByRole('textbox', { name: 'Card number' }).fill(cardNumber || '4111 1111 1111 1111');
-      await stripeFrame.getByRole('textbox', { name: /Expiration date/i }).fill(expiry || '12 / 27');
-      await stripeFrame.getByRole('textbox', { name: /Security code/i }).fill(cvc || '123');
-      console.log('  Stripe fields filled successfully');
-    } catch (e) {
-      console.log(`  Stripe iframe error: ${e.message.split('\n')[0]}`);
-    }
+  async fillStripePayment({ cvc = '123' }) {
+  console.log('Filling CVC for saved card...');
+
+  // ✅ FIXED locator
+  await this.page
+    .getByRole('heading', { name: 'Payment Method' })
+    .scrollIntoViewIfNeeded();
+
+  await this.page.waitForTimeout(500);
+
+  await this.page.waitForSelector('iframe[src*="stripe"]', {
+    timeout: 15000
+  });
+
+  const cvcFrame = this.page.frameLocator('iframe[title*="CVC"]');
+  const cvcInput = cvcFrame.locator('input[name="cvc"]');
+
+  await cvcInput.waitFor({ timeout: 10000 });
+
+  try {
+    await cvcInput.fill(cvc);
+  } catch {
+    await cvcInput.click();
+    await cvcInput.pressSequentially(cvc, { delay: 50 });
   }
+
+  console.log('✅ CVC entered successfully');
+}
+
 
   async placeOrder() {
     console.log('Step 10: Clicking Pay Now...');
@@ -123,6 +144,20 @@ class CheckoutPage {
       console.log(`  Could not retrieve hash spans: ${e.message.split('\n')[0]}`);
     }
   }
+  async waitForCheckoutToLoad() {
+  console.log('Waiting for checkout to stabilize...');
+
+  await this.page.waitForURL(/onepagecheckout/, { timeout: 15000 });
+
+  await this.page.getByRole('heading', { name: 'Payment Method' })
+    .waitFor({ timeout: 40000 });
+
+  await this.page.waitForSelector('iframe[src*="stripe"]', {
+    timeout: 40000
+  });
+
+  console.log('✅ Checkout ready');
+}
 }
 
 module.exports = { CheckoutPage };

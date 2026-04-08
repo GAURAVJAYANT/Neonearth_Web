@@ -11,14 +11,8 @@ test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
 
-  // Step 0: Clear Cache and Cookies
-  console.log('Step: Clearing browser cache and cookies...');
-  const client = await page.context().newCDPSession(page);
-  await client.send('Network.clearBrowserCache');
-  await client.send('Network.clearBrowserCookies');
-  console.log('✅ Cache and Cookies cleared');
-
   // Step 1 - 4: Open Website and Navigate to Product
+  console.log('Step: Starting journey with preserved session...');
   await homePage.open();
   await homePage.navigateToProduct();
 
@@ -34,25 +28,19 @@ test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
+  
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
 
+  await checkoutPage.waitForCheckoutToLoad();
+
   // Step 7: Fill Shipping Details
-  await checkoutPage.fillShippingDetails({
-    email: 'test@yopmail.com',
-    firstName: 'Gaurav',
-    lastName: 'Jayant',
-    phone: '88888888888',
-    address: '123 Main Street',
-    city: 'New York',
-    postcode: '10001'
-  });
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
-    cardNumber: '4111 1111 1111 1111',
-    expiry: '12 / 27',
+ //   cardNumber: '4111 1111 1111 1111',
+ //   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -75,3 +63,5 @@ test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
   console.log('✅ All steps complete. Browser closing.');
   await page.waitForTimeout(20000);
 });
+
+  
