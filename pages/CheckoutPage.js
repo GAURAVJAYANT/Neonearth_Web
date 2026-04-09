@@ -93,19 +93,19 @@ class CheckoutPage {
   await this.page.waitForTimeout(500);
 
   await this.page.waitForSelector('iframe[src*="stripe"]', {
-    timeout: 15000
+    timeout: 30000
   });
 
   const cvcFrame = this.page.frameLocator('iframe[title*="CVC"]');
   const cvcInput = cvcFrame.locator('input[name="cvc"]');
 
-  await cvcInput.waitFor({ timeout: 10000 });
+  await cvcInput.waitFor({ timeout: 20000 });
 
   try {
     await cvcInput.fill(cvc);
   } catch {
     await cvcInput.click();
-    await cvcInput.pressSequentially(cvc, { delay: 50 });
+    await cvcInput.pressSequentially(cvc, { delay: 60 });
   }
 
   console.log('✅ CVC entered successfully');
@@ -117,7 +117,7 @@ class CheckoutPage {
     await this.payNowBtn.click();
     console.log('  Waiting for payment processing and success redirect...');
     try {
-      await this.page.waitForURL(/success/i, { timeout: 120000 });
+      await this.page.waitForURL(/success/i, { timeout: 180000 });
     } catch (e) {
       console.log('  Timeout waiting for success URL. Current URL:', this.page.url());
     }

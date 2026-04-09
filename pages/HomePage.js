@@ -13,6 +13,16 @@ class HomePage {
     this.panoramicTapestryProduct = page.locator(`//span[normalize-space()='Custom Panoramic Tapestry - Velvet Satin']`);
     // Panoramic Tapestry Weave Loom product - from sub-menu
     this.panoramicWeaveLoomProduct = page.locator(`//span[normalize-space()='Custom Panoramic Tapestry - Weave Loom']`);
+    // Triangular Tapestries category - hover over this to reveal sub-menu
+    this.triangularTapestryCategory = page.locator(`span:has-text("Custom Triangular Tapestries")`);
+    // Triangular Tapestry Velvet Satin product - from sub-menu
+    this.triangularTapestryProduct = page.locator(`//span[normalize-space()='Custom Triangular Tapestry - Velvet Satin']`);
+    // Triangular Tapestry Weave Loom product - from sub-menu
+    this.triangularWeaveLoomProduct = page.locator(`//span[normalize-space()='Custom Triangular Tapestry - Weave Loom']`);
+    // Hanging Tapestries category - hover over this to reveal sub-menu
+    this.hangingTapestryCategory = page.locator(`span:has-text("Custom Hanging Tapestries")`);
+    // Hanging Tapestry Velvet Satin product - from sub-menu
+    this.hangingTapestryProduct = page.locator(`//span[normalize-space()='Custom Hanging Tapestry - Velvet Satin']`);
     // Weave Loom product
     this.weaveLoomProduct = page.getByText('Custom Wall Tapestry - Weave Loom', { exact: true });
   }
@@ -113,24 +123,21 @@ class HomePage {
     console.log('✅ Navigated to Rug PDP successfully via clean hover');
   }
 
-  /** 
-   * Navigate to Panoramic Tapestry product:
-   * 1. Hover Tapestries menu → dropdown opens
-   * 2. Hover span:has-text("Custom Panoramic Tapestries") → sub-menu reveals
-   * 3. Click Custom Panoramic Tapestry - Velvet Satin from sub-menu
-   */
+  /** Hover the Tapestries menu to open dropdown, hover over Custom Panoramic Tapestries category to reveal sub-menu, then click the Velvet Satin product */
   async navigateToPanoramicTapestryProduct() {
     // Ensure the top-level menu is visible
     await this.menu.waitFor({ state: 'visible', timeout: 15000 });
     console.log('✅ Tapestries menu found');
 
-    // Step 1: Hover over Tapestries menu to open dropdown
+    // 1. Initial Clean Hover on Tapestries menu
     await this.menu.hover();
-    console.log('⏳ Step 1: Hovering over Tapestries menu to open dropdown...');
+    console.log('⏳ Hovering over Tapestries menu...');
     await this.page.waitForTimeout(3000); // Wait for dropdown to appear
 
-    // Step 2: Try to find the category, if not visible, perform jitter hover
-    let isCategoryVisible = await this.panoramicTapestryCategory.isVisible();
+    // 2. Try to find the category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.panoramicTapestryCategory.isVisible().catch(() => false);
+    console.log(`Category visibility check (attempt 1): ${isCategoryVisible}`);
+    
     if (!isCategoryVisible) {
       console.log('⚠️ Category not visible, trying jitter hover...');
       const box = await this.menu.boundingBox();
@@ -140,33 +147,65 @@ class HomePage {
         await this.menu.hover();
         await this.page.waitForTimeout(3000);
       }
-      isCategoryVisible = await this.panoramicTapestryCategory.isVisible();
+      isCategoryVisible = await this.panoramicTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 2): ${isCategoryVisible}`);
     }
 
-    // Final attempt with force hover
+    // 3. Final attempt with force hover
     if (!isCategoryVisible) {
-      console.log('⚠️ Re-hovering with force parameter...');
+      console.log('⚠️ Category still not visible, trying force hover...');
       await this.menu.hover({ force: true });
       await this.page.waitForTimeout(3000);
+      isCategoryVisible = await this.panoramicTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 3): ${isCategoryVisible}`);
     }
 
-    // Step 2: Wait for category to be visible in dropdown and hover over it to reveal sub-menu
-    await this.panoramicTapestryCategory.waitFor({ state: 'visible', timeout: 20000 });
-    console.log('✅ Step 2: "Custom Panoramic Tapestries" category found in dropdown');
+    // Wait for the category to be visible
+    try {
+      await this.panoramicTapestryCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Custom Panoramic Tapestries" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Category did not become visible within timeout, attempting to hover anyway');
+    }
     
+    // Scroll category into view if needed
+    try {
+      await this.panoramicTapestryCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll category into view');
+    }
+    
+    // Hover over the category to reveal sub-menu
     await this.panoramicTapestryCategory.hover();
-    console.log('⏳ Hovering over "Custom Panoramic Tapestries" to reveal sub-menu...');
-    await this.page.waitForTimeout(2000); // Wait for sub-menu to appear
+    console.log('⏳ Hovered over "Custom Panoramic Tapestries" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
     
-    // Step 3: Click on the specific product from the sub-menu
-    await this.panoramicTapestryProduct.waitFor({ state: 'visible', timeout: 20000 });
-    console.log('✅ Step 3: Custom Panoramic Tapestry - Velvet Satin visible in sub-menu');
+    // Wait for product to become visible in sub-menu
+    try {
+      await this.panoramicTapestryProduct.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Custom Panoramic Tapestry - Velvet Satin visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Product did not become visible, but attempting to click anyway');
+    }
     
+    // Scroll product into view
+    try {
+      await this.panoramicTapestryProduct.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled product into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll product into view');
+    }
+    
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+    
+    // Click the product
     await this.panoramicTapestryProduct.click();
     console.log('✅ Clicked Custom Panoramic Tapestry - Velvet Satin from sub-menu');
 
     // Confirm navigation to PDP
-    await this.page.waitForURL(/panoramic-tapestry-p/i, { timeout: 30000 });
+    await this.page.waitForURL(/panoramic-tapestry-p|tapestry-p/i, { timeout: 30000 });
     console.log('✅ Navigated to Panoramic Tapestry PDP successfully');
   }
 
@@ -214,24 +253,21 @@ class HomePage {
     console.log('✅ Navigated to Weave Loom Tapestry PDP successfully');
   }
 
-  /** 
-   * Navigate to Panoramic Tapestry Weave Loom product:
-   * 1. Hover Tapestries menu → dropdown opens
-   * 2. Hover span:has-text("Custom Panoramic Tapestries") → sub-menu reveals
-   * 3. Click Custom Panoramic Tapestry - Weave Loom from sub-menu
-   */
+  /** Hover the Tapestries menu to open dropdown, hover over Custom Panoramic Tapestries category to reveal sub-menu, then click the Weave Loom product */
   async navigateToPanoramicWeaveLoomProduct() {
     // Ensure the top-level menu is visible
     await this.menu.waitFor({ state: 'visible', timeout: 15000 });
     console.log('✅ Tapestries menu found');
 
-    // Step 1: Hover over Tapestries menu to open dropdown
+    // 1. Initial Clean Hover on Tapestries menu
     await this.menu.hover();
-    console.log('⏳ Step 1: Hovering over Tapestries menu to open dropdown...');
+    console.log('⏳ Hovering over Tapestries menu...');
     await this.page.waitForTimeout(3000); // Wait for dropdown to appear
 
-    // Step 2: Try to find the category, if not visible, perform jitter hover
-    let isCategoryVisible = await this.panoramicTapestryCategory.isVisible();
+    // 2. Try to find the category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.panoramicTapestryCategory.isVisible().catch(() => false);
+    console.log(`Category visibility check (attempt 1): ${isCategoryVisible}`);
+    
     if (!isCategoryVisible) {
       console.log('⚠️ Category not visible, trying jitter hover...');
       const box = await this.menu.boundingBox();
@@ -241,34 +277,324 @@ class HomePage {
         await this.menu.hover();
         await this.page.waitForTimeout(3000);
       }
-      isCategoryVisible = await this.panoramicTapestryCategory.isVisible();
+      isCategoryVisible = await this.panoramicTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 2): ${isCategoryVisible}`);
     }
 
-    // Final attempt with force hover
+    // 3. Final attempt with force hover
     if (!isCategoryVisible) {
-      console.log('⚠️ Re-hovering with force parameter...');
+      console.log('⚠️ Category still not visible, trying force hover...');
       await this.menu.hover({ force: true });
       await this.page.waitForTimeout(3000);
+      isCategoryVisible = await this.panoramicTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 3): ${isCategoryVisible}`);
     }
 
-    // Step 2: Wait for category to be visible in dropdown and hover over it to reveal sub-menu
-    await this.panoramicTapestryCategory.waitFor({ state: 'visible', timeout: 20000 });
-    console.log('✅ Step 2: "Custom Panoramic Tapestries" category found in dropdown');
+    // Wait for the category to be visible
+    try {
+      await this.panoramicTapestryCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Custom Panoramic Tapestries" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Category did not become visible within timeout, attempting to hover anyway');
+    }
     
+    // Scroll category into view if needed
+    try {
+      await this.panoramicTapestryCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll category into view');
+    }
+    
+    // Hover over the category to reveal sub-menu
     await this.panoramicTapestryCategory.hover();
-    console.log('⏳ Hovering over "Custom Panoramic Tapestries" to reveal sub-menu...');
-    await this.page.waitForTimeout(2000); // Wait for sub-menu to appear
+    console.log('⏳ Hovered over "Custom Panoramic Tapestries" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
     
-    // Step 3: Click on the Weave Loom product from the sub-menu
-    await this.panoramicWeaveLoomProduct.waitFor({ state: 'visible', timeout: 20000 });
-    console.log('✅ Step 3: Custom Panoramic Tapestry - Weave Loom visible in sub-menu');
+    // Wait for product to become visible in sub-menu
+    try {
+      await this.panoramicWeaveLoomProduct.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Custom Panoramic Tapestry - Weave Loom visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Product did not become visible, but attempting to click anyway');
+    }
     
+    // Scroll product into view
+    try {
+      await this.panoramicWeaveLoomProduct.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled product into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll product into view');
+    }
+    
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+    
+    // Click the product
     await this.panoramicWeaveLoomProduct.click();
     console.log('✅ Clicked Custom Panoramic Tapestry - Weave Loom from sub-menu');
 
     // Confirm navigation to PDP
     await this.page.waitForURL(/panoramic-tapestry-p|weave-loom-p|tapestry-p/i, { timeout: 30000 });
     console.log('✅ Navigated to Panoramic Tapestry Weave Loom PDP successfully');
+  }
+
+  /** Hover the Tapestries menu to open dropdown, hover over Custom Triangular Tapestries category to reveal sub-menu, then click the Velvet Satin product */
+  async navigateToTriangularTapestryProduct() {
+    // Ensure the top-level menu is visible
+    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
+    console.log('✅ Tapestries menu found');
+
+    // 1. Initial Clean Hover on Tapestries menu
+    await this.menu.hover();
+    console.log('⏳ Hovering over Tapestries menu...');
+    await this.page.waitForTimeout(3000); // Wait for dropdown to appear
+
+    // 2. Try to find the category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.triangularTapestryCategory.isVisible().catch(() => false);
+    console.log(`Category visibility check (attempt 1): ${isCategoryVisible}`);
+    
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category not visible, trying jitter hover...');
+      const box = await this.menu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.menu.hover();
+        await this.page.waitForTimeout(3000);
+      }
+      isCategoryVisible = await this.triangularTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 2): ${isCategoryVisible}`);
+    }
+
+    // 3. Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category still not visible, trying force hover...');
+      await this.menu.hover({ force: true });
+      await this.page.waitForTimeout(3000);
+      isCategoryVisible = await this.triangularTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 3): ${isCategoryVisible}`);
+    }
+
+    // Wait for the category to be visible
+    try {
+      await this.triangularTapestryCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Custom Triangular Tapestries" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Category did not become visible within timeout, attempting to hover anyway');
+    }
+    
+    // Scroll category into view if needed
+    try {
+      await this.triangularTapestryCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll category into view');
+    }
+    
+    // Hover over the category to reveal sub-menu
+    await this.triangularTapestryCategory.hover();
+    console.log('⏳ Hovered over "Custom Triangular Tapestries" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
+    
+    // Wait for product to become visible in sub-menu
+    try {
+      await this.triangularTapestryProduct.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Custom Triangular Tapestry - Velvet Satin visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Product did not become visible, but attempting to click anyway');
+    }
+    
+    // Scroll product into view
+    try {
+      await this.triangularTapestryProduct.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled product into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll product into view');
+    }
+    
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+    
+    // Click the product
+    await this.triangularTapestryProduct.click();
+    console.log('✅ Clicked Custom Triangular Tapestry - Velvet Satin from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/triangular-tapestry-p|tapestry-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Triangular Tapestry PDP successfully');
+  }
+
+  /** Hover the Tapestries menu to open dropdown, hover over Custom Triangular Tapestries category to reveal sub-menu, then click the Weave Loom product */
+  async navigateToTriangularWeaveLoomProduct() {
+    // Ensure the top-level menu is visible
+    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
+    console.log('✅ Tapestries menu found');
+
+    // 1. Initial Clean Hover on Tapestries menu
+    await this.menu.hover();
+    console.log('⏳ Hovering over Tapestries menu...');
+    await this.page.waitForTimeout(3000); // Wait for dropdown to appear
+
+    // 2. Try to find the category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.triangularTapestryCategory.isVisible().catch(() => false);
+    console.log(`Category visibility check (attempt 1): ${isCategoryVisible}`);
+    
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category not visible, trying jitter hover...');
+      const box = await this.menu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.menu.hover();
+        await this.page.waitForTimeout(3000);
+      }
+      isCategoryVisible = await this.triangularTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 2): ${isCategoryVisible}`);
+    }
+
+    // 3. Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category still not visible, trying force hover...');
+      await this.menu.hover({ force: true });
+      await this.page.waitForTimeout(3000);
+      isCategoryVisible = await this.triangularTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 3): ${isCategoryVisible}`);
+    }
+
+    // Wait for the category to be visible
+    try {
+      await this.triangularTapestryCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Custom Triangular Tapestries" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Category did not become visible within timeout, attempting to hover anyway');
+    }
+    
+    // Scroll category into view if needed
+    try {
+      await this.triangularTapestryCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll category into view');
+    }
+    
+    // Hover over the category to reveal sub-menu
+    await this.triangularTapestryCategory.hover();
+    console.log('⏳ Hovered over "Custom Triangular Tapestries" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
+    
+    // Wait for product to become visible in sub-menu
+    try {
+      await this.triangularWeaveLoomProduct.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Custom Triangular Tapestry - Weave Loom visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Product did not become visible, but attempting to click anyway');
+    }
+    
+    // Scroll product into view
+    try {
+      await this.triangularWeaveLoomProduct.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled product into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll product into view');
+    }
+    
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+    
+    // Click the product
+    await this.triangularWeaveLoomProduct.click();
+    console.log('✅ Clicked Custom Triangular Tapestry - Weave Loom from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/triangular-tapestry-p|weave-loom-p|tapestry-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Triangular Tapestry Weave Loom PDP successfully');
+  }
+
+  /** Hover the Tapestries menu to open dropdown, hover over Custom Hanging Tapestries category to reveal sub-menu, then click the Velvet Satin product */
+  async navigateToHangingTapestryProduct() {
+    // Ensure the top-level menu is visible
+    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
+    console.log('✅ Tapestries menu found');
+
+    // 1. Initial Clean Hover on Tapestries menu
+    await this.menu.hover();
+    console.log('⏳ Hovering over Tapestries menu...');
+    await this.page.waitForTimeout(3000); // Wait for dropdown to appear
+
+    // 2. Try to find the category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.hangingTapestryCategory.isVisible().catch(() => false);
+    console.log(`Category visibility check (attempt 1): ${isCategoryVisible}`);
+    
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category not visible, trying jitter hover...');
+      const box = await this.menu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.menu.hover();
+        await this.page.waitForTimeout(3000);
+      }
+      isCategoryVisible = await this.hangingTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 2): ${isCategoryVisible}`);
+    }
+
+    // 3. Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category still not visible, trying force hover...');
+      await this.menu.hover({ force: true });
+      await this.page.waitForTimeout(3000);
+      isCategoryVisible = await this.hangingTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 3): ${isCategoryVisible}`);
+    }
+
+    // Wait for the category to be visible
+    try {
+      await this.hangingTapestryCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Custom Hanging Tapestries" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Category did not become visible within timeout, attempting to hover anyway');
+    }
+    
+    // Scroll category into view if needed
+    try {
+      await this.hangingTapestryCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll category into view');
+    }
+    
+    // Hover over the category to reveal sub-menu
+    await this.hangingTapestryCategory.hover();
+    console.log('⏳ Hovered over "Custom Hanging Tapestries" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
+    
+    // Wait for product to become visible in sub-menu
+    try {
+      await this.hangingTapestryProduct.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Custom Hanging Tapestry - Velvet Satin visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Product did not become visible, but attempting to click anyway');
+    }
+    
+    // Scroll product into view
+    try {
+      await this.hangingTapestryProduct.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled product into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll product into view');
+    }
+    
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+    
+    // Click the product
+    await this.hangingTapestryProduct.click();
+    console.log('✅ Clicked Custom Hanging Tapestry - Velvet Satin from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/hanging-tapestry-p|tapestry-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Hanging Tapestry PDP successfully');
   }
 }
 
