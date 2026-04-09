@@ -10,6 +10,8 @@ class HomePage {
     // Use getByText for panoramic tapestries as requested in the user's requirement
     this.panoramicTapestryCategory = page.getByText('Custom Panoramic Tapestries', { exact: true });
     this.panoramicTapestryProduct = page.getByText('Custom Panoramic Tapestry - Velvet Satin', { exact: true });
+    // Weave Loom product
+    this.weaveLoomProduct = page.getByText('Custom Wall Tapestry - Weave Loom', { exact: true });
   }
 
   async open() {
@@ -158,6 +160,50 @@ class HomePage {
     // Confirm navigation to PDP
     await this.page.waitForURL(/panoramic-tapestry-p/i, { timeout: 30000 });
     console.log('✅ Navigated to Panoramic Tapestry PDP successfully');
+  }
+
+  /** Hover the Tapestries menu to open dropdown, then click the Custom Wall Tapestry - Weave Loom product */
+  async navigateToWeaveLoomProduct() {
+    // Ensure the top-level menu is visible
+    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
+    console.log('✅ Tapestries menu found');
+
+    // 1. Initial Clean Hover on Tapestries menu
+    await this.menu.hover();
+    console.log('⏳ Hovering over Tapestries menu...');
+    await this.page.waitForTimeout(3000); // Wait for dropdown to appear
+
+    // 2. Try to find the product, if not visible, perform jitter hover
+    let isProductVisible = await this.weaveLoomProduct.isVisible();
+    if (!isProductVisible) {
+      console.log('⚠️ Product not visible, trying jitter hover...');
+      const box = await this.menu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.menu.hover();
+        await this.page.waitForTimeout(3000);
+      }
+      isProductVisible = await this.weaveLoomProduct.isVisible();
+    }
+
+    // 3. Final attempt with force hover
+    if (!isProductVisible) {
+      console.log('⚠️ Re-hovering with force parameter...');
+      await this.menu.hover({ force: true });
+      await this.page.waitForTimeout(3000);
+    }
+
+    // Wait for the product to be visible and click it
+    await this.weaveLoomProduct.waitFor({ state: 'visible', timeout: 20000 });
+    console.log('✅ Custom Wall Tapestry - Weave Loom product visible');
+    
+    await this.weaveLoomProduct.click();
+    console.log('✅ Clicked Custom Wall Tapestry - Weave Loom');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/weave-loom-p|tapestry-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Weave Loom Tapestry PDP successfully');
   }
 }
 

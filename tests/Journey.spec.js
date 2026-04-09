@@ -124,4 +124,64 @@ test('E2E Journey - Custom Panoramic Tapestries', async ({ page }) => {
   await page.waitForTimeout(20000);
 });
 
+test('E2E Journey - Custom Wall Tapestry Weave Loom', async ({ page }) => {
+  test.setTimeout(600000);
+  const homePage = new HomePage(page);
+  const productPage = new ProductPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutPage = new CheckoutPage(page);
+
+  // Step 1 - 4: Open Website and Navigate to Product
+  console.log('Step: Starting journey with preserved session...');
+  await homePage.open();
+  await homePage.navigateToWeaveLoomProduct();
+
+  // Step 4.1: Personalize Design
+  await productPage.personalizeDesign();
+
+  // Step 4.2: Upload Design
+  await productPage.uploadImage('data/test_image.png');
+
+  // Step 4.3: Preview and Add To Cart
+  await productPage.previewAndAddToCart();
+
+  // Step 5: Navigate to Cart
+  await cartPage.goToCart();
+  await cartPage.dismissPopup();
+  
+
+  // Step 6: Secure Checkout
+  await cartPage.secureCheckout();
+
+  await checkoutPage.waitForCheckoutToLoad();
+
+  // Step 7: Fill Shipping Details
+
+  // Step 9: Fill Stripe Payment
+  await checkoutPage.fillStripePayment({
+ //   cardNumber: '4111 1111 1111 1111',
+ //   expiry: '12 / 27',
+    cvc: '123'
+  });
+
+  // Step 10: Place Order
+  await checkoutPage.placeOrder();
+
+  // Step 11: Verify Success
+  await checkoutPage.verifySuccess();
+
+  // Step 12: Wait for order confirmation
+  console.log('Waiting 30 seconds to view order number...');
+  await page.waitForTimeout(20000);
+  await cartPage.dismissPopup(); // Can use same popup dismisser for success page
+
+  // Step 13: Print Order Hash
+  await checkoutPage.printOrderHash();
+
+  console.log('Waiting 10 seconds before browser closes...');
+  await page.waitForTimeout(10000);
+  console.log('✅ All steps complete. Browser closing.');
+  await page.waitForTimeout(20000);
+});
+
   
