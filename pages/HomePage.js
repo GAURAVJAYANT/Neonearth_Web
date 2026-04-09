@@ -7,9 +7,10 @@ class HomePage {
     this.product = page.locator('span.product-text', { hasText: 'Custom Wall Tapestry - Velvet Satin' });
     this.rugsMenu = page.locator('nav.header-navigation-bar ul.header-navigation-list li.top-level-item a.top-level-link span.label-text', { hasText: 'Rugs & Mats' });
     this.rectangleRugProduct = page.locator('span.product-text', { hasText: 'Rectangle Rug' });
-    // Use getByText for panoramic tapestries as requested in the user's requirement
-    this.panoramicTapestryCategory = page.getByText('Custom Panoramic Tapestries', { exact: true });
-    this.panoramicTapestryProduct = page.getByText('Custom Panoramic Tapestry - Velvet Satin', { exact: true });
+    // Panoramic Tapestries category - hover over this to reveal sub-menu
+    this.panoramicTapestryCategory = page.locator(`span:has-text("Custom Panoramic Tapestries")`);
+    // Panoramic Tapestry product - use xpath with normalize-space for accurate selection from sub-menu
+    this.panoramicTapestryProduct = page.locator(`//span[normalize-space()='Custom Panoramic Tapestry - Velvet Satin']`);
     // Weave Loom product
     this.weaveLoomProduct = page.getByText('Custom Wall Tapestry - Weave Loom', { exact: true });
   }
@@ -110,18 +111,23 @@ class HomePage {
     console.log('✅ Navigated to Rug PDP successfully via clean hover');
   }
 
-  /** Hover the Tapestries menu to open dropdown, hover over Custom Panoramic Tapestries category, then click the product */
+  /** 
+   * Navigate to Panoramic Tapestry product:
+   * 1. Hover Tapestries menu → dropdown opens
+   * 2. Hover span:has-text("Custom Panoramic Tapestries") → sub-menu reveals
+   * 3. Click Custom Panoramic Tapestry - Velvet Satin from sub-menu
+   */
   async navigateToPanoramicTapestryProduct() {
     // Ensure the top-level menu is visible
     await this.menu.waitFor({ state: 'visible', timeout: 15000 });
     console.log('✅ Tapestries menu found');
 
-    // 1. Initial Clean Hover on Tapestries menu
+    // Step 1: Hover over Tapestries menu to open dropdown
     await this.menu.hover();
-    console.log('⏳ Hovering over Tapestries menu...');
+    console.log('⏳ Step 1: Hovering over Tapestries menu to open dropdown...');
     await this.page.waitForTimeout(3000); // Wait for dropdown to appear
 
-    // 2. Try to find the category, if not visible, perform jitter hover
+    // Step 2: Try to find the category, if not visible, perform jitter hover
     let isCategoryVisible = await this.panoramicTapestryCategory.isVisible();
     if (!isCategoryVisible) {
       console.log('⚠️ Category not visible, trying jitter hover...');
@@ -135,27 +141,27 @@ class HomePage {
       isCategoryVisible = await this.panoramicTapestryCategory.isVisible();
     }
 
-    // 3. Final attempt with force hover
+    // Final attempt with force hover
     if (!isCategoryVisible) {
       console.log('⚠️ Re-hovering with force parameter...');
       await this.menu.hover({ force: true });
       await this.page.waitForTimeout(3000);
     }
 
-    // Wait for the category to be visible and hover over it
+    // Step 2: Wait for category to be visible in dropdown and hover over it to reveal sub-menu
     await this.panoramicTapestryCategory.waitFor({ state: 'visible', timeout: 20000 });
-    console.log('✅ Custom Panoramic Tapestries category visible, hovering over it...');
+    console.log('✅ Step 2: "Custom Panoramic Tapestries" category found in dropdown');
     
     await this.panoramicTapestryCategory.hover();
-    console.log('⏳ Hovering over Custom Panoramic Tapestries to reveal sub-menu...');
+    console.log('⏳ Hovering over "Custom Panoramic Tapestries" to reveal sub-menu...');
     await this.page.waitForTimeout(2000); // Wait for sub-menu to appear
     
-    // Now click on the specific product
+    // Step 3: Click on the specific product from the sub-menu
     await this.panoramicTapestryProduct.waitFor({ state: 'visible', timeout: 20000 });
-    console.log('✅ Custom Panoramic Tapestry - Velvet Satin product visible');
+    console.log('✅ Step 3: Custom Panoramic Tapestry - Velvet Satin visible in sub-menu');
     
     await this.panoramicTapestryProduct.click();
-    console.log('✅ Clicked Custom Panoramic Tapestry - Velvet Satin');
+    console.log('✅ Clicked Custom Panoramic Tapestry - Velvet Satin from sub-menu');
 
     // Confirm navigation to PDP
     await this.page.waitForURL(/panoramic-tapestry-p/i, { timeout: 30000 });
