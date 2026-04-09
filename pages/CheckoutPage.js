@@ -90,7 +90,7 @@ class CheckoutPage {
     .getByRole('heading', { name: 'Payment Method' })
     .scrollIntoViewIfNeeded();
 
-  await this.page.waitForTimeout(500);
+  await this.page.waitForTimeout(1500);
 
   await this.page.waitForSelector('iframe[src*="stripe"]', {
     timeout: 30000

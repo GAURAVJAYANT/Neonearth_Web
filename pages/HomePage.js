@@ -23,6 +23,8 @@ class HomePage {
     this.hangingTapestryCategory = page.locator(`span:has-text("Custom Hanging Tapestries")`);
     // Hanging Tapestry Velvet Satin product - from sub-menu
     this.hangingTapestryProduct = page.locator(`//span[normalize-space()='Custom Hanging Tapestry - Velvet Satin']`);
+    // Hanging Tapestry Weave Loom product - from sub-menu
+    this.hangingWeaveLoomProduct = page.locator(`//span[normalize-space()='Custom Hanging Tapestry - Weave Loom']`);
     // Weave Loom product
     this.weaveLoomProduct = page.getByText('Custom Wall Tapestry - Weave Loom', { exact: true });
   }
@@ -595,6 +597,92 @@ class HomePage {
     // Confirm navigation to PDP
     await this.page.waitForURL(/hanging-tapestry-p|tapestry-p/i, { timeout: 30000 });
     console.log('✅ Navigated to Hanging Tapestry PDP successfully');
+  }
+
+  /** Hover the Tapestries menu to open dropdown, hover over Custom Hanging Tapestries category to reveal sub-menu, then click the Weave Loom product */
+  async navigateToHangingWeaveLoomProduct() {
+    // Ensure the top-level menu is visible
+    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
+    console.log('✅ Tapestries menu found');
+
+    // 1. Initial Clean Hover on Tapestries menu
+    await this.menu.hover();
+    console.log('⏳ Hovering over Tapestries menu...');
+    await this.page.waitForTimeout(3000); // Wait for dropdown to appear
+
+    // 2. Try to find the category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.hangingTapestryCategory.isVisible().catch(() => false);
+    console.log(`Category visibility check (attempt 1): ${isCategoryVisible}`);
+    
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category not visible, trying jitter hover...');
+      const box = await this.menu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.menu.hover();
+        await this.page.waitForTimeout(3000);
+      }
+      isCategoryVisible = await this.hangingTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 2): ${isCategoryVisible}`);
+    }
+
+    // 3. Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category still not visible, trying force hover...');
+      await this.menu.hover({ force: true });
+      await this.page.waitForTimeout(3000);
+      isCategoryVisible = await this.hangingTapestryCategory.isVisible().catch(() => false);
+      console.log(`Category visibility check (attempt 3): ${isCategoryVisible}`);
+    }
+
+    // Wait for the category to be visible
+    try {
+      await this.hangingTapestryCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Custom Hanging Tapestries" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Category did not become visible within timeout, attempting to hover anyway');
+    }
+    
+    // Scroll category into view if needed
+    try {
+      await this.hangingTapestryCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll category into view');
+    }
+    
+    // Hover over the category to reveal sub-menu
+    await this.hangingTapestryCategory.hover();
+    console.log('⏳ Hovered over "Custom Hanging Tapestries" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
+    
+    // Wait for product to become visible in sub-menu
+    try {
+      await this.hangingWeaveLoomProduct.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Custom Hanging Tapestry - Weave Loom visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Product did not become visible, but attempting to click anyway');
+    }
+    
+    // Scroll product into view
+    try {
+      await this.hangingWeaveLoomProduct.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled product into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll product into view');
+    }
+    
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+    
+    // Click the product
+    await this.hangingWeaveLoomProduct.click();
+    console.log('✅ Clicked Custom Hanging Tapestry - Weave Loom from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/hanging-tapestry-p|weave-loom-p|tapestry-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Hanging Tapestry Weave Loom PDP successfully');
   }
 }
 
