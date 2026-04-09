@@ -9,8 +9,10 @@ class HomePage {
     this.rectangleRugProduct = page.locator('span.product-text', { hasText: 'Rectangle Rug' });
     // Panoramic Tapestries category - hover over this to reveal sub-menu
     this.panoramicTapestryCategory = page.locator(`span:has-text("Custom Panoramic Tapestries")`);
-    // Panoramic Tapestry product - use xpath with normalize-space for accurate selection from sub-menu
+    // Panoramic Tapestry Velvet Satin product - use xpath with normalize-space for accurate selection from sub-menu
     this.panoramicTapestryProduct = page.locator(`//span[normalize-space()='Custom Panoramic Tapestry - Velvet Satin']`);
+    // Panoramic Tapestry Weave Loom product - from sub-menu
+    this.panoramicWeaveLoomProduct = page.locator(`//span[normalize-space()='Custom Panoramic Tapestry - Weave Loom']`);
     // Weave Loom product
     this.weaveLoomProduct = page.getByText('Custom Wall Tapestry - Weave Loom', { exact: true });
   }
@@ -210,6 +212,63 @@ class HomePage {
     // Confirm navigation to PDP
     await this.page.waitForURL(/weave-loom-p|tapestry-p/i, { timeout: 30000 });
     console.log('✅ Navigated to Weave Loom Tapestry PDP successfully');
+  }
+
+  /** 
+   * Navigate to Panoramic Tapestry Weave Loom product:
+   * 1. Hover Tapestries menu → dropdown opens
+   * 2. Hover span:has-text("Custom Panoramic Tapestries") → sub-menu reveals
+   * 3. Click Custom Panoramic Tapestry - Weave Loom from sub-menu
+   */
+  async navigateToPanoramicWeaveLoomProduct() {
+    // Ensure the top-level menu is visible
+    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
+    console.log('✅ Tapestries menu found');
+
+    // Step 1: Hover over Tapestries menu to open dropdown
+    await this.menu.hover();
+    console.log('⏳ Step 1: Hovering over Tapestries menu to open dropdown...');
+    await this.page.waitForTimeout(3000); // Wait for dropdown to appear
+
+    // Step 2: Try to find the category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.panoramicTapestryCategory.isVisible();
+    if (!isCategoryVisible) {
+      console.log('⚠️ Category not visible, trying jitter hover...');
+      const box = await this.menu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.menu.hover();
+        await this.page.waitForTimeout(3000);
+      }
+      isCategoryVisible = await this.panoramicTapestryCategory.isVisible();
+    }
+
+    // Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Re-hovering with force parameter...');
+      await this.menu.hover({ force: true });
+      await this.page.waitForTimeout(3000);
+    }
+
+    // Step 2: Wait for category to be visible in dropdown and hover over it to reveal sub-menu
+    await this.panoramicTapestryCategory.waitFor({ state: 'visible', timeout: 20000 });
+    console.log('✅ Step 2: "Custom Panoramic Tapestries" category found in dropdown');
+    
+    await this.panoramicTapestryCategory.hover();
+    console.log('⏳ Hovering over "Custom Panoramic Tapestries" to reveal sub-menu...');
+    await this.page.waitForTimeout(2000); // Wait for sub-menu to appear
+    
+    // Step 3: Click on the Weave Loom product from the sub-menu
+    await this.panoramicWeaveLoomProduct.waitFor({ state: 'visible', timeout: 20000 });
+    console.log('✅ Step 3: Custom Panoramic Tapestry - Weave Loom visible in sub-menu');
+    
+    await this.panoramicWeaveLoomProduct.click();
+    console.log('✅ Clicked Custom Panoramic Tapestry - Weave Loom from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/panoramic-tapestry-p|weave-loom-p|tapestry-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Panoramic Tapestry Weave Loom PDP successfully');
   }
 }
 
