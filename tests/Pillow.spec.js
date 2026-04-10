@@ -2,14 +2,14 @@ const { test, expect } = require('@playwright/test');
 const { HomePage } = require('../pages/HomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
-// const { CheckoutPage } = require('../pages/CheckoutPage');
+const { CheckoutPage } = require('../pages/CheckoutPage');
 
 test('E2E Journey - Pillows - Custom Square Throw Pillow', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new HomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
-  // const checkoutPage = new CheckoutPage(page);
+  const checkoutPage = new CheckoutPage(page);
 
   // Step 1: Open Website
   await homePage.open();
@@ -37,7 +37,10 @@ test('E2E Journey - Pillows - Custom Square Throw Pillow', async ({ page }) => {
   await productPage.uploadImage('data/test_image.png');
 
   // Step 4.2.1: Click "Next: Back Side" (Pillow specific)
-  await productPage.clickNextBackSide();
+ const nextBackSideBtn = page.getByRole('button', { name: 'Next: Back Side' });
+ await nextBackSideBtn.waitFor({ state: 'visible', timeout: 20000 });
+ await nextBackSideBtn.click();
+ console.log('✅ Clicked "Next : Back Side" button');
 
   // Step 4.3: Preview and Add To Cart
   await productPage.previewAndAddToCart();
@@ -49,25 +52,35 @@ test('E2E Journey - Pillows - Custom Square Throw Pillow', async ({ page }) => {
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
 
-  // Step 7: Select Amazon Pay
-  try {
-    console.log('Step 7: Selecting Alexa/Amazon Pay...');
-    // Switch into the Stripe Payment Element iframe first
-    const paymentFrame = page.frameLocator('iframe[title="Secure payment input frame"]');
+  await checkoutPage.waitForCheckoutToLoad();
 
-    // Click the Amazon Pay accordion button
-    const amazonPayBtn = paymentFrame.locator('[data-value="amazon_pay"]');
+  // Step 7: Fill Shipping Details
 
-    await amazonPayBtn.waitFor({ state: 'visible', timeout: 15000 });
-    await amazonPayBtn.click();
-    console.log('  ✅ Amazon Pay selected');
-  } catch (e) {
-    console.log(`  ❌ Amazon Pay selection failed: ${e.message.split('\n')[0]}`);
-    throw new Error(`Amazon Pay option could not be clicked: ${e.message}`);
-  }
+  // Step 9: Fill Stripe Payment
+  await checkoutPage.fillStripePayment({
+ //   cardNumber: '4111 1111 1111 1111',
+ //   expiry: '12 / 27',
+    cvc: '123'
+  });
+
+  // Step 10: Place Order
+  await checkoutPage.placeOrder();
+
+  // Step 11: Verify Success
+  await checkoutPage.verifySuccess();
+
+  // Step 12: Wait for order confirmation
+  console.log('Waiting 30 seconds to view order number...');
+  await page.waitForTimeout(20000);
+  await cartPage.dismissPopup(); // Can use same popup dismisser for success page
+
+  // Step 13: Print Order Hash
+  await checkoutPage.printOrderHash();
 
   console.log('Waiting 10 seconds before browser closes...');
   await page.waitForTimeout(10000);
   console.log('✅ All steps complete. Browser closing.');
-  await page.waitForTimeout(10000);
+  await page.waitForTimeout(20000);
+
+  
 });

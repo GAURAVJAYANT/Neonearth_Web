@@ -27,6 +27,12 @@ class HomePage {
     this.hangingWeaveLoomProduct = page.locator(`//span[normalize-space()='Custom Hanging Tapestry - Weave Loom']`);
     // Weave Loom product
     this.weaveLoomProduct = page.getByText('Custom Wall Tapestry - Weave Loom', { exact: true });
+    // Pillows menu
+    this.pillowsMenu = page.getByText('Pillows', { exact: true });
+    // Throw Pillows category in dropdown - use role-based selector to avoid strict mode violation
+    this.throwPillowsCategory = page.getByRole('link', { name: /^Throw Pillows$/ }).first();
+    // Custom Square Throw Pillow product in submenu - using role-based selector
+    this.customSquareThrowPillow = page.getByRole('link', { name: /Custom Square Throw Pillow/ }).first();
   }
 
   async open() {
@@ -683,6 +689,54 @@ class HomePage {
     // Confirm navigation to PDP
     await this.page.waitForURL(/hanging-tapestry-p|weave-loom-p|tapestry-p/i, { timeout: 30000 });
     console.log('✅ Navigated to Hanging Tapestry Weave Loom PDP successfully');
+  }
+
+  /** Hover the Pillows menu to open dropdown, hover over Throw Pillows category to reveal sub-menu, then click the Custom Square Throw Pillow product */
+  async navigateToPillowProduct() {
+    // Ensure the Pillows menu is visible - this is quick check
+    await this.pillowsMenu.waitFor({ state: 'visible', timeout: 5000 });
+    console.log('✅ Pillows menu found');
+
+    // 1. Initial Hover on Pillows menu - immediately
+    await this.pillowsMenu.hover();
+    console.log('⏳ Hovering over Pillows menu...');
+    await this.page.waitForTimeout(1000); // Quick wait for dropdown animation
+
+    // 2. Wait for Throw Pillows category to be visible
+    try {
+      await this.throwPillowsCategory.waitFor({ state: 'visible', timeout: 3000 });
+      console.log('✅ "Throw Pillows" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Throw Pillows not visible yet, trying again...');
+      await this.pillowsMenu.hover();
+      await this.page.waitForTimeout(1000);
+      await this.throwPillowsCategory.waitFor({ state: 'visible', timeout: 3000 });
+    }
+    
+    // 3. Hover over the Throw Pillows category to reveal sub-menu
+    await this.throwPillowsCategory.hover();
+    console.log('⏳ Hovered over "Throw Pillows" category');
+    await this.page.waitForTimeout(1000); // Quick wait for sub-menu animation
+    
+    // 4. Wait for Custom Square Throw Pillow product to be visible in sub-menu
+    try {
+      await this.customSquareThrowPillow.waitFor({ state: 'visible', timeout: 3000 });
+      console.log('✅ Custom Square Throw Pillow visible in sub-menu');
+    } catch (e) {
+      console.log(`⚠️ Product not visible: ${e.message.split('\n')[0]}`);
+      console.log('⏳ Retrying hover...');
+      await this.throwPillowsCategory.hover();
+      await this.page.waitForTimeout(1000);
+      await this.customSquareThrowPillow.waitFor({ state: 'visible', timeout: 3000 });
+    }
+    
+    // 5. Click the product immediately
+    await this.customSquareThrowPillow.click();
+    console.log('✅ Clicked Custom Square Throw Pillow from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/throw-pillow-p|pillow-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Custom Square Throw Pillow PDP successfully');
   }
 }
 
