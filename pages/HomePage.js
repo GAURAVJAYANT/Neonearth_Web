@@ -37,6 +37,14 @@ class HomePage {
     this.customRectangleThrowPillow = page.getByRole('link', { name: 'Custom Rectangle Throw Pillow' }).first();
     // Custom Round Throw Pillow product in submenu
     this.customRoundThrowPillow = page.getByRole('link', { name: 'Custom Round Throw Pillow' }).first();
+    // Cushions category in dropdown - use href attribute for reliable matching
+    this.cushionsCategory = page.locator('a[href="/cushions"]').first();
+    // Square Seat Cushion product in submenu - look for link with title containing Square Seat Cushion
+    this.squareSeatCushion = page.locator('a[href*="square-seat"]').first();
+    // Round Seat Cushion product in submenu
+    this.roundSeatCushion = page.locator('a[href*="round-seat"]').first();
+    // Rectangle Seat Cushion product in submenu
+    this.rectangleSeatCushion = page.locator('a[href*="rectangle-seat"]').first();
   }
 
   async open() {
@@ -856,6 +864,264 @@ class HomePage {
     // Confirm navigation to PDP
     await this.page.waitForURL(/throw-pillow-p|pillow-p/i, { timeout: 30000 });
     console.log('✅ Navigated to Custom Round Throw Pillow PDP successfully');
+  }
+
+  /** Hover the Pillows menu to open dropdown, hover over Cushions category in dropdown to reveal sub-menu, then click the Square Seat Cushion product */
+  async navigateToSquareSeatCushionProduct() {
+    // Ensure the Pillows menu is visible
+    await this.pillowsMenu.waitFor({ state: 'visible', timeout: 5000 });
+    console.log('✅ Pillows menu found');
+
+    // 1. Initial Hover on Pillows menu
+    await this.pillowsMenu.hover();
+    console.log('⏳ Hovering over Pillows menu...');
+    await this.page.waitForTimeout(2000); // Wait for dropdown to appear
+
+    // 2. Try to find the Cushions category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+    console.log(`Cushions category visibility check (attempt 1): ${isCategoryVisible}`);
+    
+    if (!isCategoryVisible) {
+      console.log('⚠️ Cushions category not visible, trying jitter hover...');
+      const box = await this.pillowsMenu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.pillowsMenu.hover();
+        await this.page.waitForTimeout(2000);
+      }
+      isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+      console.log(`Cushions category visibility check (attempt 2): ${isCategoryVisible}`);
+    }
+
+    // 3. Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Cushions category still not visible, trying force hover...');
+      await this.pillowsMenu.hover({ force: true });
+      await this.page.waitForTimeout(2000);
+      isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+      console.log(`Cushions category visibility check (attempt 3): ${isCategoryVisible}`);
+    }
+
+    // Wait for the Cushions category to be visible
+    try {
+      await this.cushionsCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Cushions" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Cushions category did not become visible within timeout, attempting to hover anyway');
+    }
+    
+    // Scroll Cushions category into view if needed
+    try {
+      await this.cushionsCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled Cushions category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll Cushions category into view');
+    }
+    
+    // Hover over the Cushions category to reveal sub-menu
+    await this.cushionsCategory.hover();
+    console.log('⏳ Hovered over "Cushions" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
+    
+    // Wait for Square Seat Cushion to become visible in sub-menu
+    try {
+      await this.squareSeatCushion.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Square Seat Cushion visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Square Seat Cushion did not become visible, but attempting to click anyway');
+    }
+    
+    // Scroll product into view
+    try {
+      await this.squareSeatCushion.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled Square Seat Cushion into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll Square Seat Cushion into view');
+    }
+    
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+    
+    // Click the product
+    await this.squareSeatCushion.click();
+    console.log('✅ Clicked Square Seat Cushion from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/cushion-p|seat-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Square Seat Cushion PDP successfully');
+  }
+
+  /** Hover the Pillows menu to open dropdown, hover over Cushions category in dropdown to reveal sub-menu, then click the Round Seat Cushion product */
+  async navigateToRoundSeatCushionProduct() {
+    // Ensure the Pillows menu is visible
+    await this.pillowsMenu.waitFor({ state: 'visible', timeout: 5000 });
+    console.log('✅ Pillows menu found');
+
+    // 1. Initial Hover on Pillows menu
+    await this.pillowsMenu.hover();
+    console.log('⏳ Hovering over Pillows menu...');
+    await this.page.waitForTimeout(2000); // Wait for dropdown to appear
+
+    // 2. Try to find the Cushions category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+    console.log(`Cushions category visibility check (attempt 1): ${isCategoryVisible}`);
+
+    if (!isCategoryVisible) {
+      console.log('⚠️ Cushions category not visible, trying jitter hover...');
+      const box = await this.pillowsMenu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.pillowsMenu.hover();
+        await this.page.waitForTimeout(2000);
+      }
+      isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+      console.log(`Cushions category visibility check (attempt 2): ${isCategoryVisible}`);
+    }
+
+    // 3. Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Cushions category still not visible, trying force hover...');
+      await this.pillowsMenu.hover({ force: true });
+      await this.page.waitForTimeout(2000);
+      isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+      console.log(`Cushions category visibility check (attempt 3): ${isCategoryVisible}`);
+    }
+
+    // Wait for the Cushions category to be visible
+    try {
+      await this.cushionsCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Cushions" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Cushions category did not become visible within timeout, attempting to hover anyway');
+    }
+
+    // Scroll Cushions category into view if needed
+    try {
+      await this.cushionsCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled Cushions category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll Cushions category into view');
+    }
+
+    // Hover over the Cushions category to reveal sub-menu
+    await this.cushionsCategory.hover();
+    console.log('⏳ Hovered over "Cushions" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
+
+    // Wait for Round Seat Cushion to become visible in sub-menu
+    try {
+      await this.roundSeatCushion.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Round Seat Cushion visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Round Seat Cushion did not become visible, but attempting to click anyway');
+    }
+
+    // Scroll product into view
+    try {
+      await this.roundSeatCushion.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled Round Seat Cushion into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll Round Seat Cushion into view');
+    }
+
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+
+    // Click the product
+    await this.roundSeatCushion.click();
+    console.log('✅ Clicked Round Seat Cushion from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/cushion-p|seat-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Round Seat Cushion PDP successfully');
+  }
+
+  /** Hover the Pillows menu to open dropdown, hover over Cushions category in dropdown to reveal sub-menu, then click the Rectangle Seat Cushion product */
+  async navigateToRectangleSeatCushionProduct() {
+    // Ensure the Pillows menu is visible
+    await this.pillowsMenu.waitFor({ state: 'visible', timeout: 5000 });
+    console.log('✅ Pillows menu found');
+
+    // 1. Initial Hover on Pillows menu
+    await this.pillowsMenu.hover();
+    console.log('⏳ Hovering over Pillows menu...');
+    await this.page.waitForTimeout(2000); // Wait for dropdown to appear
+
+    // 2. Try to find the Cushions category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+    console.log(`Cushions category visibility check (attempt 1): ${isCategoryVisible}`);
+
+    if (!isCategoryVisible) {
+      console.log('⚠️ Cushions category not visible, trying jitter hover...');
+      const box = await this.pillowsMenu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.pillowsMenu.hover();
+        await this.page.waitForTimeout(2000);
+      }
+      isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+      console.log(`Cushions category visibility check (attempt 2): ${isCategoryVisible}`);
+    }
+
+    // 3. Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Cushions category still not visible, trying force hover...');
+      await this.pillowsMenu.hover({ force: true });
+      await this.page.waitForTimeout(2000);
+      isCategoryVisible = await this.cushionsCategory.isVisible().catch(() => false);
+      console.log(`Cushions category visibility check (attempt 3): ${isCategoryVisible}`);
+    }
+
+    // Wait for the Cushions category to be visible
+    try {
+      await this.cushionsCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Cushions" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Cushions category did not become visible within timeout, attempting to hover anyway');
+    }
+
+    // Scroll Cushions category into view if needed
+    try {
+      await this.cushionsCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled Cushions category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll Cushions category into view');
+    }
+
+    // Hover over the Cushions category to reveal sub-menu
+    await this.cushionsCategory.hover();
+    console.log('⏳ Hovered over "Cushions" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
+
+    // Wait for Rectangle Seat Cushion to become visible in sub-menu
+    try {
+      await this.rectangleSeatCushion.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Rectangle Seat Cushion visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Rectangle Seat Cushion did not become visible, but attempting to click anyway');
+    }
+
+    // Scroll product into view
+    try {
+      await this.rectangleSeatCushion.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled Rectangle Seat Cushion into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll Rectangle Seat Cushion into view');
+    }
+
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+
+    // Click the product
+    await this.rectangleSeatCushion.click();
+    console.log('✅ Clicked Rectangle Seat Cushion from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/cushion-p|seat-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Rectangle Seat Cushion PDP successfully');
   }
 }
 
