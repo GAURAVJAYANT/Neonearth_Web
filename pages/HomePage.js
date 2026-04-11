@@ -45,6 +45,10 @@ class HomePage {
     this.roundSeatCushion = page.locator('a[href*="round-seat"]').first();
     // Rectangle Seat Cushion product in submenu
     this.rectangleSeatCushion = page.locator('a[href*="rectangle-seat"]').first();
+    // Bed Pillows category in dropdown
+    this.bedPillowsCategory = page.locator('a[href*="/bed-pillows"]').first();
+    // Bed Pillow product in submenu
+    this.bedPillow = page.getByText('Bed Pillow', { exact: true });
   }
 
   async open() {
@@ -1122,6 +1126,92 @@ class HomePage {
     // Confirm navigation to PDP
     await this.page.waitForURL(/cushion-p|seat-p/i, { timeout: 30000 });
     console.log('✅ Navigated to Rectangle Seat Cushion PDP successfully');
+  }
+
+  /** Hover the Pillows menu to open dropdown, hover over Bed Pillows category to reveal sub-menu, then click the Bed Pillow product */
+  async navigateToBedPillowProduct() {
+    // Ensure the Pillows menu is visible
+    await this.pillowsMenu.waitFor({ state: 'visible', timeout: 5000 });
+    console.log('✅ Pillows menu found');
+
+    // 1. Initial Hover on Pillows menu
+    await this.pillowsMenu.hover();
+    console.log('⏳ Hovering over Pillows menu...');
+    await this.page.waitForTimeout(2000); // Wait for dropdown to appear
+
+    // 2. Try to find the Bed Pillows category, if not visible, perform jitter hover
+    let isCategoryVisible = await this.bedPillowsCategory.isVisible().catch(() => false);
+    console.log(`Bed Pillows category visibility check (attempt 1): ${isCategoryVisible}`);
+
+    if (!isCategoryVisible) {
+      console.log('⚠️ Bed Pillows category not visible, trying jitter hover...');
+      const box = await this.pillowsMenu.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x - 20, box.y + box.height / 2);
+        await this.page.waitForTimeout(500);
+        await this.pillowsMenu.hover();
+        await this.page.waitForTimeout(2000);
+      }
+      isCategoryVisible = await this.bedPillowsCategory.isVisible().catch(() => false);
+      console.log(`Bed Pillows category visibility check (attempt 2): ${isCategoryVisible}`);
+    }
+
+    // 3. Final attempt with force hover
+    if (!isCategoryVisible) {
+      console.log('⚠️ Bed Pillows category still not visible, trying force hover...');
+      await this.pillowsMenu.hover({ force: true });
+      await this.page.waitForTimeout(2000);
+      isCategoryVisible = await this.bedPillowsCategory.isVisible().catch(() => false);
+      console.log(`Bed Pillows category visibility check (attempt 3): ${isCategoryVisible}`);
+    }
+
+    // Wait for the Bed Pillows category to be visible
+    try {
+      await this.bedPillowsCategory.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ "Bed Pillows" category found and visible');
+    } catch (e) {
+      console.log('⚠️ Bed Pillows category did not become visible within timeout, attempting to hover anyway');
+    }
+
+    // Scroll Bed Pillows category into view if needed
+    try {
+      await this.bedPillowsCategory.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled Bed Pillows category into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll Bed Pillows category into view');
+    }
+
+    // Hover over the Bed Pillows category to reveal sub-menu
+    await this.bedPillowsCategory.hover();
+    console.log('⏳ Hovered over "Bed Pillows" category');
+    await this.page.waitForTimeout(2500); // Wait for sub-menu to appear
+
+    // Wait for Bed Pillow product to become visible in sub-menu
+    try {
+      await this.bedPillow.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('✅ Bed Pillow visible in sub-menu');
+    } catch (e) {
+      console.log('⚠️ Bed Pillow did not become visible, but attempting to click anyway');
+    }
+
+    // Scroll product into view
+    try {
+      await this.bedPillow.scrollIntoViewIfNeeded();
+      console.log('✅ Scrolled Bed Pillow into view');
+    } catch (e) {
+      console.log('⚠️ Could not scroll Bed Pillow into view');
+    }
+
+    // Add small delay before clicking
+    await this.page.waitForTimeout(500);
+
+    // Click the product
+    await this.bedPillow.click();
+    console.log('✅ Clicked Bed Pillow from sub-menu');
+
+    // Confirm navigation to PDP
+    await this.page.waitForURL(/bed-pillow-p|pillow-p/i, { timeout: 30000 });
+    console.log('✅ Navigated to Bed Pillow PDP successfully');
   }
 }
 
