@@ -57,8 +57,6 @@ test('E2E Journey - Fabrics - Spanish Velvet', async ({ page }) => {
     throw new Error(`Amazon Pay option could not be clicked: ${e.message}`);
   }
 
-  console.log('Waiting 10 seconds before browser closes...');
-  await page.waitForTimeout(10000);
   console.log('✅ All steps complete. Browser closing.');
-  await page.waitForTimeout(10000);
+    await page.waitForTimeout(2000);
 });

@@ -1,8 +1,11 @@
 const { expect } = require('@playwright/test');
+const { SmartPage } = require('./SmartPage');
+const { measurePagePerformance } = require('../utils/helpers/performanceHelper');
+const { monitorApiCalls } = require('../utils/helpers/apiValidator');
 
-class CartPage {
+class CartPage extends SmartPage {
   constructor(page) {
-    this.page = page;
+    super(page);
 
     // ✅ Stable locator (avoid class-based)
     this.checkoutBtn = page
@@ -20,6 +23,9 @@ class CartPage {
     await this.page.goto('/checkout/cart', {
       waitUntil: 'domcontentloaded'
     });
+
+    // ── Performance: measure cart page load ──────────────────────────
+    await measurePagePerformance(this.page, 'Cart Page');
 
     // Validate cart state
     const cartContent = await this.page.content();

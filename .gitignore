@@ -13,6 +13,9 @@ _div*
 /allure-results/
 /allure-report/
 
+# Performance Reports
+/performance-results/
+
 # Debug and Temporary Logs
 *.log
 debug_output*

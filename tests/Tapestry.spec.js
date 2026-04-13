@@ -294,8 +294,8 @@ test('Open NeonEarth Website - Hover and Click Velvet Satin', async ({ page }) =
   expect(finalUrl).toContain('success');
   console.log('✅ Journey Complete! Order placed successfully.');
   // 🔥 FINAL WAIT (IMPORTANT)
-  console.log('Waiting 30 seconds to view order number...');
-  await page.waitForTimeout(20000);
+  console.log('Waiting briefly to view order number...');
+    await page.waitForTimeout(3000);
 
   // Step 12: Close any popup that appeared after order placement
   console.log('Step 12: Closing any popup if visible...');

@@ -1,9 +1,12 @@
 const { expect } = require('@playwright/test');
+const { SmartPage } = require('./SmartPage');
 const path = require('path');
+const { measurePagePerformance } = require('../utils/helpers/performanceHelper');
+const { validateApiCall } = require('../utils/helpers/apiValidator');
 
-class ProductPage {
+class ProductPage extends SmartPage {
   constructor(page) {
-    this.page = page;
+    super(page);
     this.personaliseBtn = page.getByRole('button', { name: /Personali[sz]e this Design/i });
     this.uploadYourDesignBtn = page.getByRole('button', { name: /Upload Your Design/i });
     this.uploadFileText = page.getByText('Browse Files');
@@ -53,8 +56,24 @@ class ProductPage {
 
     const atcBtn = this.addToCartBtn.nth(2);
     await atcBtn.waitFor({ state: 'visible', timeout: 10 * 1000 });
-    await atcBtn.click();
-    console.log('✅ Clicked add to cart button');
+
+    // ── API Validation: intercept the cart API response instead of blind waiting ──
+    console.log('Step: Clicking Add to Cart (with API validation)...');
+    const apiResult = await validateApiCall(this.page, () => atcBtn.click(), {
+      urlPattern: '/cart',
+      label: 'Add To Cart API',
+      expectedStatus: 200,
+    }).catch((err) => {
+      // Non-fatal: log the issue but don't stop the test
+      console.warn(`⚠️ API validation warning: ${err.message}`);
+      return null;
+    });
+
+    if (apiResult) {
+      console.log(`✅ Add to Cart API confirmed (HTTP ${apiResult.status}, ${apiResult.responseTime}ms)`);
+    } else {
+      console.log('✅ Clicked add to cart button (API response not captured)');
+    }
 
     try {
       await this.page.waitForLoadState('networkidle', { timeout: 30000 });

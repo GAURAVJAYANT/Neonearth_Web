@@ -54,15 +54,13 @@ test('E2E Journey - Rugs & Mats - Area Rugs', async ({ page }) => {
   await checkoutPage.verifySuccess();
 
   // Step 12: Wait for order confirmation
-  console.log('Waiting 30 seconds to view order number...');
-  await page.waitForTimeout(20000);
+  console.log('Waiting briefly to view order number...');
+    await page.waitForTimeout(3000);
   await cartPage.dismissPopup(); 
 
   // Step 13: Print Order Hash
   await checkoutPage.printOrderHash();
 
-  console.log('Waiting 10 seconds before browser closes...');
-  await page.waitForTimeout(10000);
   console.log('✅ All steps complete. Browser closing.');
-  await page.waitForTimeout(20000);
+    await page.waitForTimeout(2000);
 });

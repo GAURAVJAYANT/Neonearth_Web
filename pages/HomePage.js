@@ -1,8 +1,9 @@
 const { expect } = require('@playwright/test');
+const { SmartPage } = require('./SmartPage');
 
-class HomePage {
+class HomePage extends SmartPage {
   constructor(page) {
-    this.page = page;
+    super(page);
     this.menu = page.locator('nav.header-navigation-bar ul.header-navigation-list li.top-level-item a.top-level-link span.label-text', { hasText: 'Tapestries' });
     this.product = page.locator('span.product-text', { hasText: 'Custom Wall Tapestry - Velvet Satin' });
     this.rugsMenu = page.locator('nav.header-navigation-bar ul.header-navigation-list li.top-level-item a.top-level-link span.label-text', { hasText: 'Rugs & Mats' });

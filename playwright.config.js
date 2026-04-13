@@ -6,9 +6,10 @@ require('dotenv').config();
 delete process.env.JAVA_HOME;
 
 module.exports = defineConfig({
+  globalSetup: './globalSetup.js', // Logs in once; saves session for all tests
   testDir: './tests',
-  fullyParallel: true,
-  workers: process.env.CI ? 1 : undefined,
+  fullyParallel: false,
+  workers: 1,
   retries: 2,
   timeout: 60 * 5000,
   expect: {
@@ -23,16 +24,17 @@ module.exports = defineConfig({
       suiteTitle: false,
       environmentInfo: {
         Project: 'NeonEarth Web',
-        BaseURL: process.env.BASE_URL || 'https://test.neonearth.com',
+        BaseURL: process.env.BASE_URL || 'https://www.neonearth.com/',
         Browser: 'Chromium',
       },
     }],
     ['json', { outputFile: 'test-results/report.json' }],
     ['./allure-open-reporter.js'],
+    ['./AIReporter.js'],
   ],
 
   use: {
-    baseURL: process.env.BASE_URL || 'https://test.neonearth.com',
+    baseURL: process.env.BASE_URL || 'https://www.neonearth.com/',
     trace: 'retain-on-failure',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
@@ -47,16 +49,11 @@ module.exports = defineConfig({
 
   projects: [
     {
-      name: 'setup',
-      testMatch: /Login\.spec\.js/,
-    },
-    {
       name: 'chromium',
       use: {
         browserName: 'chromium',
         storageState: 'playwright/.auth/user.json',
       },
-      dependencies: ['setup'],
     },
   ],
 });

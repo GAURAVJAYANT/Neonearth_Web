@@ -13,12 +13,12 @@ test('Open NeonEarth Website - Login and Hover Tapestries', async ({ page }) => 
   test.setTimeout(120000);
 
   // ─── Step 1: Open Website ───────────────────────────────────────
-  await page.goto('https://test.neonearth.com/', { 
+  await page.goto('https://www.neonearth.com/', { 
     waitUntil: 'domcontentloaded',
     timeout: 60000 
   });
 
-  await expect(page).toHaveURL('https://test.neonearth.com/');
+  await expect(page).toHaveURL('https://www.neonearth.com/');
   console.log('✅ Website opened successfully');
 
   // ─── Step 2: Click Join/Login ───────────────────────────────────
@@ -74,4 +74,4 @@ test('Open NeonEarth Website - Login and Hover Tapestries', async ({ page }) => 
   const authFile = 'playwright/.auth/user.json';
   await page.context().storageState({ path: authFile });
   console.log(`✅ Authentication state saved to: ${authFile}`);
-});
+});

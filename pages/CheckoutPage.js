@@ -1,8 +1,10 @@
 const { expect } = require('@playwright/test');
+const { SmartPage } = require('./SmartPage');
+const { measurePagePerformance, savePerformanceReport } = require('../utils/helpers/performanceHelper');
 
-class CheckoutPage {
+class CheckoutPage extends SmartPage {
   constructor(page) {
-    this.page = page;
+    super(page);
     this.fNameInput = page.locator('#firstname');
     this.lNameInput = page.locator('#lastname');
     this.phoneInput = page.locator('#telephone');
@@ -145,19 +147,31 @@ class CheckoutPage {
     }
   }
   async waitForCheckoutToLoad() {
-  console.log('Waiting for checkout to stabilize...');
+    console.log('Waiting for checkout to stabilize...');
 
-  await this.page.waitForURL(/onepagecheckout/, { timeout: 15000 });
+    const start = Date.now();
 
-  await this.page.getByRole('heading', { name: 'Payment Method' })
-    .waitFor({ timeout: 40000 });
+    await this.page.waitForURL(/onepagecheckout/, { timeout: 15000 });
 
-  await this.page.waitForSelector('iframe[src*="stripe"]', {
-    timeout: 40000
-  });
+    await this.page.getByRole('heading', { name: 'Payment Method' })
+      .waitFor({ timeout: 40000 });
 
-  console.log('✅ Checkout ready');
-}
+    await this.page.waitForSelector('iframe[src*="stripe"]', {
+      timeout: 40000
+    });
+
+    const loadTime = Date.now() - start;
+    console.log(`✅ Checkout ready (took ${loadTime}ms to fully load)`);
+
+    // ── Performance: measure checkout page metrics ───────────────────
+    await measurePagePerformance(this.page, 'Checkout Page');
+  }
+
+  async verifySuccessAndReport(testName) {
+    await this.verifySuccess();
+    // ── Save performance report for this test run ────────────────────
+    savePerformanceReport(testName || 'E2E Journey');
+  }
 }
 
 module.exports = { CheckoutPage };
