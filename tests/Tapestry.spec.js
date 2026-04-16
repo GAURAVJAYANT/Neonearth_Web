@@ -51,7 +51,7 @@ test('Open NeonEarth Website - Hover and Click Velvet Satin', async ({ page }) =
   } catch (e) {
     const currentUrl = page.url();
     // If the site redirected us to the homepage, navigate back to the PDP once
-    if (currentUrl === 'https://test.neonearth.com/' || currentUrl === 'https://test.neonearth.com') {
+    if (currentUrl === 'https://www.neonearth.com/' || currentUrl === 'https://www.neonearth.com') {
       console.log('⚠️ Redirect to homepage detected. Re-navigating to PDP...');
       await page.goto(pdpUrl, { waitUntil: 'domcontentloaded' });
       await personalisebtn.waitFor({ state: 'visible', timeout: 20000 });

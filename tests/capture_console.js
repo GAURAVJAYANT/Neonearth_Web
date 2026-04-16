@@ -14,7 +14,7 @@ const { chromium } = require('@playwright/test');
     });
 
     console.log('Navigating to product page...');
-    await page.goto('https://test.neonearth.com/custom-wall-tapestry-p?variant_sku=NE-SKU-133-335&list_material_type=list_mt_satin');
+    await page.goto('https://www.neonearth.com/custom-wall-tapestry-p?variant_sku=NE-SKU-133-335&list_material_type=list_mt_satin');
     
     console.log('Clicking Personalize...');
     await page.getByRole('button', { name: /Personali[sz]e this Design/i }).click();

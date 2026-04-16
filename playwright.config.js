@@ -6,7 +6,7 @@ require('dotenv').config();
 delete process.env.JAVA_HOME;
 
 module.exports = defineConfig({
-  globalSetup: './globalSetup.js', // Logs in once; saves session for all tests
+  globalSetup: './globalSetup.js',
   testDir: './tests',
   fullyParallel: false,
   workers: 1,

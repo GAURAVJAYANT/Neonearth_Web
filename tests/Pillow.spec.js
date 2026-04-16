@@ -284,12 +284,12 @@ test.describe('Pillow E2E Journeys', () => {
 
     await homePage.navigateToRectangleSeatCushionProduct();
 
-   /* const currentUrl = page.url();
+    const currentUrl = page.url();
     if (currentUrl.includes('-p?') || /-p($|\?)/.test(currentUrl)) {
       console.log('✅ Directly landed on a Product Page (PDP)');
     } else {
       console.log('✅ Landing verified');
-    }*/
+    }
 
     await productPage.personalizeDesign();
     await productPage.uploadImage('data/test_image.png');
@@ -331,12 +331,12 @@ test.describe('Pillow E2E Journeys', () => {
 
     await homePage.navigateToBedPillowProduct();
 
-   /* const currentUrl = page.url();
+    const currentUrl = page.url();
     if (currentUrl.includes('-p?') || /-p($|\?)/.test(currentUrl)) {
       console.log('✅ Directly landed on a Product Page (PDP)');
     } else {
       console.log('✅ Landing verified');
-    }*/
+    }
 
     await productPage.personalizeDesign();
     await productPage.uploadImage('data/test_image.png');
