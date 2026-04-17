@@ -43,6 +43,8 @@ class HomePage extends SmartPage {
       hangingVelvet: page.getByRole('link', { name: 'Hanging Tapestry - Velvet Satin', exact: true }),
       hangingWeave: page.getByRole('link', { name: 'Hanging Tapestry - Weave Loom', exact: true }),
       rectangleRug: page.locator('span.product-text', { hasText: 'Rectangle Rug' }),
+      squareRug: page.locator(`span:has-text("Square Rug")`),
+      roundRug: page.locator(`span:has-text("Round Rug")`),
       squareThrowPillow: page.getByRole('link', { name: 'Custom Square Throw Pillow' }).first(),
       rectangleThrowPillow: page.getByRole('link', { name: 'Custom Rectangle Throw Pillow' }).first(),
       roundThrowPillow: page.getByRole('link', { name: 'Custom Round Throw Pillow' }).first(),
@@ -78,6 +80,8 @@ class HomePage extends SmartPage {
     this.rectangleSeatCushion = this.products.rectangleSeatCushion;
     this.bedPillowsCategory = this.categories.bedPillows;
     this.bedPillow = this.products.bedPillow;
+    this.squareRug = this.products.squareRug;
+    this.roundRug = this.products.roundRug;
   }
 
   async open() {
@@ -196,6 +200,27 @@ class HomePage extends SmartPage {
       name: "Rectangle Rug"
     });
   }
+
+/** Hover the Rugs & Mats menu cleanly, wait for dropdown, then click the Square Rug product */
+  async navigateToSquareRugProduct() {
+    await this._navigate({
+      menu: this.menus.rugs,
+      product: this.products.squareRug,
+      urlPattern: /rug-p/i,
+      name: "Square Rug"
+    });
+  }
+
+  /** Hover the Rugs & Mats menu cleanly, wait for dropdown, then click the Round Rug product */
+  async navigateToRoundRugProduct() {
+    await this._navigate({
+      menu: this.menus.rugs,
+      product: this.products.roundRug,
+      urlPattern: /rug-p/i,
+      name: "Round Rug"
+    });
+  }
+
 
   /** Hover the Tapestries menu to open dropdown, hover over Custom Panoramic Tapestries category to reveal sub-menu, then click the Velvet Satin product */
   async navigateToPanoramicTapestryProduct() {
