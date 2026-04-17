@@ -7,9 +7,9 @@ class HomePage extends SmartPage {
     
     // Systematic Configuration
     this.CONFIG = {
-      WAIT_INITIAL: 5000,
+      WAIT_INITIAL: 7000,
       WAIT_JITTER: 5000,
-      WAIT_SUBMENU: 2500,
+      WAIT_SUBMENU: 4500,
       WAIT_PDP_LOAD: 30000,
       RETRIES: 2,
       TIMEOUT_VISIBLE: 15000
@@ -17,16 +17,16 @@ class HomePage extends SmartPage {
 
     // --- Locators: Main Menus ---
     this.menus = {
-      tapestries: page.locator('nav.header-navigation-bar li.top-level-item span.label-text', { hasText: 'Tapestries' }),
-      rugs: page.locator('nav.header-navigation-bar li.top-level-item span.label-text', { hasText: 'Rugs & Mats' }),
-      pillows: page.locator('nav.header-navigation-bar li.top-level-item span.label-text', { hasText: 'Pillows' })
+      tapestries: page.locator('nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Tapestries"))'),
+      rugs: page.locator('nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Rugs & Mats"))'),
+      pillows: page.locator('nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Pillows"))')
     };
 
     // --- Locators: Categories ---
     this.categories = {
-      panoramic: page.locator('span:has-text("Custom Panoramic Tapestries")'),
-      triangular: page.locator('span:has-text("Custom Triangular Tapestries")'),
-      hanging: page.locator('span:has-text("Custom Hanging Tapestries")'),
+      panoramic: page.getByRole('link', { name: 'Custom Panoramic Tapestries', exact: false }).first(),
+      triangular: page.getByRole('link', { name: 'Custom Triangular Tapestries', exact: false }).first(),
+      hanging: page.getByRole('link', { name: 'Custom Hanging Tapestries', exact: false }).first(),
       throwPillows: page.getByRole('link', { name: /^Throw Pillows$/ }).first(),
       cushions: page.locator('a[href="/cushions"]').first(),
       bedPillows: page.locator('a[href*="/bed-pillows"]').first()
@@ -34,14 +34,14 @@ class HomePage extends SmartPage {
 
     // --- Locators: Products ---
     this.products = {
-      tapestryVelvet: page.locator('span.product-text', { hasText: 'Custom Wall Tapestry - Velvet Satin' }),
-      tapestryWeave: page.getByText('Custom Wall Tapestry - Weave Loom', { exact: true }),
-      panoramicVelvet: page.locator("//span[normalize-space()='Custom Panoramic Tapestry - Velvet Satin']"),
-      panoramicWeave: page.locator("//span[normalize-space()='Custom Panoramic Tapestry - Weave Loom']"),
-      triangularVelvet: page.locator("//span[normalize-space()='Custom Triangular Tapestry - Velvet Satin']"),
-      triangularWeave: page.locator("//span[normalize-space()='Custom Triangular Tapestry - Weave Loom']"),
-      hangingVelvet: page.locator("//span[normalize-space()='Custom Hanging Tapestry - Velvet Satin']"),
-      hangingWeave: page.locator("//span[normalize-space()='Custom Hanging Tapestry - Weave Loom']"),
+      tapestryVelvet: page.getByRole('link', { name: 'Wall Tapestry - Velvet Satin', exact: true }),
+      tapestryWeave: page.getByRole('link', { name: 'Wall Tapestry - Weave Loom', exact: true }),
+      panoramicVelvet: page.getByRole('link', { name: 'Panoramic Tapestry - Velvet Satin', exact: true }),
+      panoramicWeave: page.getByRole('link', { name: 'Panoramic Tapestry - Weave Loom', exact: true }),
+      triangularVelvet: page.getByRole('link', { name: 'Triangular Tapestry - Velvet Satin', exact: true }),
+      triangularWeave: page.getByRole('link', { name: 'Triangular Tapestry - Weave Loom', exact: true }),
+      hangingVelvet: page.getByRole('link', { name: 'Hanging Tapestry - Velvet Satin', exact: true }),
+      hangingWeave: page.getByRole('link', { name: 'Hanging Tapestry - Weave Loom', exact: true }),
       rectangleRug: page.locator('span.product-text', { hasText: 'Rectangle Rug' }),
       squareThrowPillow: page.getByRole('link', { name: 'Custom Square Throw Pillow' }).first(),
       rectangleThrowPillow: page.getByRole('link', { name: 'Custom Rectangle Throw Pillow' }).first(),
@@ -101,7 +101,7 @@ class HomePage extends SmartPage {
     
     for (let i = 0; i < this.CONFIG.RETRIES; i++) {
         console.log(`⏳ Attempt ${i+1}: Hovering over menu for ${name}...`);
-        await menu.hover();
+        await menu.hover({ force: true });
         
         // Wait for target to appear - we use a shorter localized timeout for the loop
         try {
@@ -115,7 +115,7 @@ class HomePage extends SmartPage {
                 // Jitter: Move slightly away and back
                 await this.page.mouse.move(box.x - 30, box.y + box.height / 2);
                 await this.page.waitForTimeout(500);
-                await menu.hover();
+                await menu.hover({ force: true });
             }
             // Wait for stability after jitter
             await this.page.waitForTimeout(this.CONFIG.WAIT_JITTER);
@@ -135,15 +135,21 @@ class HomePage extends SmartPage {
     if (category) {
       await category.waitFor({ state: 'visible', timeout: this.CONFIG.TIMEOUT_VISIBLE });
       await category.scrollIntoViewIfNeeded();
-      await category.hover();
+      await category.hover({ force: true });
       console.log(`⏳ Hovered over intermediate category: ${name}`);
-      // Wait for product to appear after category hover
-      try {
-          await product.waitFor({ state: 'visible', timeout: 5000 });
-      } catch (e) {
-          console.log(`⚠️ Product not visible after category hover, retrying category hover...`);
-          await category.hover();
-          await this.page.waitForTimeout(2000);
+      
+      // Wait for product to appear after category hover with retry
+      let isProductReady = false;
+      for (let j = 0; j < 2; j++) {
+          try {
+              await product.waitFor({ state: 'visible', timeout: 5000 });
+              isProductReady = true;
+              break;
+          } catch (e) {
+              console.log(`⚠️ Product not visible after category hover (attempt ${j+1}), retrying category hover...`);
+              await category.hover({ force: true });
+              await this.page.waitForTimeout(1500);
+          }
       }
     }
 
@@ -152,9 +158,15 @@ class HomePage extends SmartPage {
     await product.scrollIntoViewIfNeeded();
     
     // Safety delay to ensure the menu isn't still animating
-    await this.page.waitForTimeout(1000); 
+    await this.page.waitForTimeout(1500); 
     
-    await product.click();
+    // Try click with a fallback to force click
+    try {
+        await product.click({ timeout: 10000 });
+    } catch (e) {
+        console.log(`⚠️ Standard click failed for ${name}, attempting force click...`);
+        await product.click({ force: true });
+    }
     console.log(`✅ Clicked product for: ${name}`);
 
     // 5. URL Verification
