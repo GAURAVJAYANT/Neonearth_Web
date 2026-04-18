@@ -1,14 +1,5 @@
 const { HomePage } = require('./HomePage');
 
-/**
- * RugsHomePage — owns all Rugs & Mats locators and navigation methods.
- * Extends the shared HomePage base (CONFIG, open(), _navigate() engine).
- *
- * Usage in tests:
- *   const { RugsHomePage } = require('../pages/RugsHomePage');
- *   const homePage = new RugsHomePage(page);
- *   await homePage.navigateToRugsProduct();
- */
 class RugsHomePage extends HomePage {
   constructor(page) {
     super(page);
@@ -28,6 +19,7 @@ class RugsHomePage extends HomePage {
       roundRug: page.locator(`span:has-text("Round Rug")`),
       ovalRug: page.locator(`span:has-text("Oval Rug")`),
       RunnerLuxeGrain: page.getByRole('link', { name: 'Runner - Luxe Grain', exact: false }).first(),
+      runnerSilkenPlush: page.getByRole('link', { name: 'Runner - Silken Plush', exact: false }).first(),
     };
   }
 
@@ -68,6 +60,17 @@ class RugsHomePage extends HomePage {
       product: this.products.ovalRug,
       urlPattern: /rug-p/i,
       name: "Oval Rug"
+    });
+  }
+
+  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Silken Plush */
+  async navigateToRunnerSilkenPlushProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HallwayRunners,
+      product: this.products.runnerSilkenPlush,
+      urlPattern: /runner-p|silken-plush-p|runner-p/i,
+      name: "Runner - Silken Plush"
     });
   }
 

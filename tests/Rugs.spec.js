@@ -2,311 +2,365 @@ const { test, expect } = require('@playwright/test');
 const { RugsHomePage } = require('../pages/RugsHomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
-const { NeonearthCategoryPage } = require('../pages/NeonearthCategoryPage');
- const { CheckoutPage } = require('../pages/CheckoutPage');
+const { CheckoutPage } = require('../pages/CheckoutPage');
 
 test('E2E Journey - Rugs & Mats - Area Rugs', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
-  const categoryPage = new NeonearthCategoryPage(page);
   const checkoutPage = new CheckoutPage(page);
 
-  // Step 1: Open Website
+  // ── Step 1: Homepage load ──────────────────────────────────────────
   await homePage.open();
-  console.log('✅ Website opened successfully');
+  await expect(page).toHaveURL('/');
+  await expect(page.locator('nav.header-navigation-bar')).toBeVisible();
+  console.log('✅ Homepage loaded');
 
-  // Step 2: Navigate to Rugs & Mats -> Rectangle Rug
+  // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToRugsProduct();
+  await expect(page).toHaveURL(/rug-p/i);
+  await expect(productPage.personaliseBtn).toBeVisible();
+  console.log('✅ PDP loaded - Area Rug');
 
-  // Step 3: Navigation is handled by navigateToRugsProduct which waits for PDP
-  
-  // Step 4.1: Personalize Design
+  // ── Step 3: Personalize & Upload ───────────────────────────────────
   await productPage.personalizeDesign();
-
-  // Step 4.2: Upload Design
+  await expect(productPage.uploadYourDesignBtn).toBeVisible();
   await productPage.uploadImage('data/test_image.png');
+  await expect(productPage.previewBtn).toBeVisible({ timeout: 150000 });
 
-  // Step 4.3: Preview and Add To Cart
+  // ── Step 4: Preview & Add to Cart ──────────────────────────────────
   await productPage.previewAndAddToCart();
 
-  // Step 5: Navigate to Cart
+  // ── Step 5: Cart page ──────────────────────────────────────────────
   await cartPage.goToCart();
+  await expect(page).toHaveURL(/checkout\/cart/i);
+  await expect(page.locator('.product-item')).toBeVisible();
+  await expect(page.locator('.cart-empty, .message.info.empty')).not.toBeVisible();
   await cartPage.dismissPopup();
 
-  // Step 6: Secure Checkout
+  // ── Step 6: Checkout page ──────────────────────────────────────────
   await cartPage.secureCheckout();
-
   await checkoutPage.waitForCheckoutToLoad();
+  await expect(page).toHaveURL(/onepagecheckout/i);
+  await expect(page.getByRole('heading', { name: 'Payment Method' })).toBeVisible();
+  await expect(page.locator('iframe[src*="stripe"]')).toBeVisible();
 
-  // Step 7: Fill Shipping Details (Handled by session or predefined fields)
-
-  // Step 9: Fill Stripe Payment
-  await checkoutPage.fillStripePayment({
-    cvc: '123'
-  });
-
-  // Step 10: Place Order
+  // ── Step 7: Payment & Order ────────────────────────────────────────
+  await checkoutPage.fillStripePayment({ cvc: '123' });
   await checkoutPage.placeOrder();
 
-  // Step 11: Verify Success
+  // ── Step 8: Order success ──────────────────────────────────────────
+  await expect(page).toHaveURL(/success/i, { timeout: 180000 });
   await checkoutPage.verifySuccess();
 
-  // Step 12: Wait for order confirmation
   console.log('Waiting briefly to view order number...');
-    await page.waitForTimeout(3000);
-  await cartPage.dismissPopup(); 
-
-  // Step 13: Print Order Hash
+  await page.waitForTimeout(3000);
+  await cartPage.dismissPopup();
   await checkoutPage.printOrderHash();
 
   console.log('✅ All steps complete. Browser closing.');
-    await page.waitForTimeout(2000);
+  await page.waitForTimeout(2000);
 });
 
-test('E2E Journey -Square Rug', async ({ page }) => {
+
+test('E2E Journey - Square Rug', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
-  const categoryPage = new NeonearthCategoryPage(page);
   const checkoutPage = new CheckoutPage(page);
 
-  // Step 1: Open Website
+  // ── Step 1: Homepage load ──────────────────────────────────────────
   await homePage.open();
-  console.log('✅ Website opened successfully');
+  await expect(page).toHaveURL('/');
+  await expect(page.locator('nav.header-navigation-bar')).toBeVisible();
+  console.log('✅ Homepage loaded');
 
-  // Step 2: Navigate to Rugs & Mats -> Square Rug
+  // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToSquareRugProduct();
+  await expect(page).toHaveURL(/rug-p/i);
+  await expect(productPage.personaliseBtn).toBeVisible();
+  console.log('✅ PDP loaded - Square Rug');
 
-  // Step 3: Navigation is handled by navigateToRugsProduct which waits for PDP
-  
-  // Step 4.1: Personalize Design
+  // ── Step 3: Personalize & Upload ───────────────────────────────────
   await productPage.personalizeDesign();
-
-  // Step 4.2: Upload Design
+  await expect(productPage.uploadYourDesignBtn).toBeVisible();
   await productPage.uploadImage('data/test_image.png');
+  await expect(productPage.previewBtn).toBeVisible({ timeout: 150000 });
 
-  // Step 4.3: Preview and Add To Cart
+  // ── Step 4: Preview & Add to Cart ──────────────────────────────────
   await productPage.previewAndAddToCart();
 
-  // Step 5: Navigate to Cart
+  // ── Step 5: Cart page ──────────────────────────────────────────────
   await cartPage.goToCart();
+  await expect(page).toHaveURL(/checkout\/cart/i);
+  await expect(page.locator('.product-item')).toBeVisible();
+  await expect(page.locator('.cart-empty, .message.info.empty')).not.toBeVisible();
   await cartPage.dismissPopup();
 
-  // Step 6: Secure Checkout
+  // ── Step 6: Checkout page ──────────────────────────────────────────
   await cartPage.secureCheckout();
-
   await checkoutPage.waitForCheckoutToLoad();
+  await expect(page).toHaveURL(/onepagecheckout/i);
+  await expect(page.getByRole('heading', { name: 'Payment Method' })).toBeVisible();
+  await expect(page.locator('iframe[src*="stripe"]')).toBeVisible();
 
-  // Step 7: Fill Shipping Details (Handled by session or predefined fields)
-
-  // Step 9: Fill Stripe Payment
-  await checkoutPage.fillStripePayment({
-    cvc: '123'
-  });
-
-  // Step 10: Place Order
+  // ── Step 7: Payment & Order ────────────────────────────────────────
+  await checkoutPage.fillStripePayment({ cvc: '123' });
   await checkoutPage.placeOrder();
 
-  // Step 11: Verify Success
+  // ── Step 8: Order success ──────────────────────────────────────────
+  await expect(page).toHaveURL(/success/i, { timeout: 180000 });
   await checkoutPage.verifySuccess();
 
-  // Step 12: Wait for order confirmation
   console.log('Waiting briefly to view order number...');
-    await page.waitForTimeout(3000);
-  await cartPage.dismissPopup(); 
-
-  // Step 13: Print Order Hash
+  await page.waitForTimeout(3000);
+  await cartPage.dismissPopup();
   await checkoutPage.printOrderHash();
 
   console.log('✅ All steps complete. Browser closing.');
-    await page.waitForTimeout(2000);
+  await page.waitForTimeout(2000);
 });
 
 
-test('E2E Journey -Round Rug', async ({ page }) => {
+
+test('E2E Journey - Round Rug', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
-  const categoryPage = new NeonearthCategoryPage(page);
   const checkoutPage = new CheckoutPage(page);
 
-  // Step 1: Open Website
+  // ── Step 1: Homepage load ──────────────────────────────────────────
   await homePage.open();
-  console.log('✅ Website opened successfully');
+  await expect(page).toHaveURL('/');
+  await expect(page.locator('nav.header-navigation-bar')).toBeVisible();
+  console.log('✅ Homepage loaded');
 
-  // Step 2: Navigate to Rugs & Mats -> Round Rug
+  // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToRoundRugProduct();
+  await expect(page).toHaveURL(/rug-p/i);
+  await expect(productPage.personaliseBtn).toBeVisible();
+  console.log('✅ PDP loaded - Round Rug');
 
-  // Step 3: Navigation is handled by navigateToRugsProduct which waits for PDP
-  
-  // Step 4.1: Personalize Design
+  // ── Step 3: Personalize & Upload ───────────────────────────────────
   await productPage.personalizeDesign();
-
-  // Step 4.2: Upload Design
+  await expect(productPage.uploadYourDesignBtn).toBeVisible();
   await productPage.uploadImage('data/test_image.png');
+  await expect(productPage.previewBtn).toBeVisible({ timeout: 150000 });
 
-  // Step 4.3: Preview and Add To Cart
+  // ── Step 4: Preview & Add to Cart ──────────────────────────────────
   await productPage.previewAndAddToCart();
 
-  // Step 5: Navigate to Cart
+  // ── Step 5: Cart page ──────────────────────────────────────────────
   await cartPage.goToCart();
+  await expect(page).toHaveURL(/checkout\/cart/i);
+  await expect(page.locator('.product-item')).toBeVisible();
+  await expect(page.locator('.cart-empty, .message.info.empty')).not.toBeVisible();
   await cartPage.dismissPopup();
 
-  // Step 6: Secure Checkout
+  // ── Step 6: Checkout page ──────────────────────────────────────────
   await cartPage.secureCheckout();
-
   await checkoutPage.waitForCheckoutToLoad();
+  await expect(page).toHaveURL(/onepagecheckout/i);
+  await expect(page.getByRole('heading', { name: 'Payment Method' })).toBeVisible();
+  await expect(page.locator('iframe[src*="stripe"]')).toBeVisible();
 
-  // Step 7: Fill Shipping Details (Handled by session or predefined fields)
-
-  // Step 9: Fill Stripe Payment
-  await checkoutPage.fillStripePayment({
-    cvc: '123'
-  });
-
-  // Step 10: Place Order
+  // ── Step 7: Payment & Order ────────────────────────────────────────
+  await checkoutPage.fillStripePayment({ cvc: '123' });
   await checkoutPage.placeOrder();
 
-  // Step 11: Verify Success
+  // ── Step 8: Order success ──────────────────────────────────────────
+  await expect(page).toHaveURL(/success/i, { timeout: 180000 });
   await checkoutPage.verifySuccess();
 
-  // Step 12: Wait for order confirmation
   console.log('Waiting briefly to view order number...');
-    await page.waitForTimeout(3000);
-  await cartPage.dismissPopup(); 
-
-  // Step 13: Print Order Hash
+  await page.waitForTimeout(3000);
+  await cartPage.dismissPopup();
   await checkoutPage.printOrderHash();
 
   console.log('✅ All steps complete. Browser closing.');
-    await page.waitForTimeout(2000);
+  await page.waitForTimeout(2000);
 });
 
 
-test('E2E Journey -Oval Rug', async ({ page }) => {
+
+test('E2E Journey - Oval Rug', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
-  const categoryPage = new NeonearthCategoryPage(page);
   const checkoutPage = new CheckoutPage(page);
 
-  // Step 1: Open Website
+  // ── Step 1: Homepage load ──────────────────────────────────────────
   await homePage.open();
-  console.log('✅ Website opened successfully');
+  await expect(page).toHaveURL('/');
+  await expect(page.locator('nav.header-navigation-bar')).toBeVisible();
+  console.log('✅ Homepage loaded');
 
-  // Step 2: Navigate to Rugs & Mats -> Oval Rug
+  // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToOvalRugProduct();
+  await expect(page).toHaveURL(/rug-p/i);
+  await expect(productPage.personaliseBtn).toBeVisible();
+  console.log('✅ PDP loaded - Oval Rug');
 
-  // Step 3: Navigation is handled by navigateToRugsProduct which waits for PDP
-  
-  // Step 4.1: Personalize Design
+  // ── Step 3: Personalize & Upload ───────────────────────────────────
   await productPage.personalizeDesign();
-
-  // Step 4.2: Upload Design
+  await expect(productPage.uploadYourDesignBtn).toBeVisible();
   await productPage.uploadImage('data/test_image.png');
+  await expect(productPage.previewBtn).toBeVisible({ timeout: 150000 });
 
-  // Step 4.3: Preview and Add To Cart
+  // ── Step 4: Preview & Add to Cart ──────────────────────────────────
   await productPage.previewAndAddToCart();
 
-  // Step 5: Navigate to Cart
+  // ── Step 5: Cart page ──────────────────────────────────────────────
   await cartPage.goToCart();
+  await expect(page).toHaveURL(/checkout\/cart/i);
+  await expect(page.locator('.product-item')).toBeVisible();
+  await expect(page.locator('.cart-empty, .message.info.empty')).not.toBeVisible();
   await cartPage.dismissPopup();
 
-  // Step 6: Secure Checkout
+  // ── Step 6: Checkout page ──────────────────────────────────────────
   await cartPage.secureCheckout();
-
   await checkoutPage.waitForCheckoutToLoad();
+  await expect(page).toHaveURL(/onepagecheckout/i);
+  await expect(page.getByRole('heading', { name: 'Payment Method' })).toBeVisible();
+  await expect(page.locator('iframe[src*="stripe"]')).toBeVisible();
 
-  // Step 7: Fill Shipping Details (Handled by session or predefined fields)
-
-  // Step 9: Fill Stripe Payment
-  await checkoutPage.fillStripePayment({
-    cvc: '123'
-  });
-
-  // Step 10: Place Order
+  // ── Step 7: Payment & Order ────────────────────────────────────────
+  await checkoutPage.fillStripePayment({ cvc: '123' });
   await checkoutPage.placeOrder();
 
-  // Step 11: Verify Success
+  // ── Step 8: Order success ──────────────────────────────────────────
+  await expect(page).toHaveURL(/success/i, { timeout: 180000 });
   await checkoutPage.verifySuccess();
 
-  // Step 12: Wait for order confirmation
   console.log('Waiting briefly to view order number...');
-    await page.waitForTimeout(3000);
-  await cartPage.dismissPopup(); 
-
-  // Step 13: Print Order Hash
+  await page.waitForTimeout(3000);
+  await cartPage.dismissPopup();
   await checkoutPage.printOrderHash();
 
   console.log('✅ All steps complete. Browser closing.');
-    await page.waitForTimeout(2000);
+  await page.waitForTimeout(2000);
 });
 
-test('E2E Journey -Runner - Luxe Grain', async ({ page }) => {
+
+
+test('E2E Journey - Runner - Luxe Grain', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
-  const categoryPage = new NeonearthCategoryPage(page);
   const checkoutPage = new CheckoutPage(page);
 
-  // Step 1: Open Website
+  // ── Step 1: Homepage load ──────────────────────────────────────────
   await homePage.open();
-  console.log('✅ Website opened successfully');
+  await expect(page).toHaveURL('/');
+  await expect(page.locator('nav.header-navigation-bar')).toBeVisible();
+  console.log('✅ Homepage loaded');
 
-  // Step 2: Navigate to Rugs & Mats -> Oval Rug
+  // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToHallwayRunnersProduct();
+  await expect(page).toHaveURL(/runner-p|hallway-runners-p|rugs-p/i);
+  await expect(productPage.personaliseBtn).toBeVisible();
+  console.log('✅ PDP loaded - Runner Luxe Grain');
 
-  // Step 3: Navigation is handled by navigateToRugsProduct which waits for PDP
-  
-  // Step 4.1: Personalize Design
+  // ── Step 3: Personalize & Upload ───────────────────────────────────
   await productPage.personalizeDesign();
-
-  // Step 4.2: Upload Design
+  await expect(productPage.uploadYourDesignBtn).toBeVisible();
   await productPage.uploadImage('data/test_image.png');
+  await expect(productPage.previewBtn).toBeVisible({ timeout: 150000 });
 
-  // Step 4.3: Preview and Add To Cart
+  // ── Step 4: Preview & Add to Cart ──────────────────────────────────
   await productPage.previewAndAddToCart();
 
-  // Step 5: Navigate to Cart
+  // ── Step 5: Cart page ──────────────────────────────────────────────
   await cartPage.goToCart();
+  await expect(page).toHaveURL(/checkout\/cart/i);
+  await expect(page.locator('.product-item')).toBeVisible();
+  await expect(page.locator('.cart-empty, .message.info.empty')).not.toBeVisible();
   await cartPage.dismissPopup();
 
-  // Step 6: Secure Checkout
+  // ── Step 6: Checkout page ──────────────────────────────────────────
   await cartPage.secureCheckout();
-
   await checkoutPage.waitForCheckoutToLoad();
+  await expect(page).toHaveURL(/onepagecheckout/i);
+  await expect(page.getByRole('heading', { name: 'Payment Method' })).toBeVisible();
+  await expect(page.locator('iframe[src*="stripe"]')).toBeVisible();
 
-  // Step 7: Fill Shipping Details (Handled by session or predefined fields)
-
-  // Step 9: Fill Stripe Payment
-  await checkoutPage.fillStripePayment({
-    cvc: '123'
-  });
-
-  // Step 10: Place Order
+  // ── Step 7: Payment & Order ────────────────────────────────────────
+  await checkoutPage.fillStripePayment({ cvc: '123' });
   await checkoutPage.placeOrder();
 
-  // Step 11: Verify Success
+  // ── Step 8: Order success ──────────────────────────────────────────
+  await expect(page).toHaveURL(/success/i, { timeout: 180000 });
   await checkoutPage.verifySuccess();
 
-  // Step 12: Wait for order confirmation
   console.log('Waiting briefly to view order number...');
-    await page.waitForTimeout(3000);
-  await cartPage.dismissPopup(); 
-
-  // Step 13: Print Order Hash
+  await page.waitForTimeout(3000);
+  await cartPage.dismissPopup();
   await checkoutPage.printOrderHash();
 
   console.log('✅ All steps complete. Browser closing.');
-    await page.waitForTimeout(2000);
+  await page.waitForTimeout(2000);
 });
 
+test('E2E Journey - Runner - Silken Plush', async ({ page }) => {
+  test.setTimeout(600000);
+  const homePage = new RugsHomePage(page);
+  const productPage = new ProductPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutPage = new CheckoutPage(page);
 
+  // ── Step 1: Homepage load ──────────────────────────────────────────
+  await homePage.open();
+  await expect(page).toHaveURL('/');
+  await expect(page.locator('nav.header-navigation-bar')).toBeVisible();
+  console.log('✅ Homepage loaded');
 
+  // ── Step 2: Navigate to PDP ────────────────────────────────────────
+  await homePage.navigateToRunnerSilkenPlushProduct();
+ // await expect(page).toHaveURL();
+  await expect(productPage.personaliseBtn).toBeVisible();
+  console.log('✅ PDP loaded - Runner Silken Plush');
 
+  // ── Step 3: Personalize & Upload ───────────────────────────────────
+  await productPage.personalizeDesign();
+  await expect(productPage.uploadYourDesignBtn).toBeVisible();
+  await productPage.uploadImage('data/test_image.png');
+  await expect(productPage.previewBtn).toBeVisible({ timeout: 150000 });
+
+  // ── Step 4: Preview & Add to Cart ──────────────────────────────────
+  await productPage.previewAndAddToCart();
+
+  // ── Step 5: Cart page ──────────────────────────────────────────────
+  await cartPage.goToCart();
+  await expect(page).toHaveURL(/checkout\/cart/i);
+  await expect(page.locator('.product-item')).toBeVisible();
+  await expect(page.locator('.cart-empty, .message.info.empty')).not.toBeVisible();
+  await cartPage.dismissPopup();
+
+  // ── Step 6: Checkout page ──────────────────────────────────────────
+  await cartPage.secureCheckout();
+  await checkoutPage.waitForCheckoutToLoad();
+  await expect(page).toHaveURL(/onepagecheckout/i);
+  await expect(page.getByRole('heading', { name: 'Payment Method' })).toBeVisible();
+  await expect(page.locator('iframe[src*="stripe"]')).toBeVisible();
+
+  // ── Step 7: Payment & Order ────────────────────────────────────────
+  await checkoutPage.fillStripePayment({ cvc: '123' });
+  await checkoutPage.placeOrder();
+
+  // ── Step 8: Order success ──────────────────────────────────────────
+  await expect(page).toHaveURL(/success/i, { timeout: 180000 });
+  await checkoutPage.verifySuccess();
+
+  console.log('Waiting briefly to view order number...');
+  await page.waitForTimeout(3000);
+  await cartPage.dismissPopup();
+  await checkoutPage.printOrderHash();
+
+  console.log('✅ All steps complete. Browser closing.');
+  await page.waitForTimeout(2000);
+});

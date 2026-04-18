@@ -14,9 +14,9 @@ class HomePage extends SmartPage {
 
     // Shared navigation timing configuration
     this.CONFIG = {
-      WAIT_INITIAL: 7000,
-      WAIT_JITTER: 5000,
-      WAIT_SUBMENU: 4500,
+      WAIT_INITIAL: 8000,
+      WAIT_JITTER: 8000,
+      WAIT_SUBMENU: 8000,
       WAIT_PDP_LOAD: 30000,
       RETRIES: 2,
       TIMEOUT_VISIBLE: 15000

@@ -1,4 +1,4 @@
 @echo off
 SET JAVA_HOME=
-echo Opening Allure Report on port 9642...
-"C:\Program Files\nodejs\npx.cmd" allure serve allure-results -p 9642
+echo Opening Allure Report on port 9641...
+"C:\Program Files\nodejs\npx.cmd" allure serve allure-results -p 9641
