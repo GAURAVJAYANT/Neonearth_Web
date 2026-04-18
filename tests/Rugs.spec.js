@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { HomePage } = require('../pages/HomePage');
+const { RugsHomePage } = require('../pages/RugsHomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { NeonearthCategoryPage } = require('../pages/NeonearthCategoryPage');
@@ -7,7 +7,7 @@ const { NeonearthCategoryPage } = require('../pages/NeonearthCategoryPage');
 
 test('E2E Journey - Rugs & Mats - Area Rugs', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const categoryPage = new NeonearthCategoryPage(page);
@@ -67,7 +67,7 @@ test('E2E Journey - Rugs & Mats - Area Rugs', async ({ page }) => {
 
 test('E2E Journey -Square Rug', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const categoryPage = new NeonearthCategoryPage(page);
@@ -128,7 +128,7 @@ test('E2E Journey -Square Rug', async ({ page }) => {
 
 test('E2E Journey -Round Rug', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const categoryPage = new NeonearthCategoryPage(page);
@@ -189,7 +189,7 @@ test('E2E Journey -Round Rug', async ({ page }) => {
 
 test('E2E Journey -Oval Rug', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const categoryPage = new NeonearthCategoryPage(page);
@@ -249,7 +249,7 @@ test('E2E Journey -Oval Rug', async ({ page }) => {
 
 test('E2E Journey -Runner - Luxe Grain', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const categoryPage = new NeonearthCategoryPage(page);

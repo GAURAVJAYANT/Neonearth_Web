@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { HomePage } = require('../pages/HomePage');
+const { PillowHomePage } = require('../pages/PillowHomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
@@ -7,7 +7,7 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 test.describe('Pillow E2E Journeys', () => {
   test('E2E Journey - Pillows - Custom Square Throw Pillow', async ({ page }) => {
     test.setTimeout(600000);
-    const homePage = new HomePage(page);
+    const homePage = new PillowHomePage(page);
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
@@ -76,7 +76,7 @@ test.describe('Pillow E2E Journeys', () => {
 
   test('E2E Journey - Custom Rectangle Throw Pillow', async ({ page }) => {
     test.setTimeout(600000);
-    const homePage = new HomePage(page);
+    const homePage = new PillowHomePage(page);
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
@@ -128,7 +128,7 @@ test.describe('Pillow E2E Journeys', () => {
 
   test('E2E Journey - Custom Round Throw Pillow', async ({ page }) => {
     test.setTimeout(600000);
-    const homePage = new HomePage(page);
+    const homePage = new PillowHomePage(page);
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
@@ -180,7 +180,7 @@ test.describe('Pillow E2E Journeys', () => {
 
   test('E2E Journey Pillow - Square seat Cushion', async ({ page }) => {
     test.setTimeout(600000);
-    const homePage = new HomePage(page);
+    const homePage = new PillowHomePage(page);
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
@@ -227,7 +227,7 @@ test.describe('Pillow E2E Journeys', () => {
 
   test('E2E Journey Pillow - Round Seat Cushion', async ({ page }) => {
     test.setTimeout(600000);
-    const homePage = new HomePage(page);
+    const homePage = new PillowHomePage(page);
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
@@ -274,7 +274,7 @@ test.describe('Pillow E2E Journeys', () => {
 
   test('E2E Journey Pillow - Rectangle Seat Cushion', async ({ page }) => {
     test.setTimeout(600000);
-    const homePage = new HomePage(page);
+    const homePage = new PillowHomePage(page);
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
@@ -321,7 +321,7 @@ test.describe('Pillow E2E Journeys', () => {
 
   test('E2E Journey Pillow - Bed Pillow', async ({ page }) => {
     test.setTimeout(600000);
-    const homePage = new HomePage(page);
+    const homePage = new PillowHomePage(page);
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);

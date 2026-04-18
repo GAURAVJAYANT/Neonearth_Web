@@ -1,12 +1,12 @@
 const { test } = require('@playwright/test');
-const { HomePage } = require('../pages/HomePage');
+const { TapestryHomePage } = require('../pages/TapestryHomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 
 test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new TapestryHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
@@ -64,7 +64,7 @@ test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
 
 test('E2E Journey - Custom Panoramic Tapestries', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new TapestryHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
@@ -122,7 +122,7 @@ test('E2E Journey - Custom Panoramic Tapestries', async ({ page }) => {
 
 test('E2E Journey - Custom Wall Tapestry Weave Loom', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new TapestryHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
@@ -180,7 +180,7 @@ test('E2E Journey - Custom Wall Tapestry Weave Loom', async ({ page }) => {
 
 test('E2E Journey - Custom Panoramic Tapestry - Weave Loom', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new TapestryHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
@@ -238,7 +238,7 @@ test('E2E Journey - Custom Panoramic Tapestry - Weave Loom', async ({ page }) =>
 
 test('E2E Journey -Custom Triangular Tapestry - Velvet Satin', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new TapestryHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
@@ -296,7 +296,7 @@ test('E2E Journey -Custom Triangular Tapestry - Velvet Satin', async ({ page }) 
 
 test('E2E Journey -Custom Triangular Tapestry - Weave Loom', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new TapestryHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
@@ -354,7 +354,7 @@ test('E2E Journey -Custom Triangular Tapestry - Weave Loom', async ({ page }) =>
 
 test('E2E Journey -Custom Hanging Tapestry - Velvet Satin', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new TapestryHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
@@ -412,7 +412,7 @@ test('E2E Journey -Custom Hanging Tapestry - Velvet Satin', async ({ page }) => 
 
 test('E2E Journey -Custom Hanging Tapestry - Weave Loom', async ({ page }) => {
   test.setTimeout(600000);
-  const homePage = new HomePage(page);
+  const homePage = new TapestryHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
