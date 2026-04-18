@@ -29,7 +29,8 @@ class HomePage extends SmartPage {
       hanging: page.getByRole('link', { name: 'Custom Hanging Tapestries', exact: false }).first(),
       throwPillows: page.getByRole('link', { name: /^Throw Pillows$/ }).first(),
       cushions: page.locator('a[href="/cushions"]').first(),
-      bedPillows: page.locator('a[href*="/bed-pillows"]').first()
+      bedPillows: page.locator('a[href*="/bed-pillows"]').first(),
+      HallwayRunners : page.getByText('Hallway Runners', { exact: true }),
     };
 
     // --- Locators: Products ---
@@ -45,6 +46,8 @@ class HomePage extends SmartPage {
       rectangleRug: page.locator('span.product-text', { hasText: 'Rectangle Rug' }),
       squareRug: page.locator(`span:has-text("Square Rug")`),
       roundRug: page.locator(`span:has-text("Round Rug")`),
+      ovalRug: page.locator(`span:has-text("Oval Rug")`),
+      RunnerLuxeGrain: page.getByRole('link', { name: 'Runner - Luxe Grain', exact: false }).first(),
       squareThrowPillow: page.getByRole('link', { name: 'Custom Square Throw Pillow' }).first(),
       rectangleThrowPillow: page.getByRole('link', { name: 'Custom Rectangle Throw Pillow' }).first(),
       roundThrowPillow: page.getByRole('link', { name: 'Custom Round Throw Pillow' }).first(),
@@ -82,6 +85,7 @@ class HomePage extends SmartPage {
     this.bedPillow = this.products.bedPillow;
     this.squareRug = this.products.squareRug;
     this.roundRug = this.products.roundRug;
+    this.ovalRug = this.products.ovalRug;
   }
 
   async open() {
@@ -181,7 +185,6 @@ class HomePage extends SmartPage {
   }
 
   /** Hover the Tapestries menu cleanly, wait for dropdown, then click the Velvet Satin product */
-  /** Hover the Tapestries menu cleanly, wait for dropdown, then click the Velvet Satin product */
   async navigateToProduct() {
     await this._navigate({
       menu: this.menus.tapestries,
@@ -222,6 +225,17 @@ class HomePage extends SmartPage {
   }
 
 
+  /** Hover the Rugs & Mats menu cleanly, wait for dropdown, then click the Oval Rug product */
+  async navigateToOvalRugProduct() {
+    await this._navigate({
+      menu: this.menus.rugs,
+      product: this.products.ovalRug,
+      urlPattern: /rug-p/i,
+      name: "Oval Rug"
+    });
+  }
+
+
   /** Hover the Tapestries menu to open dropdown, hover over Custom Panoramic Tapestries category to reveal sub-menu, then click the Velvet Satin product */
   async navigateToPanoramicTapestryProduct() {
     await this._navigate({
@@ -230,6 +244,18 @@ class HomePage extends SmartPage {
       product: this.products.panoramicVelvet,
       urlPattern: /panoramic-tapestry-p|tapestry-p/i,
       name: "Panoramic Tapestry - Velvet Satin"
+    });
+  }
+
+  //page.getByText('Hallway Runners', { exact: true });
+
+  async navigateToHallwayRunnersProduct() {
+    await this._navigate({
+      menu: this.menus.rugs,
+      category: this.categories.HallwayRunners,
+      product: this.products.RunnerLuxeGrain,
+      urlPattern: /runner-p|hallway-runners-p|rugs-p/i,
+      name: "Hallway Runners"
     });
   }
 
