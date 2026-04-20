@@ -13,12 +13,12 @@ test('Open NeonEarth Website - Login and Hover Tapestries', async ({ page }) => 
   test.setTimeout(120000);
 
   // ─── Step 1: Open Website ───────────────────────────────────────
-  await page.goto('https://www.neonearth.com/', { 
+  await page.goto('https://ne.signsigma.com/', { 
     waitUntil: 'domcontentloaded',
     timeout: 60000 
   });
 
-  await expect(page).toHaveURL('https://www.neonearth.com/');
+  await expect(page).toHaveURL('https://ne.signsigma.com/');
   console.log('✅ Website opened successfully');
 
   // ─── Step 2: Click Join/Login ───────────────────────────────────

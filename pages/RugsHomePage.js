@@ -20,6 +20,7 @@ class RugsHomePage extends HomePage {
       ovalRug: page.locator(`span:has-text("Oval Rug")`),
       RunnerLuxeGrain: page.getByRole('link', { name: 'Runner - Luxe Grain', exact: false }).first(),
       runnerSilkenPlush: page.getByRole('link', { name: 'Runner - Silken Plush', exact: false }).first(),
+      runnerNatureLoom: page.getByRole('link', { name: 'Runner - Nature Loom', exact: false }).first(),
     };
   }
 
@@ -74,14 +75,25 @@ class RugsHomePage extends HomePage {
     });
   }
 
-  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Luxe Grain */
-  async navigateToHallwayRunnersProduct() {
+  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Silken Plush */
+  async navigateToRunnerSilkenPlushProduct() {
     await this._navigate({
       menu: this.menu,
       category: this.categories.HallwayRunners,
-      product: this.products.RunnerLuxeGrain,
-      urlPattern: /runner-p|hallway-runners-p|rugs-p/i,
-      name: "Hallway Runners"
+      product: this.products.runnerSilkenPlush,
+      urlPattern: /runner-p|silken-plush-p|runner-p/i,
+      name: "Runner - Silken Plush"
+    });
+  }
+
+  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Nature Loom */
+  async navigateToRunnerNatureLoomProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HallwayRunners,
+      product: this.products.runnerNatureLoom,
+      urlPattern: /runner-p|nature-loom-p|runner-p/i,
+      name: "Runner - Nature Loom"
     });
   }
 }

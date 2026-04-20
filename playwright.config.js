@@ -24,7 +24,7 @@ module.exports = defineConfig({
       suiteTitle: false,
       environmentInfo: {
         Project: 'NeonEarth Web',
-        BaseURL: process.env.BASE_URL || 'https://www.neonearth.com/',
+        BaseURL: process.env.BASE_URL || 'https://ne.signsigma.com/',
         Browser: 'Chromium',
       },
     }],
@@ -34,7 +34,7 @@ module.exports = defineConfig({
   ],
 
   use: {
-    baseURL: process.env.BASE_URL || 'https://www.neonearth.com/',
+    baseURL: process.env.BASE_URL || 'https://ne.signsigma.com/',
     trace: 'retain-on-failure',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',

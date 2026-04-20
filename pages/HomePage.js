@@ -37,30 +37,34 @@ class HomePage extends SmartPage {
   async _navigate({ menu, category = null, product, urlPattern, name }) {
     console.log(`🚀 Starting navigation to: ${name}`);
 
-    // 1. Ensure the top-level menu is visible
+    // Step 1: Wait for any site-wide overlays, then hover the top-level menu
+    await this.waitForOverlays();
     await menu.waitFor({ state: 'visible', timeout: this.CONFIG.TIMEOUT_VISIBLE });
+    await menu.hover({ force: true });
+    console.log(`⏳ Hovering top-level menu for: ${name}...`);
 
-    // 2. Hover retry loop — keeps trying until the dropdown target (category or product) appears
+    // ── KEY: Wait for dropdown CSS animation to fully complete ──────────
+    await this.page.waitForTimeout(2000);
+
+    // Step 2: Retry if dropdown target not visible yet (jitter recovery)
     const target = category || product;
     let isTargetReady = false;
 
     for (let i = 0; i < this.CONFIG.RETRIES; i++) {
-      console.log(`⏳ Attempt ${i + 1}: Hovering over menu for ${name}...`);
-      await menu.hover({ force: true });
-
       try {
-        await target.waitFor({ state: 'visible', timeout: 5000 });
+        await target.waitFor({ state: 'visible', timeout: 8000 });
         isTargetReady = true;
+        console.log(`✅ Dropdown visible on attempt ${i + 1} for: ${name}`);
         break;
       } catch (e) {
-        console.log(`⚠️ ${name} target not visible yet, trying jitter hover...`);
+        console.log(`⚠️ ${name} — dropdown not ready (attempt ${i + 1}), retrying hover...`);
+        // Jitter: move cursor away then re-hover to re-trigger the CSS state
         const box = await menu.boundingBox();
         if (box) {
-          // Jitter: move slightly away then back to re-trigger the hover state
           await this.page.mouse.move(box.x - 30, box.y + box.height / 2);
           await this.page.waitForTimeout(500);
-          await menu.hover({ force: true });
         }
+        await menu.hover({ force: true });
         await this.page.waitForTimeout(this.CONFIG.WAIT_JITTER);
         isTargetReady = await target.isVisible();
         if (isTargetReady) break;
@@ -68,45 +72,49 @@ class HomePage extends SmartPage {
     }
 
     if (!isTargetReady) {
-      console.log(`🚨 Final Attempt: Force hovering...`);
+      console.log(`🚨 Final fallback hover for: ${name}`);
       await menu.hover({ force: true });
       await this.page.waitForTimeout(this.CONFIG.WAIT_INITIAL);
     }
 
-    // 3. Handle sub-category hover (e.g., "Hallway Runners", "Panoramic Tapestries")
+    // Step 3: Sub-category hover (e.g. "Custom Panoramic Tapestries", "Hallway Runners")
     if (category) {
       await category.waitFor({ state: 'visible', timeout: this.CONFIG.TIMEOUT_VISIBLE });
       await category.scrollIntoViewIfNeeded();
       await category.hover({ force: true });
-      console.log(`⏳ Hovered over intermediate category: ${name}`);
+      console.log(`⏳ Hovering sub-category for: ${name}...`);
 
-      // Wait for product to appear after category hover, with retry
+      // ── KEY: Wait for sub-menu flyout to fully animate open ────────────
+      await this.page.waitForTimeout(2000);
+
+      // Retry if product still not visible after sub-category hover
       for (let j = 0; j < 2; j++) {
         try {
-          await product.waitFor({ state: 'visible', timeout: 5000 });
+          await product.waitFor({ state: 'visible', timeout: 8000 });
+          console.log(`✅ Product link visible after sub-category hover`);
           break;
         } catch (e) {
-          console.log(`⚠️ Product not visible after category hover (attempt ${j + 1}), retrying...`);
+          console.log(`⚠️ Product not visible after sub-hover (attempt ${j + 1}), retrying...`);
           await category.hover({ force: true });
-          await this.page.waitForTimeout(1500);
+          await this.page.waitForTimeout(2000);
         }
       }
     }
 
-    // 4. Click the product link
+    // Step 4: Click the product link (final settle, then click)
     await product.waitFor({ state: 'visible', timeout: this.CONFIG.TIMEOUT_VISIBLE });
     await product.scrollIntoViewIfNeeded();
-    await this.page.waitForTimeout(1500); // let menu animation settle
+    await this.page.waitForTimeout(1000); // brief settle before click
 
     try {
       await product.click({ timeout: 10000 });
     } catch (e) {
-      console.log(`⚠️ Standard click failed for ${name}, attempting force click...`);
+      console.log(`⚠️ Standard click failed for ${name}, trying force click...`);
       await product.click({ force: true });
     }
     console.log(`✅ Clicked product for: ${name}`);
 
-    // 5. Verify navigation landed on the correct PDP URL
+    // Step 5: Verify correct PDP URL
     if (urlPattern) {
       await this.page.waitForURL(urlPattern, { timeout: this.CONFIG.WAIT_PDP_LOAD });
       console.log(`✨ Successfully navigated to ${name} PDP`);

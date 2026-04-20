@@ -4,7 +4,7 @@
  */
 function buildPrompt(userStory) {
   return `
-You are an expert Playwright test automation engineer working on the NeonEarth e-commerce website (https://www.neonearth.com).
+You are an expert Playwright test automation engineer working on the NeonEarth e-commerce website (https://ne.signsigma.com).
 
 Generate a complete Playwright test in JavaScript using the Page Object Model pattern.
 

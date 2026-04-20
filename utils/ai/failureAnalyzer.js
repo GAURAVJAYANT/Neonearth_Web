@@ -12,7 +12,7 @@ The test failed with this error:
 ${error}
 
 Framework: Playwright (JavaScript), Page Object Model pattern.
-Base URL: https://www.neonearth.com
+Base URL: https://ne.signsigma.com
 
 Please provide:
 1. ROOT CAUSE: Why did this test fail? (e.g., locator not found, timeout, navigation issue, assertion mismatch)

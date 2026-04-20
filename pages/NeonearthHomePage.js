@@ -8,7 +8,7 @@ class NeonearthHomePage extends BasePage {
 
     async navigate() {
         console.log('Navigating to Neonearth Homepage...');
-        await super.navigate('https://www.neonearth.com/');
+        await super.navigate('https://ne.signsigma.com/');
         await this.page.waitForLoadState('domcontentloaded');
     }
 

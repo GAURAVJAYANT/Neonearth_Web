@@ -23,14 +23,14 @@ test('User Journey - AI Generation to Checkout', async ({ page, context }) => {
   );
 
   // Step 1: Navigate directly to the Product Page
-  const productURL = 'https://www.neonearth.com/custom-wall-tapestry-p?variant_sku=NE-SKU-133-335&list_material_type=list_mt_satin';
+  const productURL = 'https://ne.signsigma.com/custom-wall-tapestry-p?variant_sku=NE-SKU-133-335&list_material_type=list_mt_satin';
   console.log(`Step 1: Navigating directly to: ${productURL}`);
   await page.goto(productURL, { waitUntil: 'domcontentloaded', timeout: 60000 });
   
   // Fallback if the specific variant URL fails (404)
   if (await page.locator('text=Spot Not Found').isVisible()) {
     console.log('⚠️ Variant URL 404, falling back to base product page...');
-    await page.goto('https://www.neonearth.com/custom-wall-tapestry-p', { waitUntil: 'domcontentloaded' });
+    await page.goto('https://ne.signsigma.com/custom-wall-tapestry-p', { waitUntil: 'domcontentloaded' });
   }
 
   await page.waitForTimeout(3000);
@@ -74,7 +74,7 @@ test('User Journey - AI Generation to Checkout', async ({ page, context }) => {
 
   // Step 8: Go to Cart and Verify
   console.log('Step 8: Verifying cart content...');
-  await page.goto('https://www.neonearth.com/checkout/cart', { waitUntil: 'domcontentloaded' });
+  await page.goto('https://ne.signsigma.com/checkout/cart', { waitUntil: 'domcontentloaded' });
   const cartContent = await page.content();
   if (cartContent.includes('Your cart is empty')) {
     console.error('❌ Error: Cart is empty after adding product!');

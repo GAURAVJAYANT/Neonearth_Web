@@ -16,23 +16,16 @@ class ProductPage extends SmartPage {
 
   async personalizeDesign() {
     console.log('Step: Clicking Personalize this Design');
-    await this.personaliseBtn.waitFor({ state: 'visible', timeout: 15000 });
-    
-    // Safety: Move the button out from under the sticky footer
-    await this.personaliseBtn.scrollIntoViewIfNeeded();
-    await this.page.mouse.wheel(0, -150); 
-    
-    // Use force click to bypass actionability checks (sticky footer overlap)
-    await this.personaliseBtn.click({ force: true });
+    // Using smartClick to handle sticky footers and actionability issues natively
+    await this.smartClick(this.personaliseBtn);
     
     console.log('✅ Clicked Personalize this Design button');
-    await this.page.waitForTimeout(8000); // Wait for customizer to open
+    await this.page.waitForTimeout(8000); // UI customization transition still needs a bit of time
   }
 
   async uploadImage(imagePath = 'data/test_image.png') {
     console.log('Step: Selecting Upload Your Design choice');
-    await this.uploadYourDesignBtn.waitFor({ state: 'visible', timeout: 20000 });
-    await this.uploadYourDesignBtn.click();
+    await this.smartClick(this.uploadYourDesignBtn);
     console.log('✅ Clicked Upload Your Design');
     await this.page.waitForTimeout(5000);
 
@@ -42,7 +35,7 @@ class ProductPage extends SmartPage {
 
     const [fileChooser] = await Promise.all([
       this.page.waitForEvent('filechooser'),
-      this.uploadFileText.click(),
+      this.uploadFileText.click(), // Using native click for file chooser compatibility
     ]);
 
     const resolvedImagePath = path.resolve(process.cwd(), imagePath);
@@ -50,14 +43,11 @@ class ProductPage extends SmartPage {
     await fileChooser.setFiles(resolvedImagePath);
     
     console.log(`✅ File uploaded successfully from: ${resolvedImagePath}`);
-
-    // Processing the Custom Design often takes a VERY long time on test servers
-    await this.page.waitForTimeout(10000); // 10 seconds for safety
+    await this.page.waitForTimeout(10000); 
   }
 
   async previewAndAddToCart() {
-    await this.previewBtn.waitFor({ state: 'visible', timeout: 150000 });
-    await this.previewBtn.click();
+    await this.smartClick(this.previewBtn, { timeout: 150000 });
     console.log('✅ Clicked preview button');
     await this.page.waitForTimeout(8000);
 

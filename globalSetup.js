@@ -48,7 +48,7 @@ module.exports = async function globalSetup(config) {
   const page = await context.newPage();
 
   try {
-    const baseURL = process.env.BASE_URL || 'https://www.neonearth.com/';
+    const baseURL = process.env.BASE_URL || 'https://ne.signsigma.com/';
 
     // Step 1: Open website
     await page.goto(baseURL, { waitUntil: 'domcontentloaded', timeout: 60000 });

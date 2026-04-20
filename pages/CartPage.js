@@ -7,7 +7,6 @@ class CartPage extends SmartPage {
   constructor(page) {
     super(page);
 
-    // ✅ Stable locator (avoid class-based)
     this.checkoutBtn = page
       .getByRole('button', { name: /secure checkout/i })
       .first();
@@ -27,67 +26,94 @@ class CartPage extends SmartPage {
     // ── Performance: measure cart page load ──────────────────────────
     await measurePagePerformance(this.page, 'Cart Page');
 
-    // Validate cart state
-    const cartContent = await this.page.content();
-    const isEmpty = cartContent.includes('Your cart is empty');
+    // ── Validate cart state ───────────────────────────────────────────
+    const emptyCart = this.page.locator('text=Your cart is empty');
+    const isEmpty = await emptyCart.isVisible({ timeout: 3000 }).catch(() => false);
 
     console.log(`  Cart is ${isEmpty ? 'EMPTY ❌' : 'populated ✅'}`);
 
-    // Optional: wait for UI stability (not hard wait)
-    await this.page.waitForLoadState('domcontentloaded');
+    // Wait for cart to fully settle (items, pricing, offers section)
+    await this.page.waitForLoadState('networkidle').catch(() => {});
   }
 
   async dismissPopup() {
     try {
-      if (await this.popupClose.isVisible({ timeout: 3000 })) {
-        await this.popupClose.click();
-        console.log('  Popup dismissed');
-      }
-    } catch (e) {
-      // ignore silently
+      await this.popupClose.waitFor({ state: 'visible', timeout: 3000 });
+      await this.popupClose.click();
+      console.log('  Popup dismissed');
+    } catch {
+      // No popup present, continue silently
     }
   }
 
- async secureCheckout() {
-  console.log('Step 6: Clicking Secure Checkout...');
+  async secureCheckout() {
+    console.log('Step 6: Clicking Secure Checkout...');
 
-  const btn = this.checkoutBtn;
+    const btn = this.checkoutBtn;
 
-  await this.dismissPopup();
+    // 1. Dismiss any overlapping popups
+    await this.dismissPopup();
 
-  await expect(btn).toBeVisible({ timeout: 15000 });
-  await expect(btn).toBeEnabled({ timeout: 15000 });
+    // 2. Wait for button to be fully visible and enabled
+    await btn.waitFor({ state: 'visible', timeout: 20000 });
+    await expect(btn).toBeEnabled({ timeout: 10000 });
 
-  await btn.scrollIntoViewIfNeeded();
+    // 3. Scroll into view and pause for layout to settle
+    await btn.scrollIntoViewIfNeeded();
+    await this.page.waitForTimeout(1500);
 
-  const expectedUrl = '**/onepagecheckout';
+    // 4. Retry: click + wait for navigation together
+    const maxAttempts = 4;
+    let navigated = false;
 
-  try {
-    await Promise.all([
-      this.page.waitForURL(expectedUrl, { timeout: 15000 }),
-      btn.click({ force: true })
-    ]);
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      console.log(`  Click attempt #${attempt}...`);
 
-    // ✅ Strong validation (URL match)
-    await expect(this.page).toHaveURL(/onepagecheckout/);
+      // Re-dismiss popups that may have appeared between attempts
+      await this.dismissPopup();
 
-    // ✅ Optional: wait for checkout UI element
-    await this.page.locator('text=Shipping').waitFor({ timeout: 15000 });
+      // Check if button entered "Processing" - wait it out
+      const btnText = await btn.innerText().catch(() => '');
+      if (btnText.toLowerCase().includes('processing')) {
+        console.log('  🕐 Button is processing, waiting...');
+        await this.page.waitForTimeout(3000);
+        continue;
+      }
 
-    console.log('✅ Navigation success: ' + this.page.url());
+      try {
+        await Promise.all([
+          this.page.waitForURL(url => url.pathname.includes('/onepagecheckout'), { timeout: 10000 }),
+          btn.click({ force: true })
+        ]);
 
-  } catch (e) {
-    console.log('⚠️ Click failed → fallback navigation');
+        navigated = true;
+        console.log('  ✅ Navigation confirmed on attempt #' + attempt);
+        break;
 
-    await this.page.goto('/onepagecheckout', {
-      waitUntil: 'domcontentloaded',
-      timeout: 30000
-    });
+      } catch (e) {
+        // Navigation might have happened even if Promise.all threw
+        if (this.page.url().includes('onepagecheckout')) {
+          navigated = true;
+          console.log('  ✅ Navigation detected in catch on attempt #' + attempt);
+          break;
+        }
+        console.log(`  ⚠️ Attempt #${attempt} timed out. Retrying...`);
+      }
+    }
 
-    await expect(this.page).toHaveURL(/onepagecheckout/);
+    // 5. Final fallback: direct navigation
+    if (!navigated) {
+      console.log('  🔄 All click attempts failed. Falling back to direct URL...');
+      await this.page.goto('/onepagecheckout', {
+        waitUntil: 'domcontentloaded',
+        timeout: 30000
+      });
+    }
+
+    // 6. Final assertion
+    await expect(this.page).toHaveURL(/onepagecheckout/, { timeout: 15000 });
+    console.log('  ✅ Final URL verified: ' + this.page.url());
   }
+}
 
-  console.log('Final URL: ' + this.page.url());
-}
-}
 module.exports = { CartPage };

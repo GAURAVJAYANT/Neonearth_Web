@@ -25,14 +25,14 @@ class TapestryHomePage extends HomePage {
 
     // --- Tapestry Product Locators ---
     this.products = {
-      tapestryVelvet: page.getByRole('link', { name: 'Wall Tapestry - Velvet Satin', exact: true }),
-      tapestryWeave: page.getByRole('link', { name: 'Wall Tapestry - Weave Loom', exact: true }),
-      panoramicVelvet: page.getByRole('link', { name: 'Panoramic Tapestry - Velvet Satin', exact: true }),
-      panoramicWeave: page.getByRole('link', { name: 'Panoramic Tapestry - Weave Loom', exact: true }),
-      triangularVelvet: page.getByRole('link', { name: 'Triangular Tapestry - Velvet Satin', exact: true }),
-      triangularWeave: page.getByRole('link', { name: 'Triangular Tapestry - Weave Loom', exact: true }),
-      hangingVelvet: page.getByRole('link', { name: 'Hanging Tapestry - Velvet Satin', exact: true }),
-      hangingWeave: page.getByRole('link', { name: 'Hanging Tapestry - Weave Loom', exact: true }),
+      tapestryVelvet: page.getByRole('link', { name: 'Wall Tapestry - Velvet Satin', exact: false }).first(),
+      tapestryWeave: page.getByRole('link', { name: 'Wall Tapestry - Weave Loom', exact: false }).first(),
+      panoramicVelvet: page.getByRole('link', { name: 'Panoramic Tapestry - Velvet Satin', exact: false }).first(),
+      panoramicWeave: page.getByRole('link', { name: 'Panoramic Tapestry - Weave Loom', exact: false }).first(),
+      triangularVelvet: page.getByRole('link', { name: 'Triangular Tapestry - Velvet Satin', exact: false }).first(),
+      triangularWeave: page.getByRole('link', { name: 'Triangular Tapestry - Weave Loom', exact: false }).first(),
+      hangingVelvet: page.getByRole('link', { name: 'Hanging Tapestry - Velvet Satin', exact: false }).first(),
+      hangingWeave: page.getByRole('link', { name: 'Hanging Tapestry - Weave Loom', exact: false }).first(),
     };
   }
 
