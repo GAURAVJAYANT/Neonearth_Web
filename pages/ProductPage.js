@@ -7,7 +7,7 @@ const { validateApiCall } = require('../utils/helpers/apiValidator');
 class ProductPage extends SmartPage {
   constructor(page) {
     super(page);
-    this.personaliseBtn = page.getByRole('button', { name: /Personali[sz]e this Design/i });
+    this.personaliseBtn = page.locator('button, a').filter({ hasText: /Personali[sz]e this Design/i });
     this.uploadYourDesignBtn = page.getByRole('button', { name: /Upload Your Design/i });
     this.uploadFileText = page.getByText('Browse Files');
     this.previewBtn = page.getByRole('button', { name: 'Preview' });
