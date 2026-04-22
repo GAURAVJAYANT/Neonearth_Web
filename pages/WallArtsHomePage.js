@@ -11,6 +11,9 @@ class WallArtsHomePage extends HomePage {
     this.categories = {
       CustomWallpapers: page.getByText('Custom Wallpapers', { exact: true }),
       CustomWallMurals: page.locator('a[title="View Custom Wall Murals"]'),
+      PhotoAndArtPrints: page.locator('a[title="View Photo And Art Prints"]'),
+      PosterPrints: page.locator('a[title="View Poster Prints"]'),
+      CanvasPrints: page.locator('a[title="View Canvas Prints"]'),
     };
 
     // --- Wall Arts Product Locators ---
@@ -20,7 +23,14 @@ class WallArtsHomePage extends HomePage {
       wallpaperTimberGrain: page.getByRole('link', { name: 'Wallpaper - Timber Grain', exact: false }).first(),
       //wallMuralLuxeSmooth: page.locator('a[href*="luxe_smooth"]').first(),
       WallMuralStoneGrain: page.getByRole('link', { name: 'Wall Mural - Stone Grain', exact: false }).first(), 
-      WallMuralTimberGrain: page.getByRole('link', { name: 'Wall Mural - Timber Grain', exact: false }).first(),     
+      WallMuralTimberGrain: page.getByRole('link', { name: 'Wall Mural - Timber Grain', exact: false }).first(), 
+      PhotoPrint:page.getByRole('link', { name: 'Photo Print', exact: false }).first(),
+      MountedPhotoPrint:page.getByRole('link', { name: 'Mounted Photo Print', exact: false }).first(),
+      FramedPhotoPrint:page.getByRole('link', { name: 'Framed Photo Print', exact: false }).first(),
+      PosterPrint:page.getByRole('link', { name: 'Poster Print', exact: false }).first(),
+      RolledCanvasPrint:page.getByRole('link', { name: 'Rolled Canvas Print', exact: false }).first(),
+
+
     };
   }
 
@@ -91,6 +101,59 @@ class WallArtsHomePage extends HomePage {
       name: "Wall Mural - Timber Grain"
     });
   }
+
+async navigateToPhotoPrintProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.PhotoAndArtPrints,
+      product: this.products.PhotoPrint  ,
+      urlPattern: /photo-print-p/i,
+      name: "Photo Print"
+    });
+  }
+
+  async navigateToMountedPhotoPrintProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.PhotoAndArtPrints,
+      product: this.products.MountedPhotoPrint  ,
+      urlPattern: /photo-print-p/i,
+      name: "Mounted Photo Print"
+    });
+  }
+
+  async navigateToFramedPhotoPrint() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.PhotoAndArtPrints,
+      product: this.products.FramedPhotoPrint  ,
+      urlPattern: /photo-print-p/i,
+      name: "Framed Photo Print"
+    });
+  }
+
+  async navigateToPosterPrint() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.PosterPrints,
+      product: this.products.PosterPrint  ,
+     // urlPattern: /poster-print-p/i,
+      name: "Poster Print"
+    });
+  }
+
+  async navigateToRolledCanvasPrintProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.CanvasPrints,
+      product: this.products.RolledCanvasPrint  ,
+     // urlPattern: /poster-print-p/i,
+      name: "Rolled Canvas Print"
+    });
+  }
+
+
+
 }
 
 module.exports = { WallArtsHomePage };
