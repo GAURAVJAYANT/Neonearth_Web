@@ -19,7 +19,8 @@ class WallArtsHomePage extends HomePage {
       wallpaperStoneGrain: page.getByRole('link', { name: 'Wallpaper - Stone Grain', exact: false }).first(),
       wallpaperTimberGrain: page.getByRole('link', { name: 'Wallpaper - Timber Grain', exact: false }).first(),
       //wallMuralLuxeSmooth: page.locator('a[href*="luxe_smooth"]').first(),
-      WallMuralStoneGrain: page.getByRole('link', { name: 'Wall Mural - Stone Grain', exact: false }).first(),      
+      WallMuralStoneGrain: page.getByRole('link', { name: 'Wall Mural - Stone Grain', exact: false }).first(), 
+      WallMuralTimberGrain: page.getByRole('link', { name: 'Wall Mural - Timber Grain', exact: false }).first(),     
     };
   }
 
@@ -77,6 +78,17 @@ class WallArtsHomePage extends HomePage {
       product: this.products.WallMuralStoneGrain  ,
       urlPattern: /custom-wall-mural-p/i,
       name: "Wall Mural - Stone Grain"
+    });
+  }
+
+  /** Navigate to: Wall Arts → Custom Wallpaper */
+  async navigateToWallMuralTimberGrainProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.CustomWallMurals,
+      product: this.products.WallMuralTimberGrain  ,
+      urlPattern: /custom-wall-mural-p/i,
+      name: "Wall Mural - Timber Grain"
     });
   }
 }
