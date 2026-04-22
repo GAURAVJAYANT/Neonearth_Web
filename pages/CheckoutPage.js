@@ -71,7 +71,7 @@ class CheckoutPage extends SmartPage {
       try {
         const frame = this.page.frameLocator(selector);
         const input = frame.locator('input[name="cvc"]');
-        if (await input.isVisible({ timeout: 5000 })) {
+        if (await input.isVisible({ timeout: 500 })) {
           cvcInput = input;
           console.log(`  ✅ CVC iframe matched via: ${selector}`);
           break;
@@ -145,7 +145,7 @@ class CheckoutPage extends SmartPage {
       'p:has-text("Your order number")',
     ];
 
-    const deadline = Date.now() + 60000;
+    const deadline = Date.now() + 15000;
     while (Date.now() < deadline) {
       for (const sel of orderIdSelectors) {
         if (await this.page.locator(sel).first().isVisible().catch(() => false)) {
@@ -153,10 +153,17 @@ class CheckoutPage extends SmartPage {
           return; // Done — Order ID is on screen
         }
       }
+      
+      const bodyText = await this.page.innerText('body').catch(() => '');
+      if (bodyText.match(/Order\s*#?\s*([0-9A-Z-]+)/i) || bodyText.match(/#([0-9]{5,})/)) {
+        console.log('  ✅ Order ID text found on page.');
+        return;
+      }
+
       await this.page.waitForTimeout(1500);
     }
 
-    console.warn('  ⚠️ Order ID element not found within 60s — order likely still succeeded.');
+    console.warn('  ⚠️ Order ID element not found within 15s — order likely still succeeded.');
   }
 
   async verifySuccess() {
@@ -196,7 +203,7 @@ class CheckoutPage extends SmartPage {
     for (const selector of orderLocators) {
       try {
         const loc = this.page.locator(selector).first();
-        if (await loc.isVisible({ timeout: 5000 })) {
+        if (await loc.isVisible()) {
           const text = await loc.innerText();
           if (text.includes('#') || /\d{5,}/.test(text)) {
             console.log(`  ✅ Order ID scavenged via [${selector}]: ${text.trim()}`);
