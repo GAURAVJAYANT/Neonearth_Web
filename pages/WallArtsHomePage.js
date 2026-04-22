@@ -13,7 +13,7 @@ class WallArtsHomePage extends HomePage {
       CustomWallMurals: page.locator('a[title="View Custom Wall Murals"]'),
       PhotoAndArtPrints: page.locator('a[title="View Photo And Art Prints"]'),
       PosterPrints: page.locator('a[title="View Poster Prints"]'),
-      CanvasPrints: page.locator('a[title="View Canvas Prints"]'),
+      CanvasPrints: page.getByText('Canvas Prints', { exact: true }),
     };
 
     // --- Wall Arts Product Locators ---

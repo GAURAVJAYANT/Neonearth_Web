@@ -16,7 +16,10 @@ class ProductPage extends SmartPage {
 
   async personalizeDesign() {
     console.log('Step: Clicking Personalize this Design');
-    // Using smartClick to handle sticky footers and actionability issues natively
+    try {
+      await this.page.waitForLoadState('networkidle', { timeout: 10000 });
+    } catch (e) {}
+    await this.waitForOverlays();
     await this.smartClick(this.personaliseBtn);
     
     console.log('✅ Clicked Personalize this Design button');
@@ -35,7 +38,7 @@ class ProductPage extends SmartPage {
 
     const [fileChooser] = await Promise.all([
       this.page.waitForEvent('filechooser'),
-      this.uploadFileText.click(), // Using native click for file chooser compatibility
+      this.uploadFileText.click({ force: true }), // Using force click to prevent interception flakiness
     ]);
 
     const resolvedImagePath = path.resolve(process.cwd(), imagePath);
