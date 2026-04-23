@@ -14,13 +14,10 @@ class WallArtsHomePage extends HomePage {
       PhotoAndArtPrints: page.locator('a[title="View Photo And Art Prints"]'),
       PosterPrints: page.locator('a[title="View Poster Prints"]'),
       CanvasPrints: page.locator(`span:has-text("Canvas Prints")`),
-<<<<<<< HEAD
       AcrylicPrints: page.locator('a[title="View Acrylic Prints"]'),
-=======
       HangingCanvas: page.locator('span:has-text("Hanging Canvas")'),
       WoodFrame: page.locator('a[title="View Wood Frame"]'),
       FloatingFrame: page.locator('a[title="View Floating Frame"]'),
->>>>>>> main
       //RolledCanvasPrint: page.locator('a[title="View Rolled Canvas Prints"]'),
       //StretchedCanvasPrint: page.locator('a[title="View Stretched Canvas Prints"]'),
       
@@ -173,8 +170,6 @@ async navigateToPhotoPrintProduct() {
     });
   }
 
-
-<<<<<<< HEAD
   async navigateToMountedCanvasPrintProduct() {
     await this._navigate({
       menu: this.menu,
@@ -222,7 +217,9 @@ async navigateToPhotoPrintProduct() {
       product: this.products.AcrylicPrintPremiumGlossy,
      // urlPattern: /poster-print-p/i,
       name: "Acrylic Print - Premium Glossy"
-=======
+    });
+  }
+
   async navigateToCharcoalWoodFrameProduct() {
     await this._navigate({
       menu: this.menu,
@@ -260,17 +257,7 @@ async navigateToPhotoPrintProduct() {
       product: this.products.FloatingFrame,
      // urlPattern: /poster-print-p/i,
       name: "Floating Frame"
->>>>>>> main
-    });
-  }
 
-
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> main
 
 }
 
