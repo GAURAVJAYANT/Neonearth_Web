@@ -30,7 +30,7 @@ class WallArtsHomePage extends HomePage {
       PhotoPrint:page.getByRole('link', { name: 'Photo Print', exact: false }).first(),
       MountedPhotoPrint:page.getByRole('link', { name: 'Mounted Photo Print', exact: false }).first(),
       FramedPhotoPrint:page.getByRole('link', { name: 'Framed Photo Print', exact: false }).first(),
-      PosterPrint:page.locator('.mega-menu-middle-col span.product-text', { hasText: 'Poster Print' }),
+      PosterPrint:page.locator('.mega-menu-middle-col').getByRole('link', { name: 'Poster Print' }),
       RolledCanvasPrint:page.getByRole('link', { name: 'Rolled Canvas Print', exact: false }).first(),
 
 

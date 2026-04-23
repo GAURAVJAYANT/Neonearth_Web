@@ -70,33 +70,22 @@ module.exports = async function globalSetup(config) {
     console.log('✅ [globalSetup] Clicked Login button');
 
     // Step 3: Enter email
-    const email = page.getByPlaceholder('Enter Email ID');
+    const email = page.getByPlaceholder('Email', { exact: true });
     await email.waitFor({ state: 'visible', timeout: 10000 });
     await email.fill(username);
-    console.log(`✅ [globalSetup] Email entered: ${username}`);
+    await email.press('Enter');
+    console.log(`✅ [globalSetup] Email entered and pressed Enter`);
 
-    // Step 4: Click Continue
-    const continueBtn = page.getByRole('button', { name: 'Continue' });
-    await continueBtn.waitFor({ state: 'visible', timeout: 10000 });
-    await continueBtn.click();
-    console.log('✅ [globalSetup] Clicked Continue');
-
-    // Step 5: Switch to password login
-    const signInWithPasswordBtn = page.getByRole('button', { name: /Sign in with a password/i });
-    await signInWithPasswordBtn.waitFor({ state: 'visible', timeout: 10000 });
-    await signInWithPasswordBtn.click();
-    console.log('✅ [globalSetup] Switched to password login');
-
-    // Step 6: Enter password
+    // Step 5 & 6: Enter password
     const passwordField = page.locator('input[type="password"], input[name="password"]');
-    await passwordField.waitFor({ state: 'visible', timeout: 10000 });
-    await passwordField.fill(password);
-    console.log('✅ [globalSetup] Password entered');
-
-    // Step 7: Sign in
-    const verifyBtn = page.getByRole('button', { name: /Verify & Sign In/i });
-    await verifyBtn.click();
-    console.log('✅ [globalSetup] Clicked Verify & Sign In');
+    await passwordField.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+    if (await passwordField.isVisible()) {
+      await passwordField.fill(password);
+      console.log('✅ [globalSetup] Password entered directly');
+      await passwordField.press('Enter');
+    } else {
+      console.log('❌ Password field not found');
+    }
 
     // Wait for login to complete
     await page.waitForTimeout(5000);
