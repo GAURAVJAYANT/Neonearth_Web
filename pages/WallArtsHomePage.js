@@ -13,7 +13,10 @@ class WallArtsHomePage extends HomePage {
       CustomWallMurals: page.locator('a[title="View Custom Wall Murals"]'),
       PhotoAndArtPrints: page.locator('a[title="View Photo And Art Prints"]'),
       PosterPrints: page.locator('a[title="View Poster Prints"]'),
-      CanvasPrints: page.getByText('Canvas Prints', { exact: true }),
+      CanvasPrints: page.locator(`span:has-text("Canvas Prints")`),
+      //RolledCanvasPrint: page.locator('a[title="View Rolled Canvas Prints"]'),
+      //StretchedCanvasPrint: page.locator('a[title="View Stretched Canvas Prints"]'),
+      
     };
 
     // --- Wall Arts Product Locators ---
@@ -27,7 +30,7 @@ class WallArtsHomePage extends HomePage {
       PhotoPrint:page.getByRole('link', { name: 'Photo Print', exact: false }).first(),
       MountedPhotoPrint:page.getByRole('link', { name: 'Mounted Photo Print', exact: false }).first(),
       FramedPhotoPrint:page.getByRole('link', { name: 'Framed Photo Print', exact: false }).first(),
-      PosterPrint:page.getByRole('link', { name: 'Poster Print', exact: false }).first(),
+      PosterPrint:page.locator('.mega-menu-middle-col span.product-text', { hasText: 'Poster Print' }),
       RolledCanvasPrint:page.getByRole('link', { name: 'Rolled Canvas Print', exact: false }).first(),
 
 
