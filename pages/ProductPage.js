@@ -17,7 +17,14 @@ class ProductPage extends SmartPage {
   async personalizeDesign() {
     console.log('Step: Clicking Personalize this Design');
     await this.personaliseBtn.waitFor({ state: 'visible', timeout: 15000 });
-    await this.personaliseBtn.click();
+    
+    // Safety: Move the button out from under the sticky footer
+    await this.personaliseBtn.scrollIntoViewIfNeeded();
+    await this.page.mouse.wheel(0, -150); 
+    
+    // Use force click to bypass actionability checks (sticky footer overlap)
+    await this.personaliseBtn.click({ force: true });
+    
     console.log('✅ Clicked Personalize this Design button');
     await this.page.waitForTimeout(8000); // Wait for customizer to open
   }
