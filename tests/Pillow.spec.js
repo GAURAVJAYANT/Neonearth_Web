@@ -356,14 +356,8 @@ test.describe('Pillow E2E Journeys', () => {
     await checkoutPage.placeOrder();
     await checkoutPage.verifySuccess();
 
-    console.log('Waiting briefly to view order number...');
-    await page.waitForTimeout(3000);
-    await cartPage.dismissPopup();
-
     await checkoutPage.printOrderHash();
-
     console.log('✅ All steps complete. Browser closing.');
-    await page.waitForTimeout(2000);
   });
 });
 

@@ -1,14 +1,5 @@
 const { HomePage } = require('./HomePage');
 
-/**
- * RugsHomePage — owns all Rugs & Mats locators and navigation methods.
- * Extends the shared HomePage base (CONFIG, open(), _navigate() engine).
- *
- * Usage in tests:
- *   const { RugsHomePage } = require('../pages/RugsHomePage');
- *   const homePage = new RugsHomePage(page);
- *   await homePage.navigateToRugsProduct();
- */
 class RugsHomePage extends HomePage {
   constructor(page) {
     super(page);
@@ -19,6 +10,7 @@ class RugsHomePage extends HomePage {
     // --- Rugs Category Locators ---
     this.categories = {
       HallwayRunners: page.getByText('Hallway Runners', { exact: true }),
+      Doormats: page.getByText('Doormats', { exact: true }),
     };
 
     // --- Rugs Product Locators ---
@@ -28,6 +20,12 @@ class RugsHomePage extends HomePage {
       roundRug: page.locator(`span:has-text("Round Rug")`),
       ovalRug: page.locator(`span:has-text("Oval Rug")`),
       RunnerLuxeGrain: page.getByRole('link', { name: 'Runner - Luxe Grain', exact: false }).first(),
+      runnerSilkenPlush: page.getByRole('link', { name: 'Runner - Silken Plush', exact: false }).first(),
+      runnerNatureLoom: page.getByRole('link', { name: 'Runner - Nature Loom', exact: false }).first(),
+      rectangleDoormat: page.getByRole('link', { name: 'Rectangle Doormat', exact: false }).first(),
+      squareDoormat: page.getByRole('link', { name: 'Square Doormat', exact: false }).first(),
+      roundDoormat: page.getByRole('link', { name: 'Round Doormat', exact: false }).first(),
+      ovalDoormat: page.getByRole('link', { name: 'Oval Doormat', exact: false }).first(),
     };
   }
 
@@ -71,14 +69,69 @@ class RugsHomePage extends HomePage {
     });
   }
 
-  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Luxe Grain */
-  async navigateToHallwayRunnersProduct() {
+  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Silken Plush */
+  async navigateToRunnerSilkenPlushProduct() {
     await this._navigate({
       menu: this.menu,
       category: this.categories.HallwayRunners,
-      product: this.products.RunnerLuxeGrain,
-      urlPattern: /runner-p|hallway-runners-p|rugs-p/i,
-      name: "Hallway Runners"
+      product: this.products.runnerSilkenPlush,
+      urlPattern: /runner-p|silken-plush-p/i,
+      name: "Runner - Silken Plush"
+    });
+  }
+
+  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Nature Loom */
+  async navigateToRunnerNatureLoomProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HallwayRunners,
+      product: this.products.runnerNatureLoom,
+      urlPattern: /nature-loom-p/i,
+      name: "Runner - Nature Loom"
+    });
+  }
+
+  async navigateToRoundDoormatProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.Doormats,
+      product: this.products.roundDoormat,
+      urlPattern: /doormat-p/i,
+      name: "Runner - Nature Loom"
+    });
+  }
+
+
+  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Nature Loom */
+  async navigateToSquareDoormatProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.Doormats,
+      product: this.products.squareDoormat,
+      urlPattern: /doormat-p/i,
+      name: "Square Doormat"
+    });
+  }
+
+  /** Navigate to: Rugs & Mats → Doormats → Oval Doormat */
+  async navigateToOvalDoormatProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.Doormats,
+      product: this.products.ovalDoormat,
+      urlPattern: /doormat-p/i,
+      name: "Oval Doormat"
+    });
+  }
+
+  /** Navigate to: Rugs & Mats → Doormats → Rectangle Doormat */
+  async navigateToRectangleDoormatProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.Doormats,
+      product: this.products.rectangleDoormat,
+      urlPattern: /doormat-p/i,
+      name: "Rectangle Doormat"
     });
   }
 }
