@@ -14,6 +14,9 @@ class WallArtsHomePage extends HomePage {
       PhotoAndArtPrints: page.locator('a[title="View Photo And Art Prints"]'),
       PosterPrints: page.locator('a[title="View Poster Prints"]'),
       CanvasPrints: page.locator(`span:has-text("Canvas Prints")`),
+      HangingCanvas: page.locator('span:has-text("Hanging Canvas")'),
+      WoodFrame: page.locator('a[title="View Wood Frame"]'),
+      FloatingFrame: page.locator('a[title="View Floating Frame"]'),
       //RolledCanvasPrint: page.locator('a[title="View Rolled Canvas Prints"]'),
       //StretchedCanvasPrint: page.locator('a[title="View Stretched Canvas Prints"]'),
       
@@ -32,6 +35,8 @@ class WallArtsHomePage extends HomePage {
       FramedPhotoPrint:page.getByRole('link', { name: 'Framed Photo Print', exact: false }).first(),
       PosterPrint:page.locator('.mega-menu-middle-col span.product-text', { hasText: 'Poster Print' }),
       RolledCanvasPrint:page.getByRole('link', { name: 'Rolled Canvas Print', exact: false }).first(),
+      CharcoalWoodFrame:page.getByRole('link', { name: 'Charcoal Wood Frame', exact: false }).first(),
+      NaturalWoodFrame:page.getByRole('link', { name: 'Natural Wood Frame', exact: false }).first(),
 
 
     };
@@ -154,6 +159,50 @@ async navigateToPhotoPrintProduct() {
       name: "Rolled Canvas Print"
     });
   }
+
+
+  async navigateToCharcoalWoodFrameProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HangingCanvas,
+      product: this.products.CharcoalWoodFrame  ,
+     // urlPattern: /poster-print-p/i,
+      name: "Charcoal Wood Frame"
+    });
+  }
+
+  async navigateToNaturalWoodFrameProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HangingCanvas,
+      product: this.products.NaturalWoodFrame,
+     // urlPattern: /poster-print-p/i,
+      name: "Natural Wood Frame"
+    });
+  }
+
+  async navigateToWoodFrameProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HangingCanvas,
+      product: this.products.WoodFrame,
+     // urlPattern: /poster-print-p/i,
+      name: "Wood Frame"
+    });
+  }
+
+  async navigateToFloatingFrameProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HangingCanvas,
+      product: this.products.FloatingFrame,
+     // urlPattern: /poster-print-p/i,
+      name: "Floating Frame"
+    });
+  }
+
+
+
 
 
 
