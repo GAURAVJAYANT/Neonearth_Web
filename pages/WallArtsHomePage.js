@@ -14,6 +14,7 @@ class WallArtsHomePage extends HomePage {
       PhotoAndArtPrints: page.locator('a[title="View Photo And Art Prints"]'),
       PosterPrints: page.locator('a[title="View Poster Prints"]'),
       CanvasPrints: page.locator(`span:has-text("Canvas Prints")`),
+      AcrylicPrints: page.locator('a[title="View Acrylic Prints"]'),
       //RolledCanvasPrint: page.locator('a[title="View Rolled Canvas Prints"]'),
       //StretchedCanvasPrint: page.locator('a[title="View Stretched Canvas Prints"]'),
       
@@ -30,8 +31,14 @@ class WallArtsHomePage extends HomePage {
       PhotoPrint:page.getByRole('link', { name: 'Photo Print', exact: false }).first(),
       MountedPhotoPrint:page.getByRole('link', { name: 'Mounted Photo Print', exact: false }).first(),
       FramedPhotoPrint:page.getByRole('link', { name: 'Framed Photo Print', exact: false }).first(),
-      PosterPrint:page.locator('.mega-menu-middle-col').getByRole('link', { name: 'Poster Print' }),
+      PosterPrint:page.locator('.mega-menu-middle-col').getByRole('link', { name: 'Poster Print' }).first(),
       RolledCanvasPrint:page.getByRole('link', { name: 'Rolled Canvas Print', exact: false }).first(),
+      MountedCanvasPrint:page.getByRole('link', { name: 'Mounted Canvas Print', exact: false }).first(),
+      FramedCanvasPrint:page.getByRole('link', { name: 'Framed Canvas Print', exact: false }).first(),
+      GalleryWrappedCanvasPrint:page.getByText('Gallery Wraped Canvas Print', { exact: false }).first(),
+      AcrylicPrintPremiumMetallic:page.getByRole('link', { name: 'Acrylic Print - Premium Metallic', exact: false }).first(),
+      AcrylicPrintPremiumGlossy:page.locator(`span:has-text("Acrylic Print - Premium Gloss")`),
+      //
 
 
     };
@@ -154,6 +161,58 @@ async navigateToPhotoPrintProduct() {
       name: "Rolled Canvas Print"
     });
   }
+
+
+  async navigateToMountedCanvasPrintProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.CanvasPrints,
+      product: this.products.MountedCanvasPrint  ,
+     // urlPattern: /poster-print-p/i,
+      name: "Mounted Canvas Print"
+    });
+  }
+
+  async navigateToFramedCanvasPrint() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.CanvasPrints,
+      product: this.products.FramedCanvasPrint  ,
+     // urlPattern: /poster-print-p/i,
+      name: "Framed Canvas Print"
+    });
+  }
+
+  async navigateToGalleryWrappedCanvasPrint() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.CanvasPrints,
+      product: this.products.GalleryWrappedCanvasPrint  ,
+     // urlPattern: /poster-print-p/i,
+      name: "Gallery Wrapped Canvas Print"
+    });
+  }
+
+  async navigateToAcrylicPrints() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.AcrylicPrints,
+      product: this.products.AcrylicPrintPremiumMetallic,
+     // urlPattern: /poster-print-p/i,
+      name: "Acrylic Print - Premium Metallic"
+    });
+  }
+
+  async navigateToAcrylicPrintPremiumGlossy() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.AcrylicPrints,
+      product: this.products.AcrylicPrintPremiumGlossy,
+     // urlPattern: /poster-print-p/i,
+      name: "Acrylic Print - Premium Glossy"
+    });
+  }
+
 
 
 
