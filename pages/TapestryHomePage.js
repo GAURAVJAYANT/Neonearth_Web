@@ -1,5 +1,5 @@
 const { HomePage } = require('./HomePage');
-
+ 
 /**
  * TapestryHomePage — owns all Tapestry locators and navigation methods.
  * Extends the shared HomePage base (CONFIG, open(), _navigate() engine).
@@ -12,17 +12,17 @@ const { HomePage } = require('./HomePage');
 class TapestryHomePage extends HomePage {
   constructor(page) {
     super(page);
-
+ 
     // --- Tapestry Menu Locator ---
     this.menu = page.locator('nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Tapestries"))');
-
+ 
     // --- Tapestry Category Locators ---
     this.categories = {
       panoramic: page.getByRole('link', { name: 'Custom Panoramic Tapestries', exact: false }).first(),
       triangular: page.getByRole('link', { name: 'Custom Triangular Tapestries', exact: false }).first(),
       hanging: page.getByRole('link', { name: 'Custom Hanging Tapestries', exact: false }).first(),
     };
-
+ 
     // --- Tapestry Product Locators ---
     this.products = {
       tapestryVelvet: page.getByRole('link', { name: 'Wall Tapestry - Velvet Satin', exact: false }).first(),
@@ -35,7 +35,7 @@ class TapestryHomePage extends HomePage {
       hangingWeave: page.getByRole('link', { name: 'Hanging Tapestry - Weave Loom', exact: false }).first(),
     };
   }
-
+ 
   /** Navigate to: Tapestries → Wall Tapestry - Velvet Satin */
   async navigateToProduct() {
     await this._navigate({
@@ -45,7 +45,7 @@ class TapestryHomePage extends HomePage {
       name: "Tapestry - Velvet Satin"
     });
   }
-
+ 
   /** Navigate to: Tapestries → Wall Tapestry - Weave Loom */
   async navigateToWeaveLoomProduct() {
     await this._navigate({
@@ -55,7 +55,7 @@ class TapestryHomePage extends HomePage {
       name: "Tapestry - Weave Loom"
     });
   }
-
+ 
   /** Navigate to: Tapestries → Custom Panoramic Tapestries → Velvet Satin */
   async navigateToPanoramicTapestryProduct() {
     await this._navigate({
@@ -66,7 +66,7 @@ class TapestryHomePage extends HomePage {
       name: "Panoramic Tapestry - Velvet Satin"
     });
   }
-
+ 
   /** Navigate to: Tapestries → Custom Panoramic Tapestries → Weave Loom */
   async navigateToPanoramicWeaveLoomProduct() {
     await this._navigate({
@@ -77,7 +77,7 @@ class TapestryHomePage extends HomePage {
       name: "Panoramic Tapestry - Weave Loom"
     });
   }
-
+ 
   /** Navigate to: Tapestries → Custom Triangular Tapestries → Velvet Satin */
   async navigateToTriangularTapestryProduct() {
     await this._navigate({
@@ -88,7 +88,7 @@ class TapestryHomePage extends HomePage {
       name: "Triangular Tapestry - Velvet Satin"
     });
   }
-
+ 
   /** Navigate to: Tapestries → Custom Triangular Tapestries → Weave Loom */
   async navigateToTriangularWeaveLoomProduct() {
     await this._navigate({
@@ -99,7 +99,7 @@ class TapestryHomePage extends HomePage {
       name: "Triangular Tapestry - Weave Loom"
     });
   }
-
+ 
   /** Navigate to: Tapestries → Custom Hanging Tapestries → Velvet Satin */
   async navigateToHangingTapestryProduct() {
     await this._navigate({
@@ -110,7 +110,7 @@ class TapestryHomePage extends HomePage {
       name: "Hanging Tapestry - Velvet Satin"
     });
   }
-
+ 
   /** Navigate to: Tapestries → Custom Hanging Tapestries → Weave Loom */
   async navigateToHangingWeaveLoomProduct() {
     await this._navigate({
@@ -122,5 +122,5 @@ class TapestryHomePage extends HomePage {
     });
   }
 }
-
+ 
 module.exports = { TapestryHomePage };

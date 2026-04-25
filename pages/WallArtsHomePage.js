@@ -36,18 +36,14 @@ class WallArtsHomePage extends HomePage {
       FramedPhotoPrint:page.getByRole('link', { name: 'Framed Photo Print', exact: false }).first(),
       PosterPrint:page.locator('.mega-menu-middle-col').getByRole('link', { name: 'Poster Print' }).first(),
       RolledCanvasPrint:page.getByRole('link', { name: 'Rolled Canvas Print', exact: false }).first(),
-<<<<<<< HEAD
       MountedCanvasPrint:page.getByRole('link', { name: 'Mounted Canvas Print', exact: false }).first(),
       FramedCanvasPrint:page.getByRole('link', { name: 'Framed Canvas Print', exact: false }).first(),
       GalleryWrappedCanvasPrint:page.getByText('Gallery Wraped Canvas Print', { exact: false }).first(),
       AcrylicPrintPremiumMetallic:page.getByRole('link', { name: 'Acrylic Print - Premium Metallic', exact: false }).first(),
       AcrylicPrintPremiumGlossy:page.locator(`span:has-text("Acrylic Print - Premium Gloss")`),
-      //
-=======
       CharcoalWoodFrame:page.getByRole('link', { name: 'Charcoal Wood Frame', exact: false }).first(),
       NaturalWoodFrame:page.getByRole('link', { name: 'Natural Wood Frame', exact: false }).first(),
->>>>>>> main
-
+//page.getByRole('link', { name: 'Drapes - Flat Panel', exact: false }).first(),
 
     };
   }
@@ -255,9 +251,8 @@ async navigateToPhotoPrintProduct() {
       menu: this.menu,
       category: this.categories.HangingCanvas,
       product: this.products.FloatingFrame,
-     // urlPattern: /poster-print-p/i,
-      name: "Floating Frame"
-
+    });
+  }
 
 }
 
