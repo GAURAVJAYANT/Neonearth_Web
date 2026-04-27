@@ -2,6 +2,9 @@ const { expect } = require('@playwright/test');
 const { SmartPage } = require('./SmartPage');
 const { measurePagePerformance, savePerformanceReport } = require('../utils/helpers/performanceHelper');
 
+const BASE_URL = process.env.BASE_URL || 'https://ne.signsigma.com/';
+const IS_PRODUCTION = BASE_URL.includes('www.neonearth.com');
+
 class CheckoutPage extends SmartPage {
   constructor(page) {
     super(page);
@@ -47,6 +50,10 @@ class CheckoutPage extends SmartPage {
   }
 
   async fillStripePayment({ cvc = '123' }) {
+    if (IS_PRODUCTION) {
+      console.log('🛡️  Production detected: Skipping payment entry.');
+      return;
+    }
     const cvcString = String(cvc);
     console.log(`Filling CVC for saved card: ${cvcString}`);
 
@@ -93,6 +100,10 @@ class CheckoutPage extends SmartPage {
   }
 
   async placeOrder() {
+    if (IS_PRODUCTION) {
+      console.log('🛡️  Production detected: Order placement blocked. Marking test as complete.');
+      return;
+    }
     console.log('Step: Finalizing Checkout...');
 
     // Phase 0: Stabilize — wait for checkout form to be fully idle
@@ -167,6 +178,7 @@ class CheckoutPage extends SmartPage {
   }
 
   async verifySuccess() {
+    if (IS_PRODUCTION) return;
     console.log('Step: Verifying Order Success...');
     
     // Ensure loaders are gone and success content has arrived
@@ -188,6 +200,7 @@ class CheckoutPage extends SmartPage {
   }
 
   async printOrderHash() {
+    if (IS_PRODUCTION) return;
     console.log('Step 13: Retrieving and printing Order Number...');
     
     // Scavenging locators (from specific to generic)
