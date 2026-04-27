@@ -1,3 +1,9 @@
+// ── Environment detection ────────────────────────────────────────────────────
+// Read BASE_URL from .env. If it contains the production domain,
+// the test will stop safely after reaching the checkout page.
+const BASE_URL = process.env.BASE_URL || 'https://ne.signsigma.com/';
+const IS_PRODUCTION = BASE_URL.includes('www.neonearth.com');
+
 async function completeFlow({
   page,
   homePage,
@@ -29,6 +35,20 @@ async function completeFlow({
   await cartPage.secureCheckout();
   await checkoutPage.waitForCheckoutToLoad();
 
+  // ── 🛡️ PRODUCTION SAFETY GUARD ──────────────────────────────────────────
+  // On production (www.neonearth.com) we MUST NOT place a real order.
+  // The test is considered PASSED once the checkout page loads successfully.
+  if (IS_PRODUCTION) {
+    console.log('');
+    console.log('🛡️  PRODUCTION ENV DETECTED — Order placement is BLOCKED.');
+    console.log(`✅  Checkout page reached and verified for: ${item.category} → ${item.product}`);
+    console.log('    Test marked as PASSED. No order was placed.');
+    console.log('');
+    return; // Exit cleanly — Playwright marks the test as PASSED
+  }
+  // ── END SAFETY GUARD ────────────────────────────────────────────────────
+
+  // Staging only: complete the full payment flow
   await checkoutPage.fillStripePayment({ cvc: '123' });
   await checkoutPage.placeOrder();
 
@@ -37,4 +57,4 @@ async function completeFlow({
   console.log(`✅ Done: ${item.category} → ${item.product}`);
 }
 
-module.exports = { completeFlow };
+module.exports = { completeFlow };
