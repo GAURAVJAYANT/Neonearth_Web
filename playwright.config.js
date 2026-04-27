@@ -30,7 +30,7 @@ module.exports = defineConfig({
     }],
     ['json', { outputFile: 'test-results/report.json' }],
     ['./allure-open-reporter.js'],
-    ['./AIReporter.js'],
+    // ['./AIReporter.js'],
   ],
 
   use: {
