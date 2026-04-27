@@ -43,7 +43,7 @@ module.exports = [
     category: 'Indoor Roller Shades',
     products: [
       'Mesh',
-      'Blackout'
+      'Roller Shade - Blackout'
     ]
   }
 ];

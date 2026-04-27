@@ -13,11 +13,13 @@ async function completeFlow({
   await homePage.navigate(item.category, item.product);
 
   // PDP
- // await productPage.personalizeDesign();
- // await productPage.uploadImage('data/test_image.png');
+  await productPage.personalizeDesign();
+  await productPage.uploadImage('data/test_image.png');
 
-  // Add to cart
-  await productPage.addToCart();
+  // Add to cart (unless explicitly skipped)
+  if (!item.skipAddToCart) {
+    await productPage.addToCart();
+  }
 
   // Cart
   await cartPage.goToCart();

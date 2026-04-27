@@ -49,6 +49,11 @@ class ProductPage extends SmartPage {
     await this.page.waitForTimeout(10000); 
   }
 
+  async addToCart() {
+    console.log('Step: Adding product to cart (including preview)...');
+    await this.previewAndAddToCart();
+  }
+
   async previewAndAddToCart() {
     await this.smartClick(this.previewBtn, { timeout: 150000 });
     console.log('✅ Clicked preview button');

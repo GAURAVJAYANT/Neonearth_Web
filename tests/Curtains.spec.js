@@ -1,10 +1,11 @@
-// tests/Curtain.spec.js
+// tests/Curtains.spec.js
 
 const { test } = require('@playwright/test');
 const curtainsData = require('../data/curtainsData');
 
 const { CurtainsHomePage } = require('../pages/CurtainsHomePage');
-const { CurtainsPDP } = require('../pages/CurtainsPDP');
+//const { CurtainsPDP } = require('../pages/CurtainsPDP');
+const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 
@@ -13,35 +14,47 @@ const { completeFlow } = require('../flows/completeFlow');
 test.describe('Curtains E2E', () => {
   test.setTimeout(600000);
 
-  // Run all curtain categories one by one
-  for (const cat of curtainsData) {
-    for (const product of cat.products) {
-      test(
-        `Curtain - ${cat.category} → ${product}`,
-        async ({ page }) => {
-          console.log(
-            `Running: ${cat.category} → ${product}`
-          );
 
-          await completeFlow({
-            page,
+  curtainsData
+    .filter(cat => !cat.category.includes('Custom Drapes'))
+    .forEach((cat) => {
+      cat.products.forEach((product) => {
+        test(
+          `Curtain - ${cat.category} → ${product}`,
+          async ({ page }) => {
+            console.log(
+              `Running: ${cat.category} → ${product}`
+            );
 
-            homePage: new CurtainsHomePage(page),
-            productPage: new CurtainsPDP(page),
-            cartPage: new CartPage(page),
-            checkoutPage: new CheckoutPage(page),
+            let productPage;
 
-            item: {
-              category: cat.category,
-              product: product
+            // Only Custom Drapes → CurtainsPDP
+            if (cat.category.includes('Custom Drapes')) {
+              productPage = new CurtainsPDP(page);
             }
-          });
 
-          console.log(
-            `✅ Completed: ${cat.category} → ${product}`
-          );
-        }
-      );
-    }
-  }
+            // Other categories → ProductPage
+            else {
+              productPage = new ProductPage(page);
+            }
+
+            await completeFlow({
+              page,
+              homePage: new CurtainsHomePage(page),
+              productPage,
+              cartPage: new CartPage(page),
+              checkoutPage: new CheckoutPage(page),
+              item: {
+                category: cat.category,
+                product
+              }
+            });
+
+            console.log(
+              `✅ Completed: ${cat.category} → ${product}`
+            );
+          }
+        );
+      });
+    });
 });
