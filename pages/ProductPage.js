@@ -37,7 +37,7 @@ class ProductPage extends SmartPage {
     await this.uploadFileText.waitFor({ state: 'visible', timeout: 50000 });
 
     const [fileChooser] = await Promise.all([
-      this.page.waitForEvent('filechooser'),
+      this.page.waitForEvent('filechooser', { timeout: 60000 }), // ← Fail fast: if file chooser doesn't open within 60s, throw & let Playwright retry
       this.uploadFileText.click({ force: true }), // Using force click to prevent interception flakiness
     ]);
 
