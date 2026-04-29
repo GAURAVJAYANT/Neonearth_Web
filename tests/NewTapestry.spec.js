@@ -16,13 +16,18 @@ test.describe('New Tapestry E2E', () => {
   // ── WARMUP TEST ──
   // Ensures the mega menu scripts are initialized before running real tests
   test('Warmup - Initialize Mega Menu', async ({ page }) => {
-    console.log('🚀 Running warmup to initialize mega menu...');
+    console.log('🚀 Running Robust Warmup to initialize mega menu...');
     const homePage = new NewTapestryHomePage(page);
     await homePage.open();
-    await homePage.menu.waitFor({ state: 'visible' });
+    
+    // Step 1: Wait for and hover the main menu item
+    await homePage.menu.waitFor({ state: 'visible', timeout: 20000 });
     await homePage.menu.hover();
-    await page.waitForTimeout(3000);
-    console.log('✅ Warmup complete.');
+    await page.waitForTimeout(2000); // Give JS time to initialize
+    
+    // Step 2: Ensure stability
+    await homePage.waitForStability(homePage.menu);
+    console.log('✅ Warmup complete: Mega Menu is ready.');
   });
 
   // Run all Tapestry categories + products

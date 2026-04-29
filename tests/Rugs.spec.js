@@ -4,7 +4,17 @@ const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 
-test('E2E Journey - Rugs & Mats - Area Rugs', async ({ page }) => {
+test.describe('Rugs E2E Journeys', () => {
+  test('Warmup - Initialize browser and menu', async ({ page }) => {
+    const homePage = new RugsHomePage(page);
+    await homePage.open();
+    await homePage.menu.waitFor({ state: 'visible', timeout: 15000 });
+    await homePage.menu.hover();
+    await page.waitForTimeout(2000);
+    console.log('🔥 Warmup complete: Menu initialized.');
+  });
+
+  test('E2E Journey - Rugs & Mats - Area Rugs', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
@@ -633,4 +643,4 @@ test('E2E Journey - Oval Doormat', async ({ page }) => {
   await cartPage.dismissPopup();
   await checkoutPage.printOrderHash();
   console.log('✅ All steps complete. Browser closing.');
-});
+});});

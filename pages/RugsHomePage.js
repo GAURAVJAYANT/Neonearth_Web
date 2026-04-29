@@ -29,111 +29,27 @@ class RugsHomePage extends HomePage {
     };
   }
 
-  /** Navigate to: Rugs & Mats → Rectangle Rug */
-  async navigateToRugsProduct() {
-    await this._navigate({
+  /** Common navigation method for Rugs */
+  async navigate(categoryName, productName, urlPattern = /rug-p|doormat-p|runner-p/i) {
+    await this.smartMegaMenuNavigate({
       menu: this.menu,
-      product: this.products.rectangleRug,
-      urlPattern: /rug-p/i,
-      name: "Rectangle Rug"
+      categoryName,
+      productName,
+      urlPattern
     });
   }
 
-  /** Navigate to: Rugs & Mats → Square Rug */
-  async navigateToSquareRugProduct() {
-    await this._navigate({
-      menu: this.menu,
-      product: this.products.squareRug,
-      urlPattern: /rug-p/i,
-      name: "Square Rug"
-    });
-  }
-
-  /** Navigate to: Rugs & Mats → Round Rug */
-  async navigateToRoundRugProduct() {
-    await this._navigate({
-      menu: this.menu,
-      product: this.products.roundRug,
-      urlPattern: /rug-p/i,
-      name: "Round Rug"
-    });
-  }
-
-  /** Navigate to: Rugs & Mats → Oval Rug */
-  async navigateToOvalRugProduct() {
-    await this._navigate({
-      menu: this.menu,
-      product: this.products.ovalRug,
-      urlPattern: /rug-p/i,
-      name: "Oval Rug"
-    });
-  }
-
-  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Silken Plush */
-  async navigateToRunnerSilkenPlushProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.HallwayRunners,
-      product: this.products.runnerSilkenPlush,
-      urlPattern: /runner-p|silken-plush-p/i,
-      name: "Runner - Silken Plush"
-    });
-  }
-
-  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Nature Loom */
-  async navigateToRunnerNatureLoomProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.HallwayRunners,
-      product: this.products.runnerNatureLoom,
-      urlPattern: /nature-loom-p/i,
-      name: "Runner - Nature Loom"
-    });
-  }
-
-  async navigateToRoundDoormatProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.Doormats,
-      product: this.products.roundDoormat,
-      urlPattern: /doormat-p/i,
-      name: "Runner - Nature Loom"
-    });
-  }
-
-
-  /** Navigate to: Rugs & Mats → Hallway Runners → Runner - Nature Loom */
-  async navigateToSquareDoormatProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.Doormats,
-      product: this.products.squareDoormat,
-      urlPattern: /doormat-p/i,
-      name: "Square Doormat"
-    });
-  }
-
-  /** Navigate to: Rugs & Mats → Doormats → Oval Doormat */
-  async navigateToOvalDoormatProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.Doormats,
-      product: this.products.ovalDoormat,
-      urlPattern: /doormat-p/i,
-      name: "Oval Doormat"
-    });
-  }
-
-  /** Navigate to: Rugs & Mats → Doormats → Rectangle Doormat */
-  async navigateToRectangleDoormatProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.Doormats,
-      product: this.products.rectangleDoormat,
-      urlPattern: /doormat-p/i,
-      name: "Rectangle Doormat"
-    });
-  }
+  /** Legacy wrappers for backward compatibility if needed */
+  async navigateToRugsProduct() { await this.navigate(null, "Rectangle Rug"); }
+  async navigateToSquareRugProduct() { await this.navigate(null, "Square Rug"); }
+  async navigateToRoundRugProduct() { await this.navigate(null, "Round Rug"); }
+  async navigateToOvalRugProduct() { await this.navigate(null, "Oval Rug"); }
+  async navigateToRunnerSilkenPlushProduct() { await this.navigate("Hallway Runners", "Runner - Silken Plush"); }
+  async navigateToRunnerNatureLoomProduct() { await this.navigate("Hallway Runners", "Runner - Nature Loom"); }
+  async navigateToRoundDoormatProduct() { await this.navigate("Doormats", "Round Doormat"); }
+  async navigateToSquareDoormatProduct() { await this.navigate("Doormats", "Square Doormat"); }
+  async navigateToOvalDoormatProduct() { await this.navigate("Doormats", "Oval Doormat"); }
+  async navigateToRectangleDoormatProduct() { await this.navigate("Doormats", "Rectangle Doormat"); }
 }
 
 module.exports = { RugsHomePage };

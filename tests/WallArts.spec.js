@@ -5,7 +5,17 @@ const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 const { WallArtsHomePage } = require('../pages/WallArtsHomePage');
 
-test('E2E Journey - Wall Arts - Custom Wallpaper', async ({ page }) => {
+test.describe('Wall Arts E2E Journeys', () => {
+  test('Warmup - Initialize browser and menu', async ({ page }) => {
+    const homePage = new WallArtsHomePage(page);
+    await homePage.open();
+    await homePage.menu.waitFor({ state: 'visible', timeout: 15000 });
+    await homePage.menu.hover();
+    await page.waitForTimeout(2000);
+    console.log('🔥 Warmup complete: Menu initialized.');
+  });
+
+  test('E2E Journey - Wall Arts - Custom Wallpaper', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
@@ -995,3 +1005,4 @@ test('E2E Journey-Acrylic Print - Premium Gloss', async ({ page }) => {
 
 
 
+});

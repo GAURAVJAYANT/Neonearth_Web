@@ -125,12 +125,12 @@ class HomePage extends SmartPage {
    * High-Stability Mega Menu Navigation Engine.
    * Handles the 'Active Wait & Category Re-hover' logic to ensure sub-menus always load.
    */
-  async smartMegaMenuNavigate({ menu, categoryName, productName }) {
+  async smartMegaMenuNavigate({ menu, categoryName = null, productName, urlPattern = null }) {
     const searchName = productName.includes('-')
       ? productName.split('-').pop().trim()
       : productName;
 
-    console.log(`🚀 Starting Smart Navigation: ${categoryName} → ${searchName}`);
+    console.log(`🚀 Starting Smart Navigation: ${categoryName ? categoryName + ' → ' : ''}${searchName}`);
 
     // Step 1: Wait for and hover the top-level menu
     await menu.waitFor({ state: 'visible', timeout: 15000 });
@@ -138,42 +138,47 @@ class HomePage extends SmartPage {
     await this.page.waitForTimeout(1000);
     await this.waitForStability(menu);
 
-    // Step 2: Define Category and Product locators
-    const category = this.page.getByRole('link', {
-      name: categoryName,
-      exact: false
-    }).first();
+    // Step 2: Handle Category if provided
+    if (categoryName) {
+      const category = this.page.getByRole('link', {
+        name: categoryName,
+        exact: false
+      }).first();
 
+      await category.waitFor({ state: 'visible', timeout: 15000 });
+      await this.waitForStability(category);
+      await category.hover({ force: true });
+      console.log(`Hovered category: ${categoryName}`);
+      await this.page.waitForTimeout(1500); // Wait for sub-menu to expand
+    }
+
+    // Step 3: Define Product locator
     const product = this.page.getByRole('link', {
       name: searchName,
       exact: false
     }).first();
 
-    // Step 3: Hover the category
-    await category.waitFor({ state: 'visible', timeout: 15000 });
-    await this.waitForStability(category);
-    await category.scrollIntoViewIfNeeded();
-    await category.hover({ force: true });
-    console.log(`Hovered category: ${categoryName}`);
-
-    // ── Step 4: Robust Sub-Menu Wait & Retry Loop ─────────────────────────────
-    // We check if the product is visible. If not, we re-hover the category.
+    // Step 4: Robust Product Wait & Retry Loop
     let isProductReady = false;
     for (let i = 0; i < 3; i++) {
       try {
         await product.waitFor({ state: 'visible', timeout: 5000 });
         isProductReady = true;
-        console.log(`✅ Product sub-menu visible on attempt ${i + 1}`);
+        console.log(`✅ Product visible on attempt ${i + 1}`);
         break;
       } catch (e) {
-        console.log(`⚠️ Product not visible (attempt ${i + 1}), re-hovering category: ${categoryName}`);
-        await category.hover({ force: true });
+        console.log(`⚠️ Product not visible (attempt ${i + 1}), re-triggering hovers...`);
+        await menu.hover();
+        if (categoryName) {
+           const category = this.page.getByRole('link', { name: categoryName, exact: false }).first();
+           await category.hover({ force: true });
+        }
         await this.page.waitForTimeout(2000);
       }
     }
 
     if (!isProductReady) {
-      throw new Error(`❌ Failed to load sub-menu product: ${searchName} after multiple category hovers.`);
+      throw new Error(`❌ Failed to load product: ${searchName} after multiple hover attempts.`);
     }
 
     // Step 5: Final Settle and Click
@@ -189,7 +194,12 @@ class HomePage extends SmartPage {
       await product.click({ force: true });
     }
 
-    console.log(`✅ Smart Navigated: ${categoryName} → ${searchName}`);
+    // Step 6: Verify URL if pattern provided
+    if (urlPattern) {
+      await this.page.waitForURL(urlPattern, { timeout: 30000 });
+    }
+
+    console.log(`✅ Smart Navigation Complete: ${searchName}`);
   }
 }
 
