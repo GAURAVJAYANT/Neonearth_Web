@@ -70,7 +70,7 @@ class SmartPage extends BasePage {
    * Waits for all loaders to disappear and STAY hidden for a period of time.
    * Useful for handling 'flickering' loaders during long processes (like Checkout).
    */
-  async waitForLoaderSilence(timeout = 300000, silenceDuration = 3000) {
+  async waitForLoaderSilence(timeout = 60000, silenceDuration = 3000) {
     const overlays = ['.loading-mask', '.spinner', '.overlay', '.ajax-loader', '.loader'];
     const startTime = Date.now();
     

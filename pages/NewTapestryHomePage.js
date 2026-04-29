@@ -1,13 +1,14 @@
-// pages/FabricsHomePage.js
+// pages/NewTapestryHomePage.js
 
 const { HomePage } = require('./HomePage');
 
-class FabricsHomePage extends HomePage {
+class NewTapestryHomePage extends HomePage {
   constructor(page) {
     super(page);
 
+    // Top-level Tapestries menu item
     this.menu = page.locator(
-      'nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Fabrics"))'
+      'nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Tapestries"))'
     );
   }
 
@@ -20,4 +21,4 @@ class FabricsHomePage extends HomePage {
   }
 }
 
-module.exports = { FabricsHomePage };
+module.exports = { NewTapestryHomePage };
