@@ -6,15 +6,6 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 const { WallArtsHomePage } = require('../pages/WallArtsHomePage');
 
 test.describe('Wall Arts E2E Journeys', () => {
-  test('Warmup - Initialize browser and menu', async ({ page }) => {
-    const homePage = new WallArtsHomePage(page);
-    await homePage.open();
-    await homePage.menu.waitFor({ state: 'visible', timeout: 15000 });
-    await homePage.menu.hover();
-    await page.waitForTimeout(2000);
-    console.log('🔥 Warmup complete: Menu initialized.');
-  });
-
   test('E2E Journey - Wall Arts - Custom Wallpaper', async ({ page }) => {
   test.setTimeout(600000);
   const homePage = new WallArtsHomePage(page);
@@ -661,7 +652,7 @@ test('E2E Journey-Wood Frame', async ({ page }) => {
 
   // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToCharcoalWoodFrameProduct();
-  //await expect(page).toHaveURL(/poster-print-p/i);
+  //await expect(page).toHaveURL(/poster-print-p/i);https://gbpcpsigns-my.sharepoint.com/:fl:/g/personal/abhishek_verma_groupbayport_com/IQCQWW7hPiJtRaCWIJY80bhYAdWnOsIEYlKiydlAHxBCEGs?nav=cz0lMkZwZXJzb25hbCUyRmFiaGlzaGVrX3Zlcm1hX2dyb3VwYmF5cG9ydF9jb20mZD1iIUFjMTVBUlJscGtTaVREOUNBYThxVXkzcjA3MTg5VGxGcjhval9IOTFTWGhodEtxZmhaWGdSSTVGdS1IckgzZl8mZj0wMVlKQlhMNkVRTEZYT0NQUkNOVkMyQkZSQVNZNk5ET0NZJmM9JTJGJmZsdWlkPTEmYT1UZWFtcyZwPSU0MGZsdWlkeCUyRmxvb3AtcGFnZS1jb250YWluZXI%3D
   await expect(productPage.personaliseBtn).toBeVisible();
   console.log('✅ PDP loaded - Charcoal Wood Frame');
 

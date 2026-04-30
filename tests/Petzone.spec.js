@@ -13,15 +13,6 @@ const { completeFlow } = require('../flows/completeFlow');
 test.describe('Pet Zone E2E', () => {
   test.setTimeout(600000);
 
-  test('Warmup - Initialize browser and menu', async ({ page }) => {
-    const homePage = new PetZoneHomePage(page);
-    await homePage.open();
-    await homePage.menu.waitFor({ state: 'visible', timeout: 15000 });
-    await homePage.menu.hover();
-    await page.waitForTimeout(2000);
-    console.log('🔥 Warmup complete: Menu initialized.');
-  });
-
   // Run all Pet Zone categories + products
   petZoneData.forEach((cat) => {
     cat.products.forEach((product) => {

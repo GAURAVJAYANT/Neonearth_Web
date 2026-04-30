@@ -16,7 +16,7 @@ class SmartPage extends BasePage {
   async waitForStability(locator, timeoutMs = 5000) {
     try {
       await locator.waitFor({ state: 'visible', timeout: timeoutMs });
-      
+
       let prevBox = await locator.boundingBox();
       let stableFor = 0;
       const interval = 100;
@@ -24,7 +24,7 @@ class SmartPage extends BasePage {
       while (stableFor < 300) { // Stable for 300ms
         await this.page.waitForTimeout(interval);
         const currentBox = await locator.boundingBox();
-        
+
         if (currentBox && prevBox && 
             currentBox.x === prevBox.x && 
             currentBox.y === prevBox.y && 
@@ -35,7 +35,7 @@ class SmartPage extends BasePage {
           stableFor = 0;
           prevBox = currentBox;
         }
-        
+
         if (stableFor >= 300) break;
       }
     } catch (e) {
@@ -54,7 +54,7 @@ class SmartPage extends BasePage {
       '.ajax-loader',
       '.loader'
     ];
-    
+
     for (const selector of overlays) {
       try {
         const locator = this.page.locator(selector).first();
@@ -70,10 +70,10 @@ class SmartPage extends BasePage {
    * Waits for all loaders to disappear and STAY hidden for a period of time.
    * Useful for handling 'flickering' loaders during long processes (like Checkout).
    */
-  async waitForLoaderSilence(timeout = 60000, silenceDuration = 3000) {
+  async waitForLoaderSilence(timeout = 300000, silenceDuration = 3000) {
     const overlays = ['.loading-mask', '.spinner', '.overlay', '.ajax-loader', '.loader'];
     const startTime = Date.now();
-    
+
     log(`  ⏳ Watching for loaders to settle (max ${timeout/1000}s)...`);
 
     while (Date.now() - startTime < timeout) {
@@ -132,7 +132,7 @@ class SmartPage extends BasePage {
     let lastError;
     const targetName = typeof target === 'string' ? target : 'Element';
     const selectorForHealing = typeof target === 'string' ? target : null;
-    
+
     // Stage 1: Robust Local Retries (Actionability Fix)
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
@@ -140,9 +140,9 @@ class SmartPage extends BasePage {
       } catch (error) {
         lastError = error;
         const msg = error.message.toLowerCase();
-        
+
         log(`  🔁 ${actionName} Attempt ${attempt} failed for [${targetName}]: ${error.message.split('\n')[0]}`);
-        
+
         if (msg.includes('intercepted') || msg.includes('visible') || msg.includes('enabled') || msg.includes('timeout')) {
           log(`  ⏳ Retrying in ${attempt}s...`);
           await this.waitForOverlays();
@@ -170,7 +170,7 @@ class SmartPage extends BasePage {
         }
       }
     }
-    
+
     throw lastError;
   }
 
@@ -179,15 +179,15 @@ class SmartPage extends BasePage {
    */
   async smartClick(target, options = {}) {
     const { force = false, timeout = 15000 } = options;
-    
+
     await this.smartAction(
       async (t, isRetry) => {
         const locator = this._getLocator(t).first();
-        
+
         // 1. Physical visibility & Stability
         await locator.waitFor({ state: 'visible', timeout });
         await this.waitForStability(locator);
-        
+
         // 2. Scroll & Adjust
         await locator.scrollIntoViewIfNeeded();
         if (isRetry) {

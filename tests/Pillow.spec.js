@@ -5,15 +5,6 @@ const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 
 test.describe('Pillow E2E Journeys', () => {
-  test('Warmup - Initialize browser and menu', async ({ page }) => {
-    const homePage = new PillowHomePage(page);
-    await homePage.open();
-    await homePage.menu.waitFor({ state: 'visible', timeout: 15000 });
-    await homePage.menu.hover();
-    await page.waitForTimeout(2000);
-    console.log('🔥 Warmup complete: Menu initialized.');
-  });
-
   test('E2E Journey - Pillows - Custom Square Throw Pillow', async ({ page }) => {
     test.setTimeout(600000);
     const homePage = new PillowHomePage(page);

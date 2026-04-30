@@ -1,13 +1,13 @@
 const { SmartPage } = require('./SmartPage');
 
 /**
- * HomePage — Pure base class.
- * Contains only shared configuration, the open() method, and the _navigate() engine.
- * All product-specific locators and navigation methods live in the specialized subclasses:
- *   - TapestryHomePage  (pages/TapestryHomePage.js)
- *   - PillowHomePage    (pages/PillowHomePage.js)
- *   - RugsHomePage      (pages/RugsHomePage.js)
- */
+* HomePage — Pure base class.
+* Contains only shared configuration, the open() method, and the _navigate() engine.
+* All product-specific locators and navigation methods live in the specialized subclasses:
+*   - TapestryHomePage  (pages/TapestryHomePage.js)
+*   - PillowHomePage    (pages/PillowHomePage.js)
+*   - RugsHomePage      (pages/RugsHomePage.js)
+*/
 class HomePage extends SmartPage {
   constructor(page) {
     super(page);
@@ -18,7 +18,7 @@ class HomePage extends SmartPage {
       WAIT_JITTER: 8000,
       WAIT_SUBMENU: 8000,
       WAIT_PDP_LOAD: 30000,
-      RETRIES: 3,
+      RETRIES: 2,
       TIMEOUT_VISIBLE: 15000
     };
   }
@@ -119,87 +119,6 @@ class HomePage extends SmartPage {
       await this.page.waitForURL(urlPattern, { timeout: this.CONFIG.WAIT_PDP_LOAD });
       console.log(`✨ Successfully navigated to ${name} PDP`);
     }
-  }
-
-  /**
-   * High-Stability Mega Menu Navigation Engine.
-   * Handles the 'Active Wait & Category Re-hover' logic to ensure sub-menus always load.
-   */
-  async smartMegaMenuNavigate({ menu, categoryName = null, productName, urlPattern = null }) {
-    const searchName = productName.includes('-')
-      ? productName.split('-').pop().trim()
-      : productName;
-
-    console.log(`🚀 Starting Smart Navigation: ${categoryName ? categoryName + ' → ' : ''}${searchName}`);
-
-    // Step 1: Wait for and hover the top-level menu
-    await menu.waitFor({ state: 'visible', timeout: 15000 });
-    await menu.hover();
-    await this.page.waitForTimeout(1000);
-    await this.waitForStability(menu);
-
-    // Step 2: Handle Category if provided
-    if (categoryName) {
-      const category = this.page.getByRole('link', {
-        name: categoryName,
-        exact: false
-      }).first();
-
-      await category.waitFor({ state: 'visible', timeout: 15000 });
-      await this.waitForStability(category);
-      await category.hover({ force: true });
-      console.log(`Hovered category: ${categoryName}`);
-      await this.page.waitForTimeout(1500); // Wait for sub-menu to expand
-    }
-
-    // Step 3: Define Product locator
-    const product = this.page.getByRole('link', {
-      name: searchName,
-      exact: false
-    }).first();
-
-    // Step 4: Robust Product Wait & Retry Loop
-    let isProductReady = false;
-    for (let i = 0; i < 3; i++) {
-      try {
-        await product.waitFor({ state: 'visible', timeout: 5000 });
-        isProductReady = true;
-        console.log(`✅ Product visible on attempt ${i + 1}`);
-        break;
-      } catch (e) {
-        console.log(`⚠️ Product not visible (attempt ${i + 1}), re-triggering hovers...`);
-        await menu.hover();
-        if (categoryName) {
-           const category = this.page.getByRole('link', { name: categoryName, exact: false }).first();
-           await category.hover({ force: true });
-        }
-        await this.page.waitForTimeout(2000);
-      }
-    }
-
-    if (!isProductReady) {
-      throw new Error(`❌ Failed to load product: ${searchName} after multiple hover attempts.`);
-    }
-
-    // Step 5: Final Settle and Click
-    await this.waitForStability(product);
-    await product.scrollIntoViewIfNeeded();
-    await this.page.waitForTimeout(1000);
-
-    console.log(`Clicking product: ${searchName}`);
-    try {
-      await product.click({ timeout: 10000 });
-    } catch (e) {
-      console.log(`⚠️ Standard click failed, trying force click...`);
-      await product.click({ force: true });
-    }
-
-    // Step 6: Verify URL if pattern provided
-    if (urlPattern) {
-      await this.page.waitForURL(urlPattern, { timeout: 30000 });
-    }
-
-    console.log(`✅ Smart Navigation Complete: ${searchName}`);
   }
 }
 

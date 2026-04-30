@@ -13,29 +13,86 @@ class CurtainsHomePage extends HomePage {
   }
 
   async navigate(categoryName, productName) {
-    // ----------------------------------
-    // Step 1 → Prepare Search Names
-    // ----------------------------------
-    let searchCategory = categoryName;
+    // Wait for Curtains menu
+    await this.menu.waitFor({
+      state: 'visible',
+      timeout: 15000
+    });
 
-    // Special handling for Sheer Curtains naming convention
-    if (categoryName.includes('Sheer')) {
-      searchCategory = 'Sheer Curtains Best ›';
+    // Step 1 → Open Curtains dropdown
+    await this.menu.hover();
+    await this.page.waitForTimeout(1000);
+    await this.waitForStability(this.menu);
+
+    // ----------------------------------
+    // Step 2 → Category Handling
+    // ----------------------------------
+
+    // Custom Drapes is usually default active
+    if (!categoryName.includes('Custom Drapes')) {
+      let category;
+
+      // Special handling for Sheer Curtains
+      if (categoryName.includes('Sheer')) {
+        category = this.page.getByRole('link', {
+          name: 'Sheer Curtains Best ›'
+        });
+      } else {
+        category = this.page.getByRole('link', {
+          name: categoryName,
+          exact: false
+        }).first();
+      }
+
+      await category.waitFor({
+        state: 'visible',
+        timeout: 15000
+      });
+      await this.waitForStability(category);
+
+      await category.scrollIntoViewIfNeeded();
+
+      // Only hover, no click
+      await category.hover({
+        force: true
+      });
+
+      // Wait for submenu products to refresh
+      await this.page.waitForTimeout(1500);
+      await this.waitForStability(category);
     }
 
     // ----------------------------------
-    // Step 2 → Execute Smart Navigation
+    // Step 3 → Product Selection
     // ----------------------------------
-    // If Custom Drapes is the category, we skip the category hover part 
-    // by passing null (the base class will handle it if we modify it slightly, 
-    // or we just use the logic as is).
-    
-    await this.smartMegaMenuNavigate({
-      menu: this.menu,
-      categoryName: searchCategory,
-      productName
+
+    const product = this.page.getByRole('link', {
+      name: productName,
+      exact: false
+    }).first();
+
+    await product.waitFor({
+      state: 'visible',
+      timeout: 15000
     });
+    await this.waitForStability(product);
+
+    await product.scrollIntoViewIfNeeded();
+    await this.page.waitForTimeout(1000);
+
+    try {
+      console.log(`🖱️ Attempting click on: ${productName}`);
+      await product.click({ timeout: 10000 });
+    } catch (e) {
+      console.log(`⚠️ Standard click failed for ${productName}, trying force click...`);
+      await product.click({ force: true });
+    }
+
+    console.log(
+      `Navigated: ${categoryName} → ${productName}`
+    );
   }
 }
 
-module.exports = { CurtainsHomePage };
+module.exports = { CurtainsHomePage };
+ 
