@@ -1,14 +1,14 @@
 const { HomePage } = require('./HomePage');
 
 /**
- * TapestryHomePage — owns all Tapestry locators and navigation methods.
- * Extends the shared HomePage base (CONFIG, open(), _navigate() engine).
- *
- * Usage in tests:
- *   const { TapestryHomePage } = require('../pages/TapestryHomePage');
- *   const homePage = new TapestryHomePage(page);
- *   await homePage.navigateToProduct();
- */
+* TapestryHomePage — owns all Tapestry locators and navigation methods.
+* Extends the shared HomePage base (CONFIG, open(), _navigate() engine).
+*
+* Usage in tests:
+*   const { TapestryHomePage } = require('../pages/TapestryHomePage');
+*   const homePage = new TapestryHomePage(page);
+*   await homePage.navigateToProduct();
+*/
 class TapestryHomePage extends HomePage {
   constructor(page) {
     super(page);
@@ -124,3 +124,4 @@ class TapestryHomePage extends HomePage {
 }
 
 module.exports = { TapestryHomePage };
+ 

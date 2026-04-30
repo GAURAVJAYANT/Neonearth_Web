@@ -1,13 +1,13 @@
 const { SmartPage } = require('./SmartPage');
 
 /**
- * HomePage — Pure base class.
- * Contains only shared configuration, the open() method, and the _navigate() engine.
- * All product-specific locators and navigation methods live in the specialized subclasses:
- *   - TapestryHomePage  (pages/TapestryHomePage.js)
- *   - PillowHomePage    (pages/PillowHomePage.js)
- *   - RugsHomePage      (pages/RugsHomePage.js)
- */
+* HomePage — Pure base class.
+* Contains only shared configuration, the open() method, and the _navigate() engine.
+* All product-specific locators and navigation methods live in the specialized subclasses:
+*   - TapestryHomePage  (pages/TapestryHomePage.js)
+*   - PillowHomePage    (pages/PillowHomePage.js)
+*   - RugsHomePage      (pages/RugsHomePage.js)
+*/
 class HomePage extends SmartPage {
   constructor(page) {
     super(page);

@@ -311,7 +311,7 @@ test('E2E Journey - Runner - Silken Plush', async ({ page }) => {
 
   // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToRunnerSilkenPlushProduct();
- // await expect(page).toHaveURL();
+// await expect(page).toHaveURL();
   await expect(productPage.personaliseBtn).toBeVisible();
   console.log('✅ PDP loaded - Runner Silken Plush');
 
@@ -368,7 +368,7 @@ test('E2E Journey - Runner - Nature Loom', async ({ page }) => {
 
   // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToRunnerNatureLoomProduct();
- // await expect(page).toHaveURL();
+// await expect(page).toHaveURL();
   await expect(productPage.personaliseBtn).toBeVisible();
   console.log('✅ PDP loaded - Runner Silken Plush');
 
@@ -425,7 +425,7 @@ test('E2E Journey - Rectangle Doormat', async ({ page }) => {
 
   // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToRectangleDoormatProduct();
- // await expect(page).toHaveURL();
+// await expect(page).toHaveURL();
   await expect(productPage.personaliseBtn).toBeVisible();
   console.log('✅ PDP loaded - Rectangle Doormat');
 
@@ -482,7 +482,7 @@ test('E2E Journey - Square Doormat', async ({ page }) => {
 
   // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToSquareDoormatProduct();
- // await expect(page).toHaveURL();
+// await expect(page).toHaveURL();
   await expect(productPage.personaliseBtn).toBeVisible();
   console.log('✅ PDP loaded - Square Doormat');
 
@@ -538,7 +538,7 @@ test('E2E Journey - Round Doormat', async ({ page }) => {
 
   // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToRoundDoormatProduct();
- // await expect(page).toHaveURL();
+// await expect(page).toHaveURL();
   await expect(productPage.personaliseBtn).toBeVisible();
   console.log('✅ PDP loaded - Round Doormat');
 
@@ -594,7 +594,7 @@ test('E2E Journey - Oval Doormat', async ({ page }) => {
 
   // ── Step 2: Navigate to PDP ────────────────────────────────────────
   await homePage.navigateToOvalDoormatProduct();
- // await expect(page).toHaveURL();
+// await expect(page).toHaveURL();
   await expect(productPage.personaliseBtn).toBeVisible();
   console.log('✅ PDP loaded - Oval Doormat');
 

@@ -10,6 +10,7 @@ class ProductPage extends SmartPage {
     this.personaliseBtn = page.locator('button, a').filter({ hasText: /Personali[sz]e this Design/i });
     this.uploadYourDesignBtn = page.getByRole('button', { name: /Upload Your Design/i });
     this.uploadFileText = page.getByText('Browse Files');
+    this.nextFrontSideBtn = page.getByRole('button', { name: 'Next: Front Side' });
     this.previewBtn = page.getByRole('button', { name: 'Preview' });
     this.addToCartBtn = page.getByRole('button', { name: /Add To Cart/i });
   }
@@ -37,7 +38,7 @@ class ProductPage extends SmartPage {
     await this.uploadFileText.waitFor({ state: 'visible', timeout: 50000 });
 
     const [fileChooser] = await Promise.all([
-      this.page.waitForEvent('filechooser'),
+      this.page.waitForEvent('filechooser', { timeout: 60000 }), // ← Fail fast: if file chooser doesn't open within 60s, throw & let Playwright retry
       this.uploadFileText.click({ force: true }), // Using force click to prevent interception flakiness
     ]);
 
@@ -49,7 +50,24 @@ class ProductPage extends SmartPage {
     await this.page.waitForTimeout(10000); 
   }
 
+  async addToCart() {
+    console.log('Step: Adding product to cart (including preview)...');
+    await this.previewAndAddToCart();
+  }
+
   async previewAndAddToCart() {
+    // ── Check for "Next" buttons (e.g., for Pet Zone multi-side products) ──
+    // We use a short wait (10s) because the button might appear after a slight delay
+    try {
+      await this.nextFrontSideBtn.waitFor({ state: 'visible', timeout: 10000 });
+      console.log('Step: Clicking "Next: Front Side" before preview');
+      await this.smartClick(this.nextFrontSideBtn);
+      await this.page.waitForTimeout(3000);
+    } catch (e) {
+      // Button did not appear within 10s, likely a single-sided product
+      console.log('  (No "Next: Front Side" button found, skipping)');
+    }
+
     await this.smartClick(this.previewBtn, { timeout: 150000 });
     console.log('✅ Clicked preview button');
     await this.page.waitForTimeout(8000);

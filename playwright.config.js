@@ -30,11 +30,13 @@ module.exports = defineConfig({
     }],
     ['json', { outputFile: 'test-results/report.json' }],
     ['./allure-open-reporter.js'],
-    ['./AIReporter.js'],
+    // ['./AIReporter.js'],
   ],
 
   use: {
     baseURL: process.env.BASE_URL || 'https://ne.signsigma.com/',
+    actionTimeout: 30 * 1000,
+    navigationTimeout: 60 * 1000,
     trace: 'retain-on-failure',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',

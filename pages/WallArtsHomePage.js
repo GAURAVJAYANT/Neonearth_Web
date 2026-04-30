@@ -15,9 +15,12 @@ class WallArtsHomePage extends HomePage {
       PosterPrints: page.locator('a[title="View Poster Prints"]'),
       CanvasPrints: page.locator(`span:has-text("Canvas Prints")`),
       AcrylicPrints: page.locator('a[title="View Acrylic Prints"]'),
+      HangingCanvas: page.locator('span:has-text("Hanging Canvas")'),
+      WoodFrame: page.locator('a[title="View Wood Frame"]'),
+      FloatingFrame: page.locator('a[title="View Floating Frame"]'),
       //RolledCanvasPrint: page.locator('a[title="View Rolled Canvas Prints"]'),
       //StretchedCanvasPrint: page.locator('a[title="View Stretched Canvas Prints"]'),
-      
+
     };
 
     // --- Wall Arts Product Locators ---
@@ -38,8 +41,9 @@ class WallArtsHomePage extends HomePage {
       GalleryWrappedCanvasPrint:page.getByText('Gallery Wraped Canvas Print', { exact: false }).first(),
       AcrylicPrintPremiumMetallic:page.getByRole('link', { name: 'Acrylic Print - Premium Metallic', exact: false }).first(),
       AcrylicPrintPremiumGlossy:page.locator(`span:has-text("Acrylic Print - Premium Gloss")`),
-      //
-
+      CharcoalWoodFrame:page.getByRole('link', { name: 'Charcoal Wood Frame', exact: false }).first(),
+      NaturalWoodFrame:page.getByRole('link', { name: 'Natural Wood Frame', exact: false }).first(),
+//page.getByRole('link', { name: 'Drapes - Flat Panel', exact: false }).first(),
 
     };
   }
@@ -65,9 +69,9 @@ class WallArtsHomePage extends HomePage {
       name: "Wallpaper Stone Grain"
     });
 
-    
+
   }
-  
+
 
   /** Navigate to: Wall Arts → Custom Wallpaper */
   async navigateToCustomWallpaperProduct() {
@@ -77,7 +81,7 @@ class WallArtsHomePage extends HomePage {
       urlPattern: /custom-wallpaper-p/i,
       name: "Custom Wallpaper"
     });
-    
+
   }
   /** Navigate to: Wall Arts → Custom Wallpaper */
   async navigateToWallMuralLuxeSmoothProduct() {
@@ -162,7 +166,6 @@ async navigateToPhotoPrintProduct() {
     });
   }
 
-
   async navigateToMountedCanvasPrintProduct() {
     await this._navigate({
       menu: this.menu,
@@ -213,9 +216,46 @@ async navigateToPhotoPrintProduct() {
     });
   }
 
+  async navigateToCharcoalWoodFrameProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HangingCanvas,
+      product: this.products.CharcoalWoodFrame  ,
+     // urlPattern: /poster-print-p/i,
+      name: "Charcoal Wood Frame"
+    });
+  }
 
+  async navigateToNaturalWoodFrameProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HangingCanvas,
+      product: this.products.NaturalWoodFrame,
+     // urlPattern: /poster-print-p/i,
+      name: "Natural Wood Frame"
+    });
+  }
 
+  async navigateToWoodFrameProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HangingCanvas,
+      product: this.products.WoodFrame,
+     // urlPattern: /poster-print-p/i,
+      name: "Wood Frame"
+    });
+  }
+
+  async navigateToFloatingFrameProduct() {
+    await this._navigate({
+      menu: this.menu,
+      category: this.categories.HangingCanvas,
+      product: this.products.FloatingFrame,
+    });
+  }
 
 }
 
 module.exports = { WallArtsHomePage };
+
+ 

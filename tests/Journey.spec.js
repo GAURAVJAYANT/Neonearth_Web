@@ -28,7 +28,7 @@ test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
-  
+
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
@@ -39,8 +39,8 @@ test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
- //   cardNumber: '4111 1111 1111 1111',
- //   expiry: '12 / 27',
+//   cardNumber: '4111 1111 1111 1111',
+//   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -86,7 +86,7 @@ test('E2E Journey - Custom Panoramic Tapestries', async ({ page }) => {
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
-  
+
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
@@ -97,8 +97,8 @@ test('E2E Journey - Custom Panoramic Tapestries', async ({ page }) => {
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
- //   cardNumber: '4111 1111 1111 1111',
- //   expiry: '12 / 27',
+//   cardNumber: '4111 1111 1111 1111',
+//   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -144,7 +144,7 @@ test('E2E Journey - Custom Wall Tapestry Weave Loom', async ({ page }) => {
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
-  
+
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
@@ -155,8 +155,8 @@ test('E2E Journey - Custom Wall Tapestry Weave Loom', async ({ page }) => {
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
- //   cardNumber: '4111 1111 1111 1111',
- //   expiry: '12 / 27',
+//   cardNumber: '4111 1111 1111 1111',
+//   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -202,7 +202,7 @@ test('E2E Journey - Custom Panoramic Tapestry - Weave Loom', async ({ page }) =>
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
-  
+
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
@@ -213,8 +213,8 @@ test('E2E Journey - Custom Panoramic Tapestry - Weave Loom', async ({ page }) =>
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
- //   cardNumber: '4111 1111 1111 1111',
- //   expiry: '12 / 27',
+//   cardNumber: '4111 1111 1111 1111',
+//   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -260,7 +260,7 @@ test('E2E Journey -Custom Triangular Tapestry - Velvet Satin', async ({ page }) 
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
-  
+
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
@@ -271,8 +271,8 @@ test('E2E Journey -Custom Triangular Tapestry - Velvet Satin', async ({ page }) 
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
- //   cardNumber: '4111 1111 1111 1111',
- //   expiry: '12 / 27',
+//   cardNumber: '4111 1111 1111 1111',
+//   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -318,7 +318,7 @@ test('E2E Journey -Custom Triangular Tapestry - Weave Loom', async ({ page }) =>
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
-  
+
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
@@ -329,8 +329,8 @@ test('E2E Journey -Custom Triangular Tapestry - Weave Loom', async ({ page }) =>
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
- //   cardNumber: '4111 1111 1111 1111',
- //   expiry: '12 / 27',
+//   cardNumber: '4111 1111 1111 1111',
+//   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -376,7 +376,7 @@ test('E2E Journey -Custom Hanging Tapestry - Velvet Satin', async ({ page }) => 
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
-  
+
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
@@ -387,8 +387,8 @@ test('E2E Journey -Custom Hanging Tapestry - Velvet Satin', async ({ page }) => 
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
- //   cardNumber: '4111 1111 1111 1111',
- //   expiry: '12 / 27',
+//   cardNumber: '4111 1111 1111 1111',
+//   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -434,7 +434,7 @@ test('E2E Journey -Custom Hanging Tapestry - Weave Loom', async ({ page }) => {
   // Step 5: Navigate to Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
-  
+
 
   // Step 6: Secure Checkout
   await cartPage.secureCheckout();
@@ -445,8 +445,8 @@ test('E2E Journey -Custom Hanging Tapestry - Weave Loom', async ({ page }) => {
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
- //   cardNumber: '4111 1111 1111 1111',
- //   expiry: '12 / 27',
+//   cardNumber: '4111 1111 1111 1111',
+//   expiry: '12 / 27',
     cvc: '123'
   });
 
@@ -473,4 +473,4 @@ test('E2E Journey -Custom Hanging Tapestry - Weave Loom', async ({ page }) => {
 
 
 
-  
+ 

@@ -1,45 +1,45 @@
 // tests/Fabrics.spec.js
 
 const { test } = require('@playwright/test');
-const fabricsData = require('../data/FabricsData');
+const NewTapestryData = require('../data/NewTapestryData');
 
-const { FabricsHomePage } = require('../pages/FabricsHomePage');
+const { NewTapestryHomePage } = require('../pages/NewTapestryHomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 
 const { completeFlow } = require('../flows/completeFlow');
 
-test.describe('Fabrics E2E', () => {
+test.describe('All Product Tapestry E2E', () => {
   test.setTimeout(600000);
 
   // Run all Fabrics categories + products
-  fabricsData.forEach((cat) => {
+  NewTapestryData.forEach((cat) => {
     cat.products.forEach((product) => {
       test(
-        `Fabric - ${cat.category} → ${product}`,
+        `New Tapestry - ${cat.category} → ${product.name}`,
         async ({ page }) => {
           console.log(
-            `Running: ${cat.category} → ${product}`
+            `Running: ${cat.category} → ${product.name}`
           );
 
-          // Fabrics uses ProductPage only
+          // NewTapestry uses ProductPage only
           const productPage = new ProductPage(page);
 
           await completeFlow({
             page,
-            homePage: new FabricsHomePage(page),
+            homePage: new NewTapestryHomePage(page),
             productPage,
             cartPage: new CartPage(page),
             checkoutPage: new CheckoutPage(page),
             item: {
               category: cat.category,
-              product: product
+              product: product.name
             }
           });
 
           console.log(
-            `✅ Completed: ${cat.category} → ${product}`
+            `✅ Completed: ${cat.category} → ${product.name}`
           );
         }
       );

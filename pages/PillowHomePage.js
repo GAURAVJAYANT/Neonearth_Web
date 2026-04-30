@@ -35,82 +35,24 @@ class PillowHomePage extends HomePage {
     };
   }
 
-  /** Navigate to: Pillows → Throw Pillows → Custom Square Throw Pillow */
-  async navigateToPillowProduct() {
-    await this._navigate({
+  /** Common navigation method for Pillows */
+  async navigate(categoryName, productName, urlPattern = /pillow-p|cushion-p|seat-p/i) {
+    await this.smartMegaMenuNavigate({
       menu: this.menu,
-      category: this.categories.throwPillows,
-      product: this.products.squareThrowPillow,
-      urlPattern: /throw-pillow-p|pillow-p/i,
-      name: "Square Throw Pillow"
+      categoryName,
+      productName,
+      urlPattern
     });
   }
 
-  /** Navigate to: Pillows → Throw Pillows → Custom Rectangle Throw Pillow */
-  async navigateToRectangleThrowPillowProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.throwPillows,
-      product: this.products.rectangleThrowPillow,
-      urlPattern: /throw-pillow-p|pillow-p/i,
-      name: "Rectangle Throw Pillow"
-    });
-  }
-
-  /** Navigate to: Pillows → Throw Pillows → Custom Round Throw Pillow */
-  async navigateToRoundThrowPillowProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.throwPillows,
-      product: this.products.roundThrowPillow,
-      urlPattern: /throw-pillow-p|pillow-p/i,
-      name: "Round Throw Pillow"
-    });
-  }
-
-  /** Navigate to: Pillows → Cushions → Square Seat Cushion */
-  async navigateToSquareSeatCushionProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.cushions,
-      product: this.products.squareSeatCushion,
-      urlPattern: /cushion-p|seat-p/i,
-      name: "Square Seat Cushion"
-    });
-  }
-
-  /** Navigate to: Pillows → Cushions → Round Seat Cushion */
-  async navigateToRoundSeatCushionProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.cushions,
-      product: this.products.roundSeatCushion,
-      urlPattern: /cushion-p|seat-p/i,
-      name: "Round Seat Cushion"
-    });
-  }
-
-  /** Navigate to: Pillows → Cushions → Rectangle Seat Cushion */
-  async navigateToRectangleSeatCushionProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.cushions,
-      product: this.products.rectangleSeatCushion,
-      urlPattern: /cushion-p|seat-p/i,
-      name: "Rectangle Seat Cushion"
-    });
-  }
-
-  /** Navigate to: Pillows → Bed Pillows → Bed Pillow */
-  async navigateToBedPillowProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.bedPillows,
-      product: this.products.bedPillow,
-      urlPattern: /bed-pillow-p|pillow-p/i,
-      name: "Bed Pillow"
-    });
-  }
+  /** Legacy wrappers for backward compatibility */
+  async navigateToPillowProduct() { await this.navigate("Throw Pillows", "Custom Square Throw Pillow"); }
+  async navigateToRectangleThrowPillowProduct() { await this.navigate("Throw Pillows", "Custom Rectangle Throw Pillow"); }
+  async navigateToRoundThrowPillowProduct() { await this.navigate("Throw Pillows", "Custom Round Throw Pillow"); }
+  async navigateToSquareSeatCushionProduct() { await this.navigate("Cushions", "Square Seat Cushion"); }
+  async navigateToRoundSeatCushionProduct() { await this.navigate("Cushions", "Round Seat Cushion"); }
+  async navigateToRectangleSeatCushionProduct() { await this.navigate("Cushions", "Rectangle Seat Cushion"); }
+  async navigateToBedPillowProduct() { await this.navigate("Bed Pillows", "Bed Pillow"); }
 }
 
 module.exports = { PillowHomePage };
