@@ -1,26 +1,27 @@
-// pages/PetZoneHomePage.js
+// pages/NewRugsHomePage.js
 
 const { HomePage } = require('./HomePage');
 
-class PetZoneHomePage extends HomePage {
+class NewRugsHomePage extends HomePage {
   constructor(page) {
     super(page);
 
+    // Top-level Rugs menu item
     this.menu = page.locator(
-      'nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Pet Zone"))'
+      'nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Rugs"))'
     );
   }
 
   async navigate(categoryName, productName) {
-    // Wait for Pet Zone menu
+    // Wait for Rugs menu
     await this.menu.waitFor({ state: 'visible', timeout: 15000 });
 
-    // Step 1: Open Pet Zone dropdown
+    // Step 1: Open Rugs dropdown
     await this.menu.hover();
     await this.page.waitForTimeout(1000);
     await this.waitForStability(this.menu);
 
-    // Step 2: Handle Category if provided
+    // Step 2: Handle Category if provided (e.g., "Area Rugs")
     if (categoryName) {
       const category = this.page.getByRole('link', {
         name: categoryName,
@@ -62,4 +63,4 @@ class PetZoneHomePage extends HomePage {
   }
 }
 
-module.exports = { PetZoneHomePage };
+module.exports = { NewRugsHomePage };
