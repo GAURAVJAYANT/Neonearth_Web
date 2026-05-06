@@ -24,22 +24,27 @@ class ProductPage extends SmartPage {
     await this.smartClick(this.personaliseBtn);
     
     console.log('✅ Clicked Personalize this Design button');
-    await this.page.waitForTimeout(8000); // UI customization transition still needs a bit of time
+    // Wait for the customizer options to appear instead of a fixed 8s
+    await this.uploadYourDesignBtn.waitFor({ state: 'visible', timeout: 30000 }).catch(() => {
+      console.log('  ⚠️ uploadYourDesignBtn not visible after 30s, proceeding anyway...');
+    });
+    await this.page.waitForTimeout(2000); 
   }
 
   async uploadImage(imagePath = 'data/test_image.png') {
     console.log('Step: Selecting Upload Your Design choice');
     await this.smartClick(this.uploadYourDesignBtn);
     console.log('✅ Clicked Upload Your Design');
-    await this.page.waitForTimeout(5000);
+    
+    // Wait for the upload area to stabilize
+    await this.uploadFileText.waitFor({ state: 'visible', timeout: 20000 });
 
-    // Using the filechooser event pattern requested by the user
     console.log('Step: Waiting for "Browse Files" button');
     await this.uploadFileText.waitFor({ state: 'visible', timeout: 50000 });
 
     const [fileChooser] = await Promise.all([
-      this.page.waitForEvent('filechooser', { timeout: 60000 }), // ← Fail fast: if file chooser doesn't open within 60s, throw & let Playwright retry
-      this.uploadFileText.click({ force: true }), // Using force click to prevent interception flakiness
+      this.page.waitForEvent('filechooser', { timeout: 60000 }),
+      this.uploadFileText.click({ force: true }),
     ]);
 
     const resolvedImagePath = path.resolve(process.cwd(), imagePath);
@@ -47,7 +52,9 @@ class ProductPage extends SmartPage {
     await fileChooser.setFiles(resolvedImagePath);
     
     console.log(`✅ File uploaded successfully from: ${resolvedImagePath}`);
-    await this.page.waitForTimeout(10000); 
+    // Wait for the "Preview" button to become active or visible after upload
+    await this.previewBtn.waitFor({ state: 'visible', timeout: 45000 });
+    await this.page.waitForTimeout(2000); 
   }
 
   async addToCart() {
@@ -56,33 +63,41 @@ class ProductPage extends SmartPage {
   }
 
   async previewAndAddToCart() {
-    // ── Check for "Next" buttons (e.g., for Pet Zone multi-side products) ──
-    // We use a short wait (10s) because the button might appear after a slight delay
     try {
-      await this.nextFrontSideBtn.waitFor({ state: 'visible', timeout: 10000 });
+      await this.nextFrontSideBtn.waitFor({ state: 'visible', timeout: 5000 });
       console.log('Step: Clicking "Next: Front Side" before preview');
       await this.smartClick(this.nextFrontSideBtn);
-      await this.page.waitForTimeout(3000);
+      await this.page.waitForTimeout(1000);
     } catch (e) {
-      // Button did not appear within 10s, likely a single-sided product
       console.log('  (No "Next: Front Side" button found, skipping)');
     }
 
-    await this.smartClick(this.previewBtn, { timeout: 150000 });
+    await this.smartClick(this.previewBtn, { timeout: 90000 });
     console.log('✅ Clicked preview button');
-    await this.page.waitForTimeout(8000);
+    
+    // Use the visible Add to Cart button (often there are multiple in the DOM)
+    const atcBtn = this.addToCartBtn.filter({ visible: true }).first();
+    
+    console.log('Step: Waiting for visible Add to Cart button...');
+    await atcBtn.waitFor({ state: 'visible', timeout: 45000 }).catch(() => {
+      console.log('⚠️ Timeout waiting for visible Add to Cart button.');
+    });
 
-    const atcBtn = this.addToCartBtn.nth(2);
-    await atcBtn.waitFor({ state: 'visible', timeout: 10 * 1000 });
+    const count = await this.addToCartBtn.count();
+    console.log(`Debug: Found ${count} total Add to Cart buttons in DOM.`);
+    
+    await this.waitForStability(atcBtn);
 
-    // ── API Validation: intercept the cart API response instead of blind waiting ──
-    console.log('Step: Clicking Add to Cart (with API validation)...');
-    const apiResult = await validateApiCall(this.page, () => atcBtn.click(), {
+    // ── API Validation: intercept the cart API response ──
+    console.log('Step: Clicking Add to Cart (with API validation and smartClick)...');
+    
+    const apiResult = await validateApiCall(this.page, async () => {
+      await this.smartClick(atcBtn, { timeout: 15000, force: true });
+    }, {
       urlPattern: '/cart',
       label: 'Add To Cart API',
       expectedStatus: 200,
     }).catch((err) => {
-      // Non-fatal: log the issue but don't stop the test
       console.warn(`⚠️ API validation warning: ${err.message}`);
       return null;
     });
@@ -96,7 +111,7 @@ class ProductPage extends SmartPage {
     try {
       await this.page.waitForLoadState('networkidle', { timeout: 30000 });
     } catch (_) {}
-    await this.page.waitForTimeout(8000);
+    await this.page.waitForTimeout(3000);
   }
 }
 

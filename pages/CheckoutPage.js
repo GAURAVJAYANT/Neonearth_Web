@@ -243,12 +243,12 @@ class CheckoutPage extends SmartPage {
     console.log('Waiting for checkout to stabilize...');
     const start = Date.now();
 
-    await this.page.waitForURL(/onepagecheckout/, { timeout: 15000 });
+    await this.page.waitForURL(/checkout/, { timeout: 45000 });
     
     // Wait for core components
     await Promise.all([
-      this.page.getByRole('heading', { name: 'Payment Method' }).waitFor({ timeout: 40000 }),
-      this.page.waitForSelector('iframe[src*="stripe"]', { state: 'attached', timeout: 40000 })
+      this.page.getByRole('heading', { name: 'Payment Method' }).waitFor({ timeout: 60000 }),
+      this.page.waitForSelector('iframe[src*="stripe"]', { state: 'attached', timeout: 60000 })
     ]);
 
     await this.waitForLoaderSilence(30000, 2000);

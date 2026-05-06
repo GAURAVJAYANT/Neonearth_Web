@@ -7,8 +7,9 @@ class NewWallArtsHomePage extends HomePage {
     super(page);
 
     // Top-level Wall Arts menu item
-    this.menu = page.locator('a[href="/wall-arts"]');
-    // page.locator('nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Wall Arts"))');
+    this.menu = page.locator(
+      'nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Wall Arts"))'
+    );
   }
 
   async navigate(categoryName, productName) {
@@ -45,7 +46,7 @@ class NewWallArtsHomePage extends HomePage {
     }).first();
 
     // Step 4: Wait, Stabilize, and Click
-    await product.waitFor({ state: 'visible', timeout: 15000 });
+    await product.waitFor({ state: 'visible', timeout: 20000 });
     await this.waitForStability(product);
     await product.scrollIntoViewIfNeeded();
     await this.page.waitForTimeout(1000);

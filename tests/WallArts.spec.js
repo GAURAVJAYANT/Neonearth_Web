@@ -7,7 +7,7 @@ const { WallArtsHomePage } = require('../pages/WallArtsHomePage');
 
 test.describe('Wall Arts E2E Journeys', () => {
   test('E2E Journey - Wall Arts - Custom Wallpaper', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -64,7 +64,7 @@ test.describe('Wall Arts E2E Journeys', () => {
 });
 
 test('E2E Journey - Wallpaper - Stone Grain', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -121,7 +121,7 @@ test('E2E Journey - Wallpaper - Stone Grain', async ({ page }) => {
 });
 
 test('E2E Journey - Wall Mural - Luxe Smooth', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -178,7 +178,7 @@ test('E2E Journey - Wall Mural - Luxe Smooth', async ({ page }) => {
 });
 
 test('E2E Journey - Wall Mural - Stone Grain', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -235,7 +235,7 @@ test('E2E Journey - Wall Mural - Stone Grain', async ({ page }) => {
 });
 
 test('E2E Journey-Wall Mural - Timber Grain', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -293,7 +293,7 @@ test('E2E Journey-Wall Mural - Timber Grain', async ({ page }) => {
 
 
 test('E2E Journey-Mounted Photo Print', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -350,7 +350,7 @@ test('E2E Journey-Mounted Photo Print', async ({ page }) => {
 });
 
 test('E2E Journey-Photo Print', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -408,7 +408,7 @@ test('E2E Journey-Photo Print', async ({ page }) => {
 
 
 test('E2E Journey-Poster Print', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -466,7 +466,7 @@ test('E2E Journey-Poster Print', async ({ page }) => {
 
 
 test('E2E Journey-Framed Photo Print', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -523,7 +523,7 @@ test('E2E Journey-Framed Photo Print', async ({ page }) => {
 });
 
 test('E2E Journey-Natural Wood Frame', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -581,7 +581,7 @@ test('E2E Journey-Natural Wood Frame', async ({ page }) => {
 
 
 test('E2E Journey-Charcoal Wood Frame', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -638,7 +638,7 @@ test('E2E Journey-Charcoal Wood Frame', async ({ page }) => {
 });
 
 test('E2E Journey-Wood Frame', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -695,7 +695,7 @@ test('E2E Journey-Wood Frame', async ({ page }) => {
 });
 
 test('E2E Journey-Natural Walnut Frame', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -753,7 +753,7 @@ test('E2E Journey-Natural Walnut Frame', async ({ page }) => {
 
 
 test('E2E Journey-Mounted Canvas Print', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -811,7 +811,7 @@ test('E2E Journey-Mounted Canvas Print', async ({ page }) => {
 
 
 test('E2E Journey-Framed Canvas Print', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -868,7 +868,7 @@ test('E2E Journey-Framed Canvas Print', async ({ page }) => {
 });
 
 test('E2E Journey-Gallery Wraped Canvas Print', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -925,7 +925,7 @@ test('E2E Journey-Gallery Wraped Canvas Print', async ({ page }) => {
 });
 
 test('E2E Journey-Acrylic Print - Premium Gloss', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new WallArtsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
