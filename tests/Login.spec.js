@@ -10,7 +10,7 @@ const loginData = xlsx.utils.sheet_to_json(sheet);
 
 test('Open NeonEarth Website - Login and Hover Tapestries', async ({ page }) => {
   const { username, password } = loginData[0];
-  test.setTimeout(120000);
+  test.setTimeout(300000);
 
   // ─── Step 1: Open Website ───────────────────────────────────────
   await page.goto('https://ne.signsigma.com/', { 

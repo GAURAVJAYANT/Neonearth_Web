@@ -11,7 +11,7 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 const { completeFlow } = require('../flows/completeFlow');
 
 test.describe('All Product Tapestry E2E', () => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
 
   // Run all Fabrics categories + products
   NewTapestryData.forEach((cat) => {

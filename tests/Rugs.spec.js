@@ -5,7 +5,7 @@ const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 
 test('E2E Journey - Rugs & Mats - Area Rugs', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -63,7 +63,7 @@ test('E2E Journey - Rugs & Mats - Area Rugs', async ({ page }) => {
 
 
 test('E2E Journey - Square Rug', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -122,7 +122,7 @@ test('E2E Journey - Square Rug', async ({ page }) => {
 
 
 test('E2E Journey - Round Rug', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -181,7 +181,7 @@ test('E2E Journey - Round Rug', async ({ page }) => {
 
 
 test('E2E Journey - Oval Rug', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -240,7 +240,7 @@ test('E2E Journey - Oval Rug', async ({ page }) => {
 
 
 test('E2E Journey - Runner - Luxe Grain', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -297,7 +297,7 @@ test('E2E Journey - Runner - Luxe Grain', async ({ page }) => {
 });
 
 test('E2E Journey - Runner - Silken Plush', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -354,7 +354,7 @@ test('E2E Journey - Runner - Silken Plush', async ({ page }) => {
 });
 
 test('E2E Journey - Runner - Nature Loom', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -411,7 +411,7 @@ test('E2E Journey - Runner - Nature Loom', async ({ page }) => {
 
 
 test('E2E Journey - Rectangle Doormat', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -468,7 +468,7 @@ test('E2E Journey - Rectangle Doormat', async ({ page }) => {
 
 
 test('E2E Journey - Square Doormat', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -524,7 +524,7 @@ test('E2E Journey - Square Doormat', async ({ page }) => {
 });
 
 test('E2E Journey - Round Doormat', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
@@ -580,7 +580,7 @@ test('E2E Journey - Round Doormat', async ({ page }) => {
 });
 
 test('E2E Journey - Oval Doormat', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
   const homePage = new RugsHomePage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);

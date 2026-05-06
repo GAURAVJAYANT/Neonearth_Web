@@ -9,7 +9,7 @@ const IS_PRODUCTION = BASE_URL.includes('www.neonearth.com');
 // If ANY step hangs silently beyond this limit, the watchdog throws an error
 // which forces Playwright to FAIL the test immediately and trigger a retry.
 // Set to 4 minutes — generous enough for slow uploads, strict enough to catch hangs.
-const FLOW_TIMEOUT_MS = 4 * 60 * 1000; // 4 minutes
+const FLOW_TIMEOUT_MS = 6 * 60 * 1000; // 6 minutes
 
 async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item }) {
 

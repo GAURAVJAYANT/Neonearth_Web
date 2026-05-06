@@ -11,7 +11,7 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 const { completeFlow } = require('../flows/completeFlow');
 
 test.describe('Pet Zone E2E', () => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
 
   // Run all Pet Zone categories + products
   petZoneData.forEach((cat) => {
@@ -44,4 +44,4 @@ test.describe('Pet Zone E2E', () => {
       );
     });
   });
-});
+});

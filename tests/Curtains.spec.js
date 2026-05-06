@@ -12,7 +12,7 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 const { completeFlow } = require('../flows/completeFlow');
 
 test.describe('Curtains E2E', () => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
 
 
   curtainsData
