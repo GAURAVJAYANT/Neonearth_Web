@@ -26,3 +26,6 @@ videos/
 *.pdf
 /test-results/
 /allure-report-temp/
+
+# env
+.env*
