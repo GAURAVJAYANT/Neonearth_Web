@@ -113,6 +113,40 @@ class ProductPage extends SmartPage {
     } catch (_) {}
     await this.page.waitForTimeout(3000);
   }
+
+  async handleCustomOptions(options) {
+    console.log(`Step: Handling custom options for ${options.targetSize}`);
+    
+    // 1. Click the current size summary using the codegen locator
+    const trigger = this.page.locator('#right-panel').getByText(/60.*50/).first();
+    await trigger.waitFor({ state: 'visible', timeout: 30000 });
+    await trigger.click({ force: true });
+    console.log('  ✅ Clicked current size summary');
+    await this.page.waitForTimeout(3000); // Wait for menu to open
+
+    // 2. Click the target size in the list (short version)
+    console.log(`Step: Clicking target size: 80″ x 65″ (nth:1)`);
+    const shortSizeLoc = this.page.getByText('80″ x 65″').nth(1);
+    await shortSizeLoc.waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
+    await shortSizeLoc.click({ force: true }).catch(() => {});
+    await this.page.waitForTimeout(2000);
+
+    // 3. Click the full updated summary string
+    console.log(`Step: Clicking updated summary: ${options.targetSize}`);
+    const fullSizeLoc = this.page.getByText(options.targetSize, { exact: true }).first();
+    await fullSizeLoc.waitFor({ state: 'visible', timeout: 30000 });
+    await fullSizeLoc.click({ force: true });
+    console.log(`  ✅ Clicked updated summary: ${options.targetSize}`);
+    await this.page.waitForTimeout(2000);
+
+    // 4. Click the Confirm button
+    const confirmLocator = this.page.getByRole('button', { name: options.confirmBtn });
+    await confirmLocator.waitFor({ state: 'visible', timeout: 30000 });
+    await confirmLocator.click({ force: true });
+    console.log(`  ✅ Clicked confirm button: ${options.confirmBtn}`);
+
+    await this.page.waitForTimeout(4000); // Settle after options change
+  }
 }
 
 module.exports = { ProductPage };

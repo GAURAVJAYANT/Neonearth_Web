@@ -2,7 +2,14 @@ module.exports = [
   {
     category: 'Custom Wall Tapestries',
     products: [
-      { name: 'Wall Tapestry - Velvet Satin' },
+      { 
+        name: 'Wall Tapestry - Velvet Satin',
+        customOptions: {
+          currentSize: '60″ x 50″ | 300 GSM Velvet Satin | Qty 1',
+          targetSize: '80″ x 65″ | 300 GSM Velvet Satin | Qty 1',
+          confirmBtn: 'Confirm ($95.41)'
+        }
+      },
       { name: 'Wall Tapestry - Weave Loom' }
     ]
   },
