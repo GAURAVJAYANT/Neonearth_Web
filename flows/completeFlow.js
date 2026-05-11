@@ -18,6 +18,13 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
   // 🔥 Dynamic navigation (menu hover + product click)
   await homePage.navigate(item.category, item.product);
 
+  // ── CUSTOM OPTIONS (Size/Material selection) ───────────────────────────
+  if (item.customOptions) {
+    console.log('⏳ Settle time before custom options...');
+    await page.waitForTimeout(5000); 
+    await productPage.handleCustomOptions(item.customOptions);
+  }
+
   // PDP — Personalize + Upload
   await productPage.personalizeDesign();
   await productPage.uploadImage('data/test_image.png');

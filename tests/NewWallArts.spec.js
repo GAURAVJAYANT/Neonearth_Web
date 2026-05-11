@@ -32,7 +32,7 @@ test.describe('All New Wall Arts E2E', () => {
             productPage,
             cartPage: new CartPage(page),
             checkoutPage: new CheckoutPage(page),
-            item: {
+            item: { ...product,
               category: cat.category,
               product: product.name
             }
