@@ -7,7 +7,7 @@ module.exports = [
         customOptions: {
           currentSize: '60″ x 50″ | 300 GSM Velvet Satin | Qty 1',
           targetSize: '80″ x 65″ | 300 GSM Velvet Satin | Qty 1',
-          confirmBtn: 'Confirm ($95.41)'
+          confirmBtn: 'Confirm'
         }
       },
       { name: 'Wall Tapestry - Weave Loom' }

@@ -13,6 +13,16 @@ class ProductPage extends SmartPage {
     this.nextFrontSideBtn = page.getByRole('button', { name: 'Next: Front Side' });
     this.previewBtn = page.getByRole('button', { name: 'Preview' });
     this.addToCartBtn = page.getByRole('button', { name: /Add To Cart/i });
+    this.priceSpan = page.locator('span.sc-fcdfa9f9-7.fFkMiV');
+  }
+
+  async getPriceFromPDP() {
+    try {
+      await this.priceSpan.first().waitFor({ state: 'visible', timeout: 10000 });
+      return (await this.priceSpan.first().innerText()).trim();
+    } catch (e) {
+      return 'Price not captured';
+    }
   }
 
   async personalizeDesign() {
@@ -115,14 +125,19 @@ class ProductPage extends SmartPage {
   }
 
   async handleCustomOptions(options) {
-    console.log(`Step: Handling custom options for ${options.targetSize}`);
-    
+    // ── PRICE: Before size change ──────────────────────────────────
+    const initialPrice = await this.getPriceFromPDP();
+    console.log('================================================');
+    console.log(`Product        : ${options.productName || 'Custom Product'}`);
+    console.log(`Price (Before) : ${initialPrice}`);
+    console.log('================================================');
+
     // 1. Click the current size summary using the codegen locator
     const trigger = this.page.locator('#right-panel').getByText(/60.*50/).first();
     await trigger.waitFor({ state: 'visible', timeout: 30000 });
     await trigger.click({ force: true });
     console.log('  ✅ Clicked current size summary');
-    await this.page.waitForTimeout(3000); // Wait for menu to open
+    await this.page.waitForTimeout(3000);
 
     // 2. Click the target size in the list (short version)
     console.log(`Step: Clicking target size: 80″ x 65″ (nth:1)`);
@@ -144,9 +159,17 @@ class ProductPage extends SmartPage {
     await confirmLocator.waitFor({ state: 'visible', timeout: 30000 });
     await confirmLocator.click({ force: true });
     console.log(`  ✅ Clicked confirm button: ${options.confirmBtn}`);
+    await this.page.waitForTimeout(4000);
 
-    await this.page.waitForTimeout(4000); // Settle after options change
+    // ── PRICE: After size change ───────────────────────────────────
+    const finalPrice = await this.getPriceFromPDP();
+    console.log('================================================');
+    console.log(`Product        : ${options.productName || 'Custom Product'}`);
+    console.log(`Price (Before) : ${initialPrice}`);
+    console.log(`Price (After)  : ${finalPrice}`);
+    console.log('================================================');
   }
+
 }
 
 module.exports = { ProductPage };

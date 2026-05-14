@@ -33,9 +33,9 @@ test.describe('All Product Tapestry E2E', () => {
             cartPage: new CartPage(page),
             checkoutPage: new CheckoutPage(page),
             item: { ...product,
-              ...product,
               category: cat.category,
-              product: product.name
+              product: product.name,
+              applyCoupon: true
             }
           });
 

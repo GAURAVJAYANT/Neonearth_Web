@@ -14,6 +14,16 @@ class CartPage extends SmartPage {
     this.popupClose = page
       .locator('label[aria-label="Close popup"] img, .newsletter-popup .close, .modal-popup .action-close')
       .first();
+
+    this.availableOffers = page.getByText('Available Offers', { exact: true });
+    this.couponCodes = page.locator('span.code');
+    this.couponInput = page.getByRole('textbox', { name: 'Enter Your Coupon Code' });
+
+    this.productNameInCart = page.locator('h6.productName');
+    this.productPriceInCart = page.locator('span.price');
+    this.discountPrice = page.locator("//div[@class='summaryTotal']//span[text()='Discount']/following-sibling::span");
+    this.quantityInput = page.locator("input[name='quantity']");
+    this.orderSummaryHeading = page.getByText('Order Summary', { exact: true });
   }
 
   async goToCart() {
@@ -113,6 +123,93 @@ class CartPage extends SmartPage {
     // 6. Final assertion
     await expect(this.page).toHaveURL(/onepagecheckout/, { timeout: 15000 });
     console.log('  ✅ Final URL verified: ' + this.page.url());
+  }
+
+  async getCartPrice() {
+    try {
+      await this.productPriceInCart.first().waitFor({ state: 'visible', timeout: 5000 });
+      return (await this.productPriceInCart.first().innerText()).trim();
+    } catch (e) {
+      return 'N/A';
+    }
+  }
+
+  async getDiscountPrice() {
+    try {
+      if (await this.discountPrice.isVisible()) {
+        return (await this.discountPrice.innerText()).trim();
+      }
+      return '0.00';
+    } catch (e) {
+      return 'N/A';
+    }
+  }
+
+  async updateQuantity(qty) {
+    console.log(`  Updating quantity to: ${qty}`);
+    const input = this.quantityInput.first();
+    await input.waitFor({ state: 'visible', timeout: 5000 });
+    
+    await input.focus();
+    await input.fill(''); 
+    await input.fill(qty.toString());
+    await input.press('Enter'); 
+    
+    // Click Order Summary to trigger update as requested
+    console.log('  Clicking Order Summary to trigger update...');
+    await this.orderSummaryHeading.click().catch(() => {});
+    
+    console.log('  Wait for cart update...');
+    await this.page.waitForTimeout(3000); 
+    await this.waitForLoaderSilence();
+  }
+
+  async handleCoupons() {
+    console.log('Step 5.5: Handling available coupons...');
+
+    try {
+      // 1. Click Available Offers
+      await this.availableOffers.waitFor({ state: 'visible', timeout: 5000 });
+      await this.availableOffers.click();
+      console.log('  Clicked "Available Offers"');
+
+      // 2. Get and print all coupon codes
+      await this.couponCodes.first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+      
+      const coupons = (await this.couponCodes.allTextContents())
+        .map(code => code.trim())
+        .filter(Boolean);
+
+      console.log("Total Coupons Available:", coupons.length);
+      
+      for (let code of coupons) {
+        console.log("Coupon:", code);
+      }
+
+      if (coupons.length > 0) {
+        // 3. Enter the first coupon code
+        const firstCoupon = coupons[0];
+        console.log(`Applying first coupon: ${firstCoupon}`);
+        await this.couponInput.waitFor({ state: 'visible', timeout: 5000 });
+        await this.couponInput.fill(firstCoupon);
+        await this.page.keyboard.press('Enter'); // Submit coupon
+        
+        // Wait for potential price update animation
+        await this.page.waitForTimeout(3000); 
+      } else {
+        console.log('⚠️ No coupons found in "Available Offers" section.');
+      }
+
+      // ── PRINT PRODUCT DETAILS ──────────────────────────────────────
+      const productName = await this.productNameInCart.first().innerText().catch(() => 'N/A');
+      const productPrice = await this.productPriceInCart.first().innerText().catch(() => 'N/A');
+
+      console.log("Product Name:", productName);
+      console.log("Product Price:", productPrice);
+
+    } catch (e) {
+      console.log('  ❌ Failed to handle coupons: ' + e.message);
+    }
   }
 }
 
