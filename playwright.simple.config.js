@@ -1,9 +1,16 @@
 const { defineConfig, devices } = require('@playwright/test');
+require('dotenv').config();
+
+const configuredRetries = Number(process.env.PLAYWRIGHT_RETRIES || process.env.RETRIES);
+const retries = Number.isInteger(configuredRetries) && configuredRetries >= 0 ? configuredRetries : 2;
+
 module.exports = defineConfig({
   testDir: './tests',
+  retries,
   projects: [
     {
       name: 'chromium',
+      retries,
       use: { ...devices['Desktop Chrome'] },
     },
   ],

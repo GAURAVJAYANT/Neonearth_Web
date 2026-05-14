@@ -66,9 +66,17 @@ pipeline {
             // STEP: ALLURE REPORT PUBLISHING
             // This requires the "Allure Jenkins Plugin" to be installed on your Jenkins server
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+
+            script {
+                if (isUnix()) {
+                    sh 'npm run allure:download'
+                } else {
+                    bat 'npm run allure:download'
+                }
+            }
             
             // Archive artifacts as backup (screenshots, videos, etc.)
-            archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'allure-report*.zip,test-results/**/*', allowEmptyArchive: true
         }
     }
 }

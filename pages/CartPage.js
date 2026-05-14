@@ -249,6 +249,7 @@ class CartPage extends SmartPage {
 
     } catch (e) {
       console.log('Failed to handle coupons: ' + e.message);
+      throw e;
     }
   }
 }
