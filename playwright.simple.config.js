@@ -7,6 +7,9 @@ const retries = Number.isInteger(configuredRetries) && configuredRetries >= 0 ? 
 module.exports = defineConfig({
   testDir: './tests',
   retries,
+  use: {
+    baseURL: process.env.BASE_URL || 'https://ne.signsigma.com/',
+  },
   projects: [
     {
       name: 'chromium',

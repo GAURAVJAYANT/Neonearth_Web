@@ -21,12 +21,15 @@ module.exports = defineConfig({
   
   reporter: [
     ['list'],
+    ['./professional-allure-reporter.js'],
     ['allure-playwright', {
       detail: true,
       outputFolder: 'allure-results',
       suiteTitle: false,
       environmentInfo: {
-        Project: 'NeonEarth Web',
+        Project: 'Neonearth',
+        Application: 'Playwright Automation JS',
+        QA: 'QA Gaurav Jayant',
         BaseURL: process.env.BASE_URL || 'https://ne.signsigma.com/',
         Browser: 'Chromium',
       },

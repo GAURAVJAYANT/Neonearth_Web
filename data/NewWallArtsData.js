@@ -29,7 +29,7 @@ module.exports = [
       { name: 'Rolled Canvas Print' },
       { name: 'Mounted Canvas Print' },
       { name: 'Framed Canvas Print' },
-      { name: 'Gallery Wrapped Canvas Print' }
+      { name: 'Gallery Wraped Canvas Print' }
     ]
   },
   {
@@ -37,6 +37,16 @@ module.exports = [
     products: [
       { name: 'Acrylic Print - Premium Metallic' },
       { name: 'Acrylic Print - Premium Gloss' }
+    ]
+  },
+
+  {
+    category: 'Photo And Art Prints',
+    products: [
+      { name: 'Photo Print' },
+      { name: 'Mounted Photo Print' },
+      { name: 'Framed Photo Print' },
+      
     ]
   },
   {

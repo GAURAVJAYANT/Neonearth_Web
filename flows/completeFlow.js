@@ -68,8 +68,18 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
     initialPriceString = finalPriceString;
   }
 
-  await productPage.personalizeDesign();
-  await productPage.uploadImage('data/test_image.png');
+  if (!item.skipPersonalizeUpload) {
+    if (item.waitForFullLoadBeforePersonalize) {
+      await page.waitForLoadState('load', { timeout: 60000 }).catch(() => {});
+      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      if (typeof productPage.waitForOverlays === 'function') {
+        await productPage.waitForOverlays();
+      }
+    }
+
+    await productPage.personalizeDesign();
+    await productPage.uploadImage('data/test_image.png');
+  }
 
   if (!item.skipAddToCart) {
     await productPage.addToCart();

@@ -12,6 +12,24 @@ class CurtainsPDP extends SmartPage {
     });
   }
 
+  async getPriceFromPDP() {
+    const price = this.page
+      .locator('div.quantity-section span.price, .price-info .price, .product-info-price .price, span.price')
+      .filter({ visible: true })
+      .first();
+
+    try {
+      await price.waitFor({
+        state: 'visible',
+        timeout: 10000
+      });
+
+      return (await price.innerText()).trim();
+    } catch (e) {
+      return 'Price not captured';
+    }
+  }
+
   async addToCart() {
     console.log('Step: Click Add To Cart');
 

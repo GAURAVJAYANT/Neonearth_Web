@@ -13,10 +13,26 @@ class NewWallArtsHomePage extends HomePage {
     return this.page.locator(
       `a:has(.menu-text-wrapper .menu-text:text-is("${categoryName}")), ` +
       `li:has(.menu-text-wrapper .menu-text:text-is("${categoryName}"))`
-    ).first();
+    ).filter({ visible: true }).first();
   }
 
-  getProductLocator(productName) {
+  getProductLocator(productName, categoryName) {
+    if (categoryName === 'Custom Wallpapers') {
+      return this.getFullNameProductLocator(productName);
+    }
+
+    if (categoryName === 'Custom Wall Murals') {
+      return this.getFullNameProductLocator(productName);
+    }
+
+    if (categoryName === 'Poster Prints') {
+      return this.getFullNameProductLocator(productName);
+    }
+
+    if (categoryName === 'Acrylic Prints') {
+      return this.getFullNameProductLocator(productName);
+    }
+
     const searchName = this.getSearchName(productName);
     const exactProductText = new RegExp(`^${this.escapeRegExp(searchName)}$`);
 
@@ -30,13 +46,42 @@ class NewWallArtsHomePage extends HomePage {
       .first();
   }
 
-  getFallbackProductLocator(productName) {
+  getFallbackProductLocator(productName, categoryName) {
+    if (categoryName === 'Custom Wallpapers') {
+      return this.getFullNameProductLocator(productName);
+    }
+
+    if (categoryName === 'Custom Wall Murals') {
+      return this.getFullNameProductLocator(productName);
+    }
+
+    if (categoryName === 'Poster Prints') {
+      return this.getFullNameProductLocator(productName);
+    }
+
+    if (categoryName === 'Acrylic Prints') {
+      return this.getFullNameProductLocator(productName);
+    }
+
     const searchName = this.getSearchName(productName);
     const exactProductText = new RegExp(`^${this.escapeRegExp(searchName)}$`);
 
     return this.page.getByRole('link', {
       name: exactProductText
     }).first();
+  }
+
+  getFullNameProductLocator(productName) {
+    const exactProductName = new RegExp(`^${this.escapeRegExp(productName)}$`, 'i');
+
+    return this.page
+      .locator('a:visible')
+      .filter({
+        has: this.page.locator('span.product-text').filter({
+          hasText: exactProductName
+        })
+      })
+      .first();
   }
 
   getSearchName(productName) {
@@ -120,8 +165,8 @@ class NewWallArtsHomePage extends HomePage {
 
   async navigate(categoryName, productName) {
     const searchName = this.getSearchName(productName);
-    const product = this.getProductLocator(productName);
-    const fallbackProduct = this.getFallbackProductLocator(productName);
+    const product = this.getProductLocator(productName, categoryName);
+    const fallbackProduct = this.getFallbackProductLocator(productName, categoryName);
 
     await this.hoverWallArtsMenu();
 
