@@ -3,13 +3,21 @@ const { chromium } = require('@playwright/test');
 const path = require('path');
 const fs = require('fs');
 
-(async () => {
-    const reportPath = path.resolve('./test-results/report.html');
+function resolveHtmlReportPath() {
+    const candidates = [
+        path.resolve('./test-results/report.html'),
+        path.resolve('./playwright-report/index.html'),
+    ];
+
+    return candidates.find(candidate => fs.existsSync(candidate));
+}
+
+async function generatePdfReport() {
+    const reportPath = resolveHtmlReportPath();
     const pdfPath = path.resolve('./test-results/report.pdf');
 
-    if (!fs.existsSync(reportPath)) {
-        console.error('Report file not found:', reportPath);
-        process.exit(1);
+    if (!reportPath) {
+        throw new Error('HTML report file not found. Expected playwright-report/index.html');
     }
 
     // 1. Patch the HTML report to hide the footer/links permanently
@@ -94,4 +102,14 @@ const fs = require('fs');
 
     console.log(`PDF Report generated successfully: ${pdfPath}`);
     await browser.close();
-})();
+    return pdfPath;
+}
+
+module.exports = { generatePdfReport };
+
+if (require.main === module) {
+    generatePdfReport().catch(error => {
+        console.error(error.message);
+        process.exit(1);
+    });
+}

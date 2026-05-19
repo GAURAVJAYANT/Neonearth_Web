@@ -9,8 +9,9 @@ const configuredRetries = Number(process.env.PLAYWRIGHT_RETRIES || process.env.R
 const retries = Number.isInteger(configuredRetries) && configuredRetries >= 0 ? configuredRetries : 2;
 
 module.exports = defineConfig({
-  globalSetup: './globalSetup.js',
   testDir: './tests',
+  testMatch: '**/*.spec.js',
+  globalSetup: './globalSetup.js',
   fullyParallel: false,
   workers: 1,
   retries,
@@ -34,7 +35,9 @@ module.exports = defineConfig({
         Browser: 'Chromium',
       },
     }],
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['json', { outputFile: 'test-results/report.json' }],
+    ['./email-reporter.js'],
     ['./allure-open-reporter.js'],
     // ['./AIReporter.js'],
   ],

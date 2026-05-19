@@ -1,0 +1,16 @@
+{
+  "thresholds": {
+    "pageLoad": 8000,
+    "domReady": 5000,
+    "firstPaint": 3000,
+    "lcp": 4000,
+    "apiResponse": 5000
+  },
+  "page": "Checkout Page",
+  "timestamp": "2026-05-19T05:32:08.965Z",
+  "ttfb": 1496,
+  "domReady": 1963,
+  "pageLoad": 1971,
+  "firstPaint": 1680,
+  "lcp": 1680
+}

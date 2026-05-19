@@ -1,0 +1,11 @@
+Performance Report — Cart Page
+Measured At : 2026-05-19T05:31:42.237Z
+────────────────────────────────────────────────────────────────────────
+  Metric                        Value      Threshold              Result
+────────────────────────────────────────────────────────────────────────
+  TTFB (Time to First Byte)    1496ms     Limit: 2000ms   ✅ PASS
+  DOM Ready                    1963ms     Limit: 5000ms   ✅ PASS
+  Full Page Load               1971ms     Limit: 8000ms   ✅ PASS
+  First Paint (FCP)            1680ms     Limit: 3000ms   ✅ PASS
+  Largest Contentful Paint     1680ms     Limit: 4000ms   ✅ PASS
+────────────────────────────────────────────────────────────────────────

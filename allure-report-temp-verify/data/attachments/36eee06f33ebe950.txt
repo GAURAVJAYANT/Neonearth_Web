@@ -1,0 +1,6 @@
+API Validation — Add To Cart API
+────────────────────────────────────────────────────────────
+URL             : https://www.neonearth.com/_next/static/chunks/pages/checkout/cart-9adb28e1758b58a9.js
+HTTP Status     : 200  (expected: 200)
+Response Time   : 5375ms
+Validation      : PASS ✅
