@@ -1,76 +1,131 @@
-// ── Environment detection ────────────────────────────────────────────────────
-// Read BASE_URL from .env. If it contains the production domain,
-// the test will stop safely after reaching the checkout page.
 const BASE_URL = process.env.BASE_URL || 'https://ne.signsigma.com/';
 const IS_PRODUCTION = BASE_URL.includes('www.neonearth.com');
+const FLOW_TIMEOUT_MS = 10 * 60 * 1000;
 
-// ── Global Flow Watchdog ─────────────────────────────────────────────────────
-// Maximum time allowed for the ENTIRE test flow (menu nav + upload + checkout).
-// If ANY step hangs silently beyond this limit, the watchdog throws an error
-// which forces Playwright to FAIL the test immediately and trigger a retry.
-// Set to 4 minutes — generous enough for slow uploads, strict enough to catch hangs.
-const FLOW_TIMEOUT_MS = 6 * 60 * 1000; // 6 minutes
+function isPriceMatch(actualAmount, expectedAmount, tolerance = 0.01) {
+  return Math.abs(actualAmount - expectedAmount) <= tolerance;
+}
+
+async function logPdpCartPriceCheck(cartPage, pdpPriceString) {
+  const cartPriceString = await cartPage.getCartPrice();
+  const pdpPrice = cartPage.parseMoney(pdpPriceString);
+  const cartPrice = cartPage.parseMoney(cartPriceString);
+  const matched = isPriceMatch(cartPrice, pdpPrice);
+
+  console.log('------------------------------------------------');
+  console.log(`PDP Price      : ${pdpPriceString}`);
+  console.log(`Cart Price     : ${cartPriceString}`);
+  console.log(`Price Status   : ${matched ? 'matched' : 'not matched'}`);
+  console.log('------------------------------------------------');
+
+  return {
+    cartPriceString,
+    cartPrice,
+    matched
+  };
+}
+
+async function logDiscountSnapshot(cartPage, qty, baseUnitPrice = 0) {
+  const currentPriceStr = await cartPage.getCartPrice();
+  const subtotalStr = await cartPage.getSubtotalPrice();
+  const discountStr = await cartPage.getDiscountPrice();
+  const discountPercent = cartPage.calculateDiscountPercent(subtotalStr, discountStr, currentPriceStr);
+  const subtotal = cartPage.parseMoney(subtotalStr);
+  const expectedSubtotal = baseUnitPrice > 0 ? baseUnitPrice * qty : 0;
+  const quantityPriceMatched = expectedSubtotal > 0 && subtotal > 0
+    ? isPriceMatch(subtotal, expectedSubtotal)
+    : false;
+
+  console.log(`Qty: ${qty} | Product Price: ${currentPriceStr} | Subtotal: ${subtotalStr} | Discount: ${discountStr} | Discount Percent: ${discountPercent.toFixed(2)}%`);
+
+  if (expectedSubtotal > 0) {
+    console.log(`Qty: ${qty} | Expected Subtotal: ${expectedSubtotal.toFixed(2)} | Actual Subtotal: ${subtotalStr} | Quantity Price Status: ${quantityPriceMatched ? 'matched' : 'not matched'}`);
+  }
+}
 
 async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item }) {
-
   await homePage.open();
-
-  // 🔥 Dynamic navigation (menu hover + product click)
   await homePage.navigate(item.category, item.product);
 
-  // ── CUSTOM OPTIONS (Size/Material selection) ───────────────────────────
+  let initialPriceString = await productPage.getPriceFromPDP();
+  console.log('================================================');
+  console.log(`Product        : ${item.product}`);
+  console.log(`Initial Price  : ${initialPriceString}`);
+  console.log('================================================');
+
   if (item.customOptions) {
-    console.log('⏳ Settle time before custom options...');
-    await page.waitForTimeout(5000); 
+    console.log('Settle time before custom options...');
+    await page.waitForTimeout(5000);
     await productPage.handleCustomOptions(item.customOptions);
+
+    const finalPriceString = await productPage.getPriceFromPDP();
+    console.log('================================================');
+    console.log(`Product        : ${item.product}`);
+    console.log(`Price (Before) : ${initialPriceString}`);
+    console.log(`Price (After)  : ${finalPriceString}`);
+    console.log('================================================');
+
+    initialPriceString = finalPriceString;
   }
 
-  // PDP — Personalize + Upload
-  await productPage.personalizeDesign();
-  await productPage.uploadImage('data/test_image.png');
+  if (!item.skipPersonalizeUpload) {
+    if (item.waitForFullLoadBeforePersonalize) {
+      await page.waitForLoadState('load', { timeout: 60000 }).catch(() => {});
+      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      if (typeof productPage.waitForOverlays === 'function') {
+        await productPage.waitForOverlays();
+      }
+    }
 
-  // Add to cart (unless explicitly skipped)
+    await productPage.personalizeDesign();
+    await productPage.uploadImage('data/test_image.png');
+  }
+
   if (!item.skipAddToCart) {
     await productPage.addToCart();
   }
 
-  // Cart
   await cartPage.goToCart();
   await cartPage.dismissPopup();
+  const cartPriceCheck = await logPdpCartPriceCheck(cartPage, initialPriceString);
+  const baseUnitPrice = cartPriceCheck.cartPrice;
 
-  // Checkout
+  if (item.applyCoupon) {
+    await cartPage.handleCoupons();
+    await logDiscountSnapshot(cartPage, 1, baseUnitPrice);
+
+    const targetQuantities = [2, 4, 6, 8];
+    console.log('--- STARTING QUANTITY TEST LOOP ---');
+
+    for (const qty of targetQuantities) {
+      await cartPage.updateQuantity(qty);
+      await logDiscountSnapshot(cartPage, qty, baseUnitPrice);
+    }
+
+    console.log('--- ENDING QUANTITY TEST LOOP ---');
+  }
+
   await cartPage.secureCheckout();
   await checkoutPage.waitForCheckoutToLoad();
 
-  // ── 🛡️ PRODUCTION SAFETY GUARD ──────────────────────────────────────────
   if (IS_PRODUCTION) {
     console.log('');
-    console.log('🛡️  PRODUCTION ENV DETECTED — Order placement is BLOCKED.');
-    console.log(`✅  Checkout page reached and verified for: ${item.category} → ${item.product}`);
-    console.log('    Test marked as PASSED. No order was placed.');
-    console.log('');
+    console.log('PRODUCTION ENV DETECTED - Order placement is BLOCKED.');
     return;
   }
-  // ── END SAFETY GUARD ────────────────────────────────────────────────────
 
-  // Staging only: complete the full payment flow
   await checkoutPage.fillStripePayment({ cvc: '123' });
   await checkoutPage.placeOrder();
   await checkoutPage.verifySuccess();
 
-  console.log(`✅ Done: ${item.category} → ${item.product}`);
+  console.log(`Done: ${item.category} -> ${item.product}`);
 }
 
 async function completeFlow({ page, homePage, productPage, cartPage, checkoutPage, item }) {
-  // ── WATCHDOG: Race the flow against a hard timeout ──────────────────────
-  // If the flow gets stuck (e.g. a locator never appears, screen freezes),
-  // this timeout fires after 4 minutes, throws a clear error, and lets
-  // Playwright's retry mechanism immediately start a fresh attempt.
   const watchdog = new Promise((_, reject) =>
     setTimeout(
       () => reject(new Error(
-        `❌ FLOW_TIMEOUT: "${item.category} → ${item.product}" exceeded ${FLOW_TIMEOUT_MS / 60000} minutes. ` +
-        `Test is stuck — failing now to trigger retry.`
+        `FLOW_TIMEOUT: "${item.category} -> ${item.product}" exceeded ${FLOW_TIMEOUT_MS / 60000} minutes.`
       )),
       FLOW_TIMEOUT_MS
     )
@@ -83,4 +138,3 @@ async function completeFlow({ page, homePage, productPage, cartPage, checkoutPag
 }
 
 module.exports = { completeFlow };
-

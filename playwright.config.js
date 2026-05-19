@@ -5,12 +5,15 @@ require('dotenv').config();
 // Forcefully clear JAVA_HOME to prevent Allure from crashing on systems with broken Java paths
 delete process.env.JAVA_HOME;
 
+const configuredRetries = Number(process.env.PLAYWRIGHT_RETRIES || process.env.RETRIES);
+const retries = Number.isInteger(configuredRetries) && configuredRetries >= 0 ? configuredRetries : 2;
+
 module.exports = defineConfig({
   globalSetup: './globalSetup.js',
   testDir: './tests',
   fullyParallel: false,
   workers: 1,
-  retries: 2,
+  retries,
   timeout: 300000,
   expect: {
     timeout: 40 * 1000,
@@ -18,12 +21,15 @@ module.exports = defineConfig({
   
   reporter: [
     ['list'],
+    ['./professional-allure-reporter.js'],
     ['allure-playwright', {
       detail: true,
       outputFolder: 'allure-results',
       suiteTitle: false,
       environmentInfo: {
-        Project: 'NeonEarth Web',
+        Project: 'Neonearth',
+        Application: 'Playwright Automation JS',
+        QA: 'QA Gaurav Jayant',
         BaseURL: process.env.BASE_URL || 'https://ne.signsigma.com/',
         Browser: 'Chromium',
       },
@@ -52,6 +58,7 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
+      retries,
       use: {
         browserName: 'chromium',
         storageState: 'playwright/.auth/user.json',

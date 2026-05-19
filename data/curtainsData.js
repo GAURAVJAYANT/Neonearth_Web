@@ -15,7 +15,7 @@ module.exports = [
   },
 
   {
-    category: 'Sheer Curtains Best ›',
+    category: 'Sheer Curtains',
     products: [
       'Velva Mist',
       'Linen Weave',

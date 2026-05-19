@@ -12,6 +12,7 @@ _div*
 # Allure
 /allure-results/
 /allure-report/
+/allure-report*.zip
 
 # Performance Reports
 /performance-results/

@@ -33,16 +33,16 @@ class CurtainsHomePage extends HomePage {
       let category;
 
       // Special handling for Sheer Curtains
-      if (categoryName.includes('Sheer')) {
-        category = this.page.getByRole('link', {
-          name: 'Sheer Curtains Best ›'
-        });
-      } else {
-        category = this.page.getByRole('link', {
-          name: categoryName,
-          exact: false
-        }).first();
-      }
+      // if (categoryName.includes('Sheer')) {
+      //   category = this.page.getByRole('link', {
+      //     name: 'Sheer Curtains Best ›'
+      //   });
+      // } else {
+      category = this.page.getByRole('link', {
+        name: categoryName,
+        exact: false
+      }).first();
+      // }
 
       await category.waitFor({
         state: 'visible',

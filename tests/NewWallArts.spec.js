@@ -1,5 +1,3 @@
-// tests/Fabrics.spec.js
-
 const { test } = require('@playwright/test');
 const NewWallArtsData = require('../data/NewWallArtsData');
 
@@ -7,42 +5,38 @@ const { NewWallArtsHomePage } = require('../pages/NewWallArtsHomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
-
 const { completeFlow } = require('../flows/completeFlow');
+
+const wallArtsCases = NewWallArtsData.flatMap((categoryData, categoryIndex) =>
+  categoryData.products.map((product, productIndex) => ({
+    category: categoryData.category,
+    product,
+    categoryIndex,
+    productIndex
+  }))
+);
 
 test.describe('All New Wall Arts E2E', () => {
   test.setTimeout(300000);
 
-  // Run all Wall Arts categories + products
-  NewWallArtsData.forEach((cat) => {
-    cat.products.forEach((product) => {
-      test(
-        `New Wall Arts - ${cat.category} → ${product.name}`,
-        async ({ page }) => {
-          console.log(
-            `Running: ${cat.category} → ${product.name}`
-          );
+  for (const { category, product, categoryIndex, productIndex } of wallArtsCases) {
+    test(`New Wall Arts - ${category} -> ${product.name} #${categoryIndex + 1}.${productIndex + 1}`, async ({ page }) => {
+      console.log(`Running: ${category} -> ${product.name}`);
 
-          // NewTapestry uses ProductPage only
-          const productPage = new ProductPage(page);
-
-          await completeFlow({
-            page,
-            homePage: new NewWallArtsHomePage(page),
-            productPage,
-            cartPage: new CartPage(page),
-            checkoutPage: new CheckoutPage(page),
-            item: { ...product,
-              category: cat.category,
-              product: product.name
-            }
-          });
-
-          console.log(
-            `✅ Completed: ${cat.category} → ${product.name}`
-          );
+      await completeFlow({
+        page,
+        homePage: new NewWallArtsHomePage(page),
+        productPage: new ProductPage(page),
+        cartPage: new CartPage(page),
+        checkoutPage: new CheckoutPage(page),
+        item: {
+          ...product,
+          category,
+          product: product.name
         }
-      );
+      });
+
+      console.log(`Completed: ${category} -> ${product.name}`);
     });
-  });
+  }
 });
