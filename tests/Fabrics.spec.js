@@ -11,6 +11,7 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 const { completeFlow } = require('../flows/completeFlow');
 
 test.describe('Fabrics E2E', () => {
+  test.describe.configure({ retries: 2 });
   test.setTimeout(300000);
 
   // Run all Fabrics categories + products

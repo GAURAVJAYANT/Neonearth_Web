@@ -1,5 +1,5 @@
 # Run Playwright tests and send one email with a matching PDF attachment.
-Set-Location $PSScriptRoot
+Set-Location (Split-Path $PSScriptRoot -Parent)
 
 Write-Host "`nRunning Playwright tests...`n" -ForegroundColor Cyan
 
@@ -16,13 +16,13 @@ Write-Host "`nTest execution completed (Exit Code: $testExitCode)." -ForegroundC
 Write-Host "`nSending Email Report..." -ForegroundColor Cyan
 # email-reporter.js generates test-results/report.pdf from the exact same HTML
 # used in the email body, so the PDF and email template always match.
-node email-reporter.js
+node reporters/email-reporter.js
 $emailExitCode = $LASTEXITCODE
 
 if ($emailExitCode -eq 0) {
     Write-Host "Email sent successfully." -ForegroundColor Green
 } else {
-    Write-Host "Email sending failed (Exit Code: $emailExitCode). Run 'node test-email-config.js' to diagnose." -ForegroundColor Yellow
+    Write-Host "Email sending failed (Exit Code: $emailExitCode). Run 'node scripts/test-email-config.js' to diagnose." -ForegroundColor Yellow
 }
 
 Write-Host "`nTest execution pipeline complete." -ForegroundColor Cyan

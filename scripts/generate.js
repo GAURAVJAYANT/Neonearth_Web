@@ -1,5 +1,5 @@
 require('dotenv').config();
-const AIEngine = require('./utils/ai');
+const AIEngine = require('../utils/ai');
 
 const story = process.argv[2];
 

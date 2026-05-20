@@ -1,5 +1,5 @@
-const AIEngine = require('./utils/ai');
-const { log } = require('./utils/helpers/logger');
+const AIEngine = require('../utils/ai');
+const { log } = require('../utils/helpers/logger');
 
 class AIReporter {
   async onTestEnd(test, result) {

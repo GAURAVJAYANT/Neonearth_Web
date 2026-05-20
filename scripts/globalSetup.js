@@ -31,7 +31,7 @@ module.exports = async function globalSetup(config) {
   }
 
   // ── Read credentials from Excel ───────────────────────────────────
-  const workbook = xlsx.readFile(path.join(__dirname, 'data/login_data.xlsx'));
+  const workbook = xlsx.readFile(path.join(__dirname, '../data/login_data.xlsx'));
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
   const loginData = xlsx.utils.sheet_to_json(sheet);
   const { username, password } = loginData[0];

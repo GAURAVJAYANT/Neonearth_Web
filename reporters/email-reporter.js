@@ -219,7 +219,7 @@ class EmailReporter {
       <strong>Execution Duration :</strong> ${stats.totalDuration}s<br>
       <strong>Execution ID :</strong> ${executionId}<br>
       <strong>Browser :</strong> Chromium<br>
-      <strong>Base URL :</strong> https://www.neonearth.com/
+      <strong>Base URL :</strong> ${process.env.BASE_URL || 'https://www.neonearth.com/'}
     </div>
 
     <h2 style="margin:20px 0 15px;font-size:18px;color:#000;font-weight:bold;">Execution Result Percentage</h2>
