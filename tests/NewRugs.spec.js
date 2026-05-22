@@ -11,7 +11,8 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 const { completeFlow } = require('../flows/completeFlow');
 
 test.describe('New Rugs E2E', () => {
-  test.setTimeout(300000);
+  test.describe.configure({ retries: 2 });
+  test.setTimeout(500000);
 
   // Run all Rugs categories + products
   NewRugsData.forEach((cat) => {

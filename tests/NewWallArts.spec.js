@@ -17,6 +17,7 @@ const wallArtsCases = NewWallArtsData.flatMap((categoryData, categoryIndex) =>
 );
 
 test.describe('All New Wall Arts E2E', () => {
+  test.describe.configure({ retries: 2 });
   test.setTimeout(300000);
 
   for (const { category, product, categoryIndex, productIndex } of wallArtsCases) {

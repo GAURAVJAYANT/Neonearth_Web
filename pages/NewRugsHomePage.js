@@ -3,39 +3,65 @@
 const { HomePage } = require('./HomePage');
 
 class NewRugsHomePage extends HomePage {
+
   constructor(page) {
     super(page);
 
-    // Top-level Rugs menu item
     this.menu = page.locator(
       'nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Rugs"))'
     );
   }
 
   async navigate(categoryName, productName) {
-    // Wait for Rugs menu
-    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
 
-    // Step 1: Open Rugs dropdown
-    await this.menu.hover();
-    await this.page.waitForTimeout(1000);
-    await this.waitForStability(this.menu);
+    // -----------------------------------
+    // Wait Main Menu
+    // -----------------------------------
 
-    // Step 2: Handle Category if provided (e.g., "Area Rugs")
+    await this.menu.waitFor({
+      state: 'visible',
+      timeout: 15000
+    });
+
+    // Hover Main Menu
+    await this.smartHover(this.menu);
+
+    console.log('✅ Hovered Rugs menu');
+
+    // IMPORTANT
+    // Allow mega menu animation
+    await this.page.waitForTimeout(2000);
+
+    // -----------------------------------
+    // Category Hover
+    // -----------------------------------
+
     if (categoryName) {
+
       const category = this.page.getByRole('link', {
         name: categoryName,
         exact: false
       }).first();
 
-      await category.waitFor({ state: 'visible', timeout: 15000 });
-      await this.waitForStability(category);
-      await category.hover({ force: true });
-      console.log(`Hovered category: ${categoryName}`);
-      await this.page.waitForTimeout(1500); // Wait for sub-menu to expand
+      await category.waitFor({
+        state: 'visible',
+        timeout: 15000
+      });
+
+      // Hover category slowly
+      await this.smartHover(category);
+
+      console.log(`✅ Hovered category: ${categoryName}`);
+
+      // VERY IMPORTANT
+      // Wait submenu render fully
+      await this.page.waitForTimeout(2500);
     }
 
-    // Step 3: Define Product locator
+    // -----------------------------------
+    // Product Locator
+    // -----------------------------------
+
     const searchName = productName.includes('-')
       ? productName.split('-').pop().trim()
       : productName;
@@ -45,21 +71,56 @@ class NewRugsHomePage extends HomePage {
       exact: false
     }).first();
 
-    // Step 4: Wait, Stabilize, and Click
-    await product.waitFor({ state: 'visible', timeout: 15000 });
+    // Wait until visible
+    await product.waitFor({
+      state: 'visible',
+      timeout: 15000
+    });
+
+    // Wait stability
     await this.waitForStability(product);
+
+    // Scroll
     await product.scrollIntoViewIfNeeded();
+
+    // VERY IMPORTANT
+    // Hover product FIRST
+    // Keeps submenu alive
+
+    await this.smartHover(product);
+
+    // Give menu time to stabilize
     await this.page.waitForTimeout(1000);
 
-    console.log(`Clicking product: ${searchName}`);
+    console.log(`🛒 Clicking product: ${searchName}`);
+
     try {
-      await product.click({ timeout: 10000 });
+
+      // Smart click
+      await this.smartClick(product);
+
     } catch (e) {
-      console.log(`⚠️ Standard click failed, trying force click...`);
-      await product.click({ force: true });
+
+      console.log(
+        '⚠️ Smart click failed, trying JS click...'
+      );
+
+      // Final fallback
+      await product.evaluate(el => el.click());
     }
 
-    console.log(`✅ Navigated: ${categoryName ? categoryName + ' → ' : ''}${searchName}`);
+    // Wait navigation complete
+    await this.page.waitForLoadState(
+      'domcontentloaded'
+    );
+
+    console.log(
+      `✅ Navigated Successfully: ${
+        categoryName
+          ? categoryName + ' → '
+          : ''
+      }${searchName}`
+    );
   }
 }
 
