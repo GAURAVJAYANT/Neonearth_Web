@@ -78,7 +78,9 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
     }
 
     await productPage.personalizeDesign();
-    await productPage.uploadImage('data/test_image.png');
+    await productPage.uploadImage('data/test_image.png', {
+      handleNextBackSide: !!item.handleNextBackSide
+    });
   }
 
   if (!item.skipAddToCart) {

@@ -1,6 +1,7 @@
 // utils/fixtures.js
 const base = require('@playwright/test');
 const { NewTapestryHomePage } = require('../pages/NewTapestryHomePage');
+const { NewPillowHomePage } = require('../pages/NewPillowHomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
@@ -9,6 +10,10 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 const test = base.test.extend({
   newTapestryHomePage: async ({ page }, use) => {
     const homePage = new NewTapestryHomePage(page);
+    await use(homePage);
+  },
+  newPillowHomePage: async ({ page }, use) => {
+    const homePage = new NewPillowHomePage(page);
     await use(homePage);
   },
   productPage: async ({ page }, use) => {
