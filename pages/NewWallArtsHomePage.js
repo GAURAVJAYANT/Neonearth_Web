@@ -72,10 +72,22 @@ class NewWallArtsHomePage extends HomePage {
       ? productName.split('-').pop().trim()
       : productName;
 
-    const product = this.page.getByRole('link', {
+    const isPosterPrintProduct =
+      categoryName === 'Poster Prints' &&
+      productName === 'Poster Print';
+
+    const productLink = this.page.getByRole('link', {
       name: searchName,
       exact: false
-    }).first();
+    });
+
+    const posterPrintText = this.page.locator('span.product-text', {
+      hasText: /^Poster Print$/
+    });
+
+    const product = isPosterPrintProduct
+      ? posterPrintText.first()
+      : productLink.first();
 
     // Wait until visible
     await product.waitFor({
@@ -107,7 +119,20 @@ class NewWallArtsHomePage extends HomePage {
       // stability
       // intercepted clicks
 
-      await this.smartClick(product);
+      if (isPosterPrintProduct) {
+        const posterPrintTarget = product.locator('xpath=ancestor::a[1]').first();
+        const clickTarget = await posterPrintTarget.count()
+          ? posterPrintTarget
+          : product;
+
+        await clickTarget.click({ timeout: 10000 }).catch(async () => {
+          await clickTarget.click({ force: true, timeout: 10000 }).catch(async () => {
+            await clickTarget.evaluate((element) => element.click());
+          });
+        });
+      } else {
+        await this.smartClick(product);
+      }
 
     } catch (e) {
 
