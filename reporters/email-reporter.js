@@ -65,7 +65,7 @@ class EmailReporter {
       const jsonStats = await this.statsFromJsonReport(5000);
       if (jsonStats && jsonStats.total > stats.total) {
         const notRun = jsonStats.total - stats.total;
-        stats = this.format({
+        const formatted = this.format({
           total: jsonStats.total,
           passed: stats.passed,
           failed: stats.failed,
@@ -73,6 +73,8 @@ class EmailReporter {
           totalDuration: parseFloat(stats.totalDuration) * 1000,
           retryWarnings: stats.retryWarnings,
         });
+        formatted.tests = jsonStats.tests || stats.tests;
+        stats = formatted;
       }
       await this.sendEmailReport(stats);
     }
@@ -80,10 +82,39 @@ class EmailReporter {
 
   // ── Stats builders ────────────────────────────────────────────────────────
 
+  parseCategoryAndProduct(title) {
+    const unified = title.replace(/→/g, '->');
+    
+    // Pattern 1: Prefix - Category -> Product Name
+    if (unified.includes(' - ') && unified.includes('->')) {
+      const parts = unified.split(' - ');
+      const prefix = parts[0].trim();
+      const rest = parts.slice(1).join(' - ');
+      const subParts = rest.split('->');
+      const category = subParts[0].trim();
+      const product = subParts.slice(1).join('->').replace(/#\d+\.\d+/, '').trim();
+      return { category, product };
+    }
+    
+    // Pattern 2: E2E Journey - Category - Product Name or similar (3+ parts separated by ' - ')
+    if (unified.includes(' - ')) {
+      const parts = unified.split(' - ');
+      if (parts.length >= 3) {
+        return { category: parts[1].trim(), product: parts[2].trim() };
+      } else if (parts.length === 2) {
+        return { category: parts[0].trim(), product: parts[1].trim() };
+      }
+    }
+    
+    // Default fallback:
+    return { category: 'General', product: title };
+  }
+
   buildStats() {
     if (this.recordedTests.size === 0) return null;
 
     let total = 0, passed = 0, failed = 0, skipped = 0, totalDuration = 0, retryWarnings = 0;
+    const tests = [];
 
     for (const test of this.recordedTests.values()) {
       total++;
@@ -97,19 +128,33 @@ class EmailReporter {
         ? 'passed'
         : (attempts[attempts.length - 1] || {}).status;
 
+      let isFlaky = false;
       if (finalStatus === 'passed') {
         passed++;
         if (statuses.length > 1 && statuses.slice(0, -1).some(s => s !== 'passed')) {
           retryWarnings++; // passed only after retry
+          isFlaky = true;
         }
       } else if (finalStatus === 'skipped') {
         skipped++;
       } else {
         failed++;
       }
+
+      const { category, product } = this.parseCategoryAndProduct(test.title);
+      tests.push({
+        title: test.title,
+        category,
+        product,
+        status: finalStatus,
+        isFlaky,
+        duration: (duration / 1000).toFixed(2)
+      });
     }
 
-    return this.format({ total, passed, failed, skipped, totalDuration, retryWarnings });
+    const formatted = this.format({ total, passed, failed, skipped, totalDuration, retryWarnings });
+    formatted.tests = tests;
+    return formatted;
   }
 
   async statsFromJsonReport(timeoutMs = 15000) {
@@ -132,6 +177,7 @@ class EmailReporter {
   parseJsonReport(data) {
     const counted = new Set();
     let total = 0, passed = 0, failed = 0, skipped = 0, totalDuration = 0, retryWarnings = 0;
+    const tests = [];
 
     const addTest = (test, suiteTitle) => {
       const key = `${suiteTitle}::${test.title}`;
@@ -148,16 +194,28 @@ class EmailReporter {
         ? 'passed'
         : statuses[statuses.length - 1] || (test.ok ? 'passed' : 'failed');
 
+      let isFlaky = false;
       if (finalStatus === 'passed') {
         passed++;
         if (statuses.length > 1 && statuses.slice(0, -1).some(s => s !== 'passed' && s !== 'expected')) {
           retryWarnings++;
+          isFlaky = true;
         }
       } else if (finalStatus === 'skipped') {
         skipped++;
       } else {
         failed++;
       }
+
+      const { category, product } = this.parseCategoryAndProduct(test.title);
+      tests.push({
+        title: test.title,
+        category,
+        product,
+        status: finalStatus,
+        isFlaky,
+        duration: (duration / 1000).toFixed(2)
+      });
     };
 
     const walk = (suite, parent = '') => {
@@ -172,7 +230,9 @@ class EmailReporter {
     };
 
     (data?.suites || []).forEach(s => walk(s));
-    return this.format({ total, passed, failed, skipped, totalDuration, retryWarnings });
+    const formatted = this.format({ total, passed, failed, skipped, totalDuration, retryWarnings });
+    formatted.tests = tests;
+    return formatted;
   }
 
   format({ total, passed, failed, skipped, totalDuration, retryWarnings }) {
@@ -198,11 +258,49 @@ class EmailReporter {
     const thStyle = 'padding:10px;border:1px solid #ddd;text-align:center;font-weight:bold;background-color:#f9f9f9;';
     const tdStyle = 'padding:10px;border:1px solid #ddd;text-align:center;';
 
+    let testRowsHtml = '';
+    if (stats.tests && stats.tests.length > 0) {
+      testRowsHtml = stats.tests.map(test => {
+        let statusStyle = 'padding:4px 8px;border-radius:4px;font-weight:bold;font-size:12px;display:inline-block;';
+        let statusText = test.status.toUpperCase();
+        if (test.isFlaky) {
+          statusStyle += 'background-color:#fff3cd;color:#856404;';
+          statusText = 'FLAKY';
+        } else if (test.status === 'passed') {
+          statusStyle += 'background-color:#d4edda;color:#155724;';
+        } else if (test.status === 'skipped') {
+          statusStyle += 'background-color:#e2e3e5;color:#383d41;';
+        } else {
+          statusStyle += 'background-color:#f8d7da;color:#721c24;';
+        }
+
+        return `
+          <tr style="page-break-inside:avoid;break-inside:avoid;">
+            <td style="${tdStyle}text-align:left;font-weight:bold;">${test.category}</td>
+            <td style="${tdStyle}text-align:left;">${test.product}</td>
+            <td style="${tdStyle}"><span style="${statusStyle}">${statusText}</span></td>
+            <td style="${tdStyle}">${test.duration}s</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
     return `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @media print {
+      tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      thead {
+        display: table-header-group;
+      }
+    }
+  </style>
 </head>
 <body style="margin:0;padding:20px;background-color:#f5f5f5;color:#333;font-family:Arial,'Segoe UI',sans-serif;">
   <div style="max-width:900px;margin:0 auto;background-color:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
@@ -259,6 +357,23 @@ class EmailReporter {
         <td style="${tdStyle}">${stats.retryWarnings}</td>
       </tr>
     </table>
+
+    ${testRowsHtml ? `
+    <h2 style="margin:25px 0 15px;font-size:18px;color:#000;font-weight:bold;">Detailed Test Results</h2>
+    <table style="width:100%;border-collapse:collapse;border:1px solid #ddd;margin-bottom:20px;">
+      <thead>
+        <tr>
+          <th style="${thStyle}text-align:left;">Category</th>
+          <th style="${thStyle}text-align:left;">Product / Test Name</th>
+          <th style="${thStyle}">Status</th>
+          <th style="${thStyle}">Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${testRowsHtml}
+      </tbody>
+    </table>
+    ` : ''}
 
     <p style="margin:20px 0 0;font-size:14px;line-height:1.6;">Please find the comprehensive report for this execution attached to this email.</p>
     <p style="margin:10px 0 20px;font-size:14px;line-height:1.6;"><strong>Regards,</strong><br>Neonearth QA Automation</p>
