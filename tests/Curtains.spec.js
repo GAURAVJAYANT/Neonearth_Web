@@ -10,8 +10,14 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 
 const { completeFlow } = require('../flows/completeFlow');
 
+const fileType = require('../data/fileList');
+
+
 test.describe('Curtains E2E', () => {
   test.setTimeout(300000);
+
+  const fileForThisTest = fileType[2];
+
 
   curtainsData
     .filter(cat => !cat.category.includes('Custom Drapes'))
@@ -37,7 +43,8 @@ test.describe('Curtains E2E', () => {
               category: cat.category,
               product,
               waitForFullLoadBeforePersonalize
-            }
+            },
+            file: fileForThisTest
           });
 
           console.log(`Completed: ${cat.category} -> ${product}`);

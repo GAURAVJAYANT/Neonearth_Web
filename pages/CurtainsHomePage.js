@@ -35,13 +35,13 @@ class CurtainsHomePage extends HomePage {
       // Special handling for Sheer Curtains
       // if (categoryName.includes('Sheer')) {
       //   category = this.page.getByRole('link', {
-      //     name: 'Sheer Curtains Best ›'
+      //     name: 'Sheer Curtains'
       //   });
       // } else {
-      category = this.page.getByRole('link', {
-        name: categoryName,
-        exact: false
-      }).first();
+        category = this.page.getByRole('link', {
+          name: categoryName,
+          exact: false
+        }).first();
       // }
 
       await category.waitFor({

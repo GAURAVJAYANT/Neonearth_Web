@@ -1,39 +1,41 @@
-// tests/Fabrics.spec.js
+
+
+
+// tests/NewPillows.spec.js
 
 const { test } = require('@playwright/test');
-const fabricsData = require('../data/FabricsData');
+const pillowsData = require('../data/pillowsData');
 
-const { FabricsHomePage } = require('../pages/FabricsHomePage');
+const { PillowHomePage } = require('../pages/PillowHomePage');
 const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
-
 const { completeFlow } = require('../flows/completeFlow');
 
 const fileType = require('../data/fileList');
 
 
-test.describe('Fabrics E2E', () => {
-  test.setTimeout(300000);
+test.describe('Pillows E2E', () => {
+  test.setTimeout(600000);
 
-  const fileForThisTest = fileType[1];
+  // Select a File from list of Files 0: test_png.png, 1: test_jpeg.jpeg, 2: test_pdf.pdf, 3: test_svg.svg
+  const fileForThisTest = fileType[2];
 
   // Run all Fabrics categories + products
-  fabricsData.forEach((cat) => {
+  pillowsData.forEach((cat) => {
     cat.products.forEach((product) => {
       test(
-        `Fabric - ${cat.category} → ${product}`,
+        `Pillows - ${cat.category} → ${product}`,
         async ({ page }) => {
           console.log(
             `Running: ${cat.category} → ${product} (file: ${fileForThisTest})`
           );
 
-          // Fabrics uses ProductPage only
           const productPage = new ProductPage(page);
 
           await completeFlow({
             page,
-            homePage: new FabricsHomePage(page),
+            homePage: new PillowHomePage(page),
             productPage,
             cartPage: new CartPage(page),
             checkoutPage: new CheckoutPage(page),

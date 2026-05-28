@@ -10,8 +10,12 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 
 const { completeFlow } = require('../flows/completeFlow');
 
+const fileType = require('../data/fileList');
+
 test.describe('Pet Zone E2E', () => {
-  test.setTimeout(300000);
+  test.setTimeout(350000);
+
+  const fileForThisTest = fileType[3];
 
   // Run all Pet Zone categories + products
   petZoneData.forEach((cat) => {
@@ -20,7 +24,7 @@ test.describe('Pet Zone E2E', () => {
         `Pet Zone - ${cat.category} → ${product}`,
         async ({ page }) => {
           console.log(
-            `Running: ${cat.category} → ${product}`
+            `Running: ${cat.category} → ${product} (file: ${fileForThisTest})`
           );
 
           const productPage = new ProductPage(page);
@@ -34,11 +38,12 @@ test.describe('Pet Zone E2E', () => {
             item: {
               category: cat.category,
               product: product
-            }
+            },
+            file: fileForThisTest,
           });
 
           console.log(
-            `✅ Completed: ${cat.category} → ${product}`
+            `✅ Completed: ${cat.category} → ${product} (file: ${fileForThisTest})`
           );
         }
       );

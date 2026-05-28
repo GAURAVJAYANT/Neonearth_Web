@@ -43,7 +43,7 @@ async function logDiscountSnapshot(cartPage, qty, baseUnitPrice = 0) {
   }
 }
 
-async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item }) {
+async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item, file }) {
   await homePage.open();
   await homePage.navigate(item.category, item.product);
 
@@ -78,7 +78,9 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
     }
 
     await productPage.personalizeDesign();
-    await productPage.uploadImage('data/test_image.png');
+    await productPage.uploadImage(file);
+
+    await productPage.skipNextSideButton();
   }
 
   if (!item.skipAddToCart) {
@@ -121,7 +123,7 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
   console.log(`Done: ${item.category} -> ${item.product}`);
 }
 
-async function completeFlow({ page, homePage, productPage, cartPage, checkoutPage, item }) {
+async function completeFlow({ page, homePage, productPage, cartPage, checkoutPage, item, file }) {
   const watchdog = new Promise((_, reject) =>
     setTimeout(
       () => reject(new Error(
@@ -132,7 +134,7 @@ async function completeFlow({ page, homePage, productPage, cartPage, checkoutPag
   );
 
   await Promise.race([
-    _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item }),
+    _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item, file }),
     watchdog
   ]);
 }
