@@ -21,7 +21,7 @@ class CheckoutPage extends SmartPage {
   async fillShippingDetails(details) {
     console.log('Step: Filling Shipping Details...');
     const { firstName, lastName, phone, address, city, postcode, email } = details;
-    
+
     // Email — optional
     try {
       const emailInput = this.page.locator('#email');
@@ -38,12 +38,12 @@ class CheckoutPage extends SmartPage {
 
     // Address Details
     await this.smartFill(this.addressInput, address || '123 Main Street');
-    
+
     try {
       if (await this.aptInput.isVisible({ timeout: 2000 })) {
         await this.smartFill(this.aptInput, 'hno 31');
       }
-    } catch (e) {}
+    } catch (e) { }
 
     await this.smartFill(this.postcodeInput, postcode || '10001');
     await this.smartFill(this.cityInput, city || 'New York');
@@ -59,7 +59,7 @@ class CheckoutPage extends SmartPage {
 
     // Robust Scroll to Payment Method
     await this.smartAssertVisible(this.page.getByRole('heading', { name: 'Payment Method' }));
-    
+
     // Wait for at least one Stripe iframe to be present
     await this.page.waitForSelector('iframe[src*="stripe"]', { state: 'attached', timeout: 30000 });
     await this.page.waitForTimeout(2000); // Stripe iframe transition settle time
@@ -83,7 +83,7 @@ class CheckoutPage extends SmartPage {
           console.log(`  ✅ CVC iframe matched via: ${selector}`);
           break;
         }
-      } catch {}
+      } catch { }
     }
 
     // Fallback: scan ALL Stripe iframes
@@ -164,7 +164,7 @@ class CheckoutPage extends SmartPage {
           return; // Done — Order ID is on screen
         }
       }
-      
+
       const bodyText = await this.page.innerText('body').catch(() => '');
       if (bodyText.match(/Order\s*#?\s*([0-9A-Z-]+)/i) || bodyText.match(/#([0-9]{5,})/)) {
         console.log('  ✅ Order ID text found on page.');
@@ -180,29 +180,29 @@ class CheckoutPage extends SmartPage {
   async verifySuccess() {
     if (IS_PRODUCTION) return;
     console.log('Step: Verifying Order Success...');
-    
+
     // Ensure loaders are gone and success content has arrived
     await this.waitForLoaderSilence(60000, 3000);
 
     const finalUrl = this.page.url();
     console.log(`  Final URL: ${finalUrl}`);
-    
+
     // Robust success check (URL or Confirmation Message)
-    const isSuccess = finalUrl.includes('success') || 
-                     await this.page.locator('h1, .page-title, .checkout-success').filter({ hasText: /Thank you|Success/i }).count() > 0;
-    
+    const isSuccess = finalUrl.includes('success') ||
+      await this.page.locator('h1, .page-title, .checkout-success').filter({ hasText: /Thank you|Success/i }).count() > 0;
+
     if (!isSuccess) {
       console.error('  ❌ Success state not confirmed.');
       throw new Error('Success verification failed: Not on success page.');
     }
-    
+
     console.log('✅ Journey Complete! Order placed successfully.');
   }
 
   async printOrderHash() {
     if (IS_PRODUCTION) return;
     console.log('Step 13: Retrieving and printing Order Number...');
-    
+
     // Scavenging locators (from specific to generic)
     const orderLocators = [
       '.order-number',
@@ -224,7 +224,7 @@ class CheckoutPage extends SmartPage {
             break;
           }
         }
-      } catch (e) {}
+      } catch (e) { }
     }
 
     if (!found) {
@@ -244,7 +244,7 @@ class CheckoutPage extends SmartPage {
     const start = Date.now();
 
     await this.page.waitForURL(/checkout/, { timeout: 45000 });
-    
+
     // Wait for core components
     await Promise.all([
       this.page.getByRole('heading', { name: 'Payment Method' }).waitFor({ timeout: 60000 }),

@@ -33,7 +33,7 @@ class ProductPage extends SmartPage {
     console.log('Step: Clicking Personalize this Design');
     try {
       await this.page.waitForLoadState('networkidle', { timeout: 10000 });
-    } catch (e) {}
+    } catch (e) { }
     await this.waitForOverlays();
     await this.smartClick(this.personaliseBtn);
 
@@ -45,22 +45,30 @@ class ProductPage extends SmartPage {
     await this.page.waitForTimeout(2000);
   }
 
-  /**
-   * Uploads an image file.
-   *
-   * @param {string} imagePath - Relative path to the image file.
-   * @param {object} options
-   * @param {boolean} [options.handleNextBackSide=false]
-   *   Set to true for two-sided pillow products. After upload, a
-   *   "Next: Back Side" button appears and must be clicked before
-   *   the Preview button becomes available. Has no effect on other products.
-   */
-  async uploadImage(imagePath = 'data/test_image.png', options = {}) {
-    const { handleNextBackSide = false } = options;
-
+  async uploadImage(imagePath) {
     console.log('Step: Selecting Upload Your Design choice');
-    await this.smartClick(this.uploadYourDesignBtn);
-    console.log('✅ Clicked Upload Your Design');
+    if (await this.uploadYourDesignBtn.isVisible()) {
+      await this.smartClick(this.uploadYourDesignBtn);
+      console.log('✅ Clicked Upload Your Design');
+    } else {
+      console.log('  (Upload Your Design button not visible, skipping click)');
+    }
+  // /**
+  //  * Uploads an image file.
+  //  *
+  //  * @param {string} imagePath - Relative path to the image file.
+  //  * @param {object} options
+  //  * @param {boolean} [options.handleNextBackSide=false]
+  //  *   Set to true for two-sided pillow products. After upload, a
+  //  *   "Next: Back Side" button appears and must be clicked before
+  //  *   the Preview button becomes available. Has no effect on other products.
+  //  */
+  // async uploadImage(imagePath = 'data/test_image.png', options = {}) {
+  //   const { handleNextBackSide = false } = options;
+
+  //   console.log('Step: Selecting Upload Your Design choice');
+  //   await this.smartClick(this.uploadYourDesignBtn);
+  //   console.log('✅ Clicked Upload Your Design');
 
     // Wait for the upload area to stabilize
     await this.uploadFileText.waitFor({ state: 'visible', timeout: 20000 });
@@ -112,13 +120,36 @@ class ProductPage extends SmartPage {
     // ─────────────────────────────────────────────────────────────────
 
     // Wait for the "Preview" button to become active or visible after upload
-    await this.previewBtn.waitFor({ state: 'visible', timeout: 45000 });
-    await this.page.waitForTimeout(2000);
+    // await this.previewBtn.waitFor({ state: 'visible', timeout: 45000 });
+    // await this.page.waitForTimeout(2000); 
   }
 
   async addToCart() {
     console.log('Step: Adding product to cart (including preview)...');
     await this.previewAndAddToCart();
+  }
+
+  async skipNextSideButton() {
+    while (!(await this.previewBtn.isVisible())) {
+      const nextSideBtn = this.page.getByRole('button', { name: /Next:/i }).first();
+
+      try {
+        await nextSideBtn.or(this.previewBtn).waitFor({ state: 'visible', timeout: 20000 });
+      } catch (e) {
+        console.log('Timeout waiting for Next or Preview button');
+        break;
+      }
+
+      if (await this.previewBtn.isVisible()) {
+        break;
+      }
+
+      if (await nextSideBtn.isVisible()) {
+        await nextSideBtn.click();
+      }
+    }
+    await this.previewBtn.waitFor({ state: 'visible', timeout: 45000 });
+    await this.page.waitForTimeout(2000);
   }
 
   async previewAndAddToCart() {
@@ -169,7 +200,7 @@ class ProductPage extends SmartPage {
 
     try {
       await this.page.waitForLoadState('networkidle', { timeout: 30000 });
-    } catch (_) {}
+    } catch (_) { }
     await this.page.waitForTimeout(3000);
   }
 
@@ -191,8 +222,8 @@ class ProductPage extends SmartPage {
     // 2. Click the target size in the list (short version)
     console.log(`Step: Clicking target size: 80″ x 65″ (nth:1)`);
     const shortSizeLoc = this.page.getByText('80″ x 65″').nth(1);
-    await shortSizeLoc.waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
-    await shortSizeLoc.click({ force: true }).catch(() => {});
+    await shortSizeLoc.waitFor({ state: 'visible', timeout: 15000 }).catch(() => { });
+    await shortSizeLoc.click({ force: true }).catch(() => { });
     await this.page.waitForTimeout(2000);
 
     // 3. Click the full updated summary string
