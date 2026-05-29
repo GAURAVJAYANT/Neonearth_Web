@@ -40,7 +40,7 @@ class ProductPage extends SmartPage {
     console.log('✅ Clicked Personalize this Design button');
     // Wait for the customizer options to appear instead of a fixed 8s
     await this.uploadYourDesignBtn.waitFor({ state: 'visible', timeout: 30000 }).catch(() => {
-      console.log('  ⚠️ uploadYourDesignBtn not visible after 30s, proceeding anyway...');
+      console.log('uploadYourDesignBtn not visible after 30s, proceeding anyway...');
     });
     await this.page.waitForTimeout(2000);
   }
