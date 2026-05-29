@@ -81,6 +81,9 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
     await productPage.uploadImage(file);
 
     await productPage.skipNextSideButton();
+    // await productPage.uploadImage('data/test_image.png', {
+    //   handleNextBackSide: !!item.handleNextBackSide
+    // });
   }
 
   if (!item.skipAddToCart) {

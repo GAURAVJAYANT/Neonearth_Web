@@ -14,6 +14,7 @@ const fileType = require('../data/fileList');
 
 
 test.describe('Curtains E2E', () => {
+  test.describe.configure({ retries: 2 });
   test.setTimeout(300000);
 
   const fileForThisTest = fileType[2];

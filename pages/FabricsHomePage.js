@@ -3,6 +3,7 @@
 const { HomePage } = require('./HomePage');
 
 class FabricsHomePage extends HomePage {
+
   constructor(page) {
     super(page);
 
@@ -12,16 +13,17 @@ class FabricsHomePage extends HomePage {
   }
 
   async navigate(categoryName, productName) {
-    // Wait for Fabrics menu
-    await this.menu.waitFor({
-      state: 'visible',
-      timeout: 15000
-    });
 
-    // Open Fabrics dropdown
-    await this.menu.hover();
+    // -----------------------------------
+    // Smart Hover Main Menu
+    // -----------------------------------
+
+    await this.smartHover(this.menu);
+
+    console.log('✅ Hovered Fabrics menu');
+
+    // Small wait for mega menu animation
     await this.page.waitForTimeout(1000);
-    await this.waitForStability(this.menu);
 
     // -----------------------------------
     // Category Hover
@@ -33,20 +35,18 @@ class FabricsHomePage extends HomePage {
       exact: false
     }).first();
 
-    await category.waitFor({
-      state: 'visible',
-      timeout: 15000
-    });
+    // Smart hover handles:
+    // visibility
+    // stability
+    // scrolling
+    // retries
 
-    await this.waitForStability(category);
-    await category.scrollIntoViewIfNeeded();
+    await this.smartHover(category);
 
-    await category.hover({
-      force: true
-    });
+    console.log(`✅ Hovered category: ${categoryName}`);
 
-    console.log(`Hovered category: ${categoryName}`);
-
+    // IMPORTANT
+    // Wait for submenu render
     await this.page.waitForTimeout(1500);
 
     // -----------------------------------
@@ -65,20 +65,27 @@ class FabricsHomePage extends HomePage {
       exact: false
     }).first();
 
-    await product.waitFor({
-      state: 'visible',
-      timeout: 15000
-    });
+    // Hover keeps submenu open
+    await this.smartHover(product);
 
-    await this.waitForStability(product);
-    await product.scrollIntoViewIfNeeded();
+    await this.page.waitForTimeout(500);
 
-    console.log(`Clicking product: ${searchName}`);
+    console.log(`🛒 Clicking product: ${searchName}`);
 
-    await product.click();
+    // Smart click handles:
+    // overlays
+    // intercepted click
+    // retries
+    // stability
+    // scrolling
+
+    await this.smartClick(product);
+
+    // Wait for navigation complete
+    await this.page.waitForLoadState('domcontentloaded');
 
     console.log(
-      `✅ Navigated: ${categoryName} → ${searchName}`
+      `✅ Navigated Successfully: ${categoryName} → ${searchName}`
     );
   }
 }

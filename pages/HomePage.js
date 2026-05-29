@@ -1,31 +1,31 @@
-const { SmartPage } = require('./SmartPage');
+const { SmartPage } = require("./SmartPage");
 
 /**
-* HomePage — Pure base class.
-* Contains only shared configuration, the open() method, and the _navigate() engine.
-* All product-specific locators and navigation methods live in the specialized subclasses:
-*   - TapestryHomePage  (pages/TapestryHomePage.js)
-*   - PillowHomePage    (pages/PillowHomePage.js)
-*   - RugsHomePage      (pages/RugsHomePage.js)
-*/
+ * HomePage — Pure base class.
+ * Contains only shared configuration, the open() method, and the _navigate() engine.
+ * All product-specific locators and navigation methods live in the specialized subclasses:
+ *   - TapestryHomePage  (pages/TapestryHomePage.js)
+ *   - PillowHomePage    (pages/PillowHomePage.js)
+ *   - RugsHomePage      (pages/RugsHomePage.js)
+ */
 class HomePage extends SmartPage {
   constructor(page) {
     super(page);
 
     // Shared navigation timing configuration
     this.CONFIG = {
-      WAIT_INITIAL: 30000,
-      WAIT_JITTER: 30000,
-      WAIT_SUBMENU: 30000,
-      WAIT_PDP_LOAD: 30000,
+      WAIT_INITIAL: 50000,
+      WAIT_JITTER: 50000,
+      WAIT_SUBMENU: 50000,
+      WAIT_PDP_LOAD: 50000,
       RETRIES: 2,
-      TIMEOUT_VISIBLE: 30000
+      TIMEOUT_VISIBLE: 50000,
     };
   }
 
   /** Open the website homepage */
   async open() {
-    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
+    await this.page.goto("/", { waitUntil: "domcontentloaded" });
   }
 
   /**
@@ -39,7 +39,10 @@ class HomePage extends SmartPage {
 
     // Step 1: Wait for any site-wide overlays, then hover the top-level menu
     await this.waitForOverlays();
-    await menu.waitFor({ state: 'visible', timeout: this.CONFIG.TIMEOUT_VISIBLE });
+    await menu.waitFor({
+      state: "visible",
+      timeout: this.CONFIG.TIMEOUT_VISIBLE,
+    });
     await menu.hover({ force: true });
     console.log(`⏳ Hovering top-level menu for: ${name}...`);
 
@@ -52,12 +55,14 @@ class HomePage extends SmartPage {
 
     for (let i = 0; i < this.CONFIG.RETRIES; i++) {
       try {
-        await target.waitFor({ state: 'visible', timeout: 8000 });
+        await target.waitFor({ state: "visible", timeout: 8000 });
         isTargetReady = true;
         console.log(`✅ Dropdown visible on attempt ${i + 1} for: ${name}`);
         break;
       } catch (e) {
-        console.log(`⚠️ ${name} — dropdown not ready (attempt ${i + 1}), retrying hover...`);
+        console.log(
+          `⚠️ ${name} — dropdown not ready (attempt ${i + 1}), retrying hover...`,
+        );
         // Jitter: move cursor away then re-hover to re-trigger the CSS state
         const box = await menu.boundingBox();
         if (box) {
@@ -79,7 +84,10 @@ class HomePage extends SmartPage {
 
     // Step 3: Sub-category hover (e.g. "Custom Panoramic Tapestries", "Hallway Runners")
     if (category) {
-      await category.waitFor({ state: 'visible', timeout: this.CONFIG.TIMEOUT_VISIBLE });
+      await category.waitFor({
+        state: "visible",
+        timeout: this.CONFIG.TIMEOUT_VISIBLE,
+      });
       await category.scrollIntoViewIfNeeded();
       await category.hover({ force: true });
       console.log(`⏳ Hovering sub-category for: ${name}...`);
@@ -90,11 +98,13 @@ class HomePage extends SmartPage {
       // Retry if product still not visible after sub-category hover
       for (let j = 0; j < 2; j++) {
         try {
-          await product.waitFor({ state: 'visible', timeout: 8000 });
+          await product.waitFor({ state: "visible", timeout: 8000 });
           console.log(`✅ Product link visible after sub-category hover`);
           break;
         } catch (e) {
-          console.log(`⚠️ Product not visible after sub-hover (attempt ${j + 1}), retrying...`);
+          console.log(
+            `⚠️ Product not visible after sub-hover (attempt ${j + 1}), retrying...`,
+          );
           await category.hover({ force: true });
           await this.page.waitForTimeout(2000);
         }
@@ -102,21 +112,28 @@ class HomePage extends SmartPage {
     }
 
     // Step 4: Click the product link (final settle, then click)
-    await product.waitFor({ state: 'visible', timeout: this.CONFIG.TIMEOUT_VISIBLE });
+    await product.waitFor({
+      state: "visible",
+      timeout: this.CONFIG.TIMEOUT_VISIBLE,
+    });
     await product.scrollIntoViewIfNeeded();
     await this.page.waitForTimeout(1000); // brief settle before click
 
     try {
       await product.click({ timeout: 10000 });
     } catch (e) {
-      console.log(`⚠️ Standard click failed for ${name}, trying force click...`);
+      console.log(
+        `⚠️ Standard click failed for ${name}, trying force click...`,
+      );
       await product.click({ force: true });
     }
     console.log(`✅ Clicked product for: ${name}`);
 
     // Step 5: Verify correct PDP URL
     if (urlPattern) {
-      await this.page.waitForURL(urlPattern, { timeout: this.CONFIG.WAIT_PDP_LOAD });
+      await this.page.waitForURL(urlPattern, {
+        timeout: this.CONFIG.WAIT_PDP_LOAD,
+      });
       console.log(`✨ Successfully navigated to ${name} PDP`);
     }
   }

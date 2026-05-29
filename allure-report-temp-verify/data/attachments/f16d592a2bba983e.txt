@@ -1,0 +1,26 @@
+Status: FAILED
+Project: Neonearth
+Application: Playwright Automation JS
+QA Owner: QA Gaurav Jayant
+Test: Fabric - By Style → By Style - Satin
+Retry Attempt: 0/0
+Likely Category: Locator / element identification issue
+
+Failure Summary:
+Error: locator.waitFor: Test ended.
+
+Full Error:
+Error: locator.waitFor: Test ended.
+Call log:
+  - waiting for getByRole('link', { name: 'By Style' }).first() to be visible
+
+
+Stack Trace:
+Error: locator.waitFor: Test ended.
+Call log:
+  - waiting for getByRole('link', { name: 'By Style' }).first() to be visible
+
+    at FabricsHomePage.navigate (D:\Neonearth_Playwright_Automation\pages\FabricsHomePage.js:36:20)
+    at _runFlow (D:\Neonearth_Playwright_Automation\flows\completeFlow.js:48:3)
+    at completeFlow (D:\Neonearth_Playwright_Automation\flows\completeFlow.js:134:3)
+    at D:\Neonearth_Playwright_Automation\tests\Fabrics.spec.js:29:11

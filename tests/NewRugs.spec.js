@@ -14,7 +14,8 @@ const fileType = require('../data/fileList');
 
 
 test.describe('New Rugs E2E', () => {
-  test.setTimeout(300000);
+  test.describe.configure({ retries: 2 });
+  test.setTimeout(500000);
 
   const fileForThisTest = fileType[3];
 

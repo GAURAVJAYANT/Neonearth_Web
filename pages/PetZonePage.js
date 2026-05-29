@@ -3,38 +3,71 @@
 const { HomePage } = require('./HomePage');
 
 class PetZoneHomePage extends HomePage {
+
   constructor(page) {
     super(page);
 
+    // Top-level Pet Zone menu
     this.menu = page.locator(
       'nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Pet Zone"))'
     );
   }
 
   async navigate(categoryName, productName) {
-    // Wait for Pet Zone menu
-    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
 
-    // Step 1: Open Pet Zone dropdown
-    await this.menu.hover();
-    await this.page.waitForTimeout(1000);
-    await this.waitForStability(this.menu);
+    // -----------------------------------
+    // Step 1 → Open Pet Zone Dropdown
+    // -----------------------------------
 
-    // Step 2: Handle Category if provided
+    await this.menu.waitFor({
+      state: 'visible',
+      timeout: 15000
+    });
+
+    // Smart hover main menu
+    await this.smartHover(this.menu);
+
+    console.log('✅ Hovered Pet Zone menu');
+
+    // IMPORTANT
+    // Allow mega menu animation
+    await this.page.waitForTimeout(2000);
+
+    // -----------------------------------
+    // Step 2 → Category Handling
+    // -----------------------------------
+
     if (categoryName) {
+
       const category = this.page.getByRole('link', {
         name: categoryName,
         exact: false
       }).first();
 
-      await category.waitFor({ state: 'visible', timeout: 15000 });
-      await this.waitForStability(category);
-      await category.hover({ force: true });
-      console.log(`Hovered category: ${categoryName}`);
-      await this.page.waitForTimeout(1500); // Wait for sub-menu to expand
+      await category.waitFor({
+        state: 'visible',
+        timeout: 15000
+      });
+
+      // Smart hover handles:
+      // visibility
+      // stability
+      // scrolling
+      // retries
+
+      await this.smartHover(category);
+
+      console.log(`✅ Hovered category: ${categoryName}`);
+
+      // IMPORTANT
+      // Wait for submenu render
+      await this.page.waitForTimeout(2500);
     }
 
-    // Step 3: Define Product locator
+    // -----------------------------------
+    // Step 3 → Product Locator
+    // -----------------------------------
+
     const searchName = productName.includes('-')
       ? productName.split('-').pop().trim()
       : productName;
@@ -44,21 +77,60 @@ class PetZoneHomePage extends HomePage {
       exact: false
     }).first();
 
-    // Step 4: Wait, Stabilize, and Click
-    await product.waitFor({ state: 'visible', timeout: 15000 });
+    // Wait until visible
+    await product.waitFor({
+      state: 'visible',
+      timeout: 15000
+    });
+
+    // Wait for stable submenu render
     await this.waitForStability(product);
+
     await product.scrollIntoViewIfNeeded();
+
+    // VERY IMPORTANT
+    // Hover product first
+    // keeps submenu alive
+
+    await this.smartHover(product);
+
+    // Give menu time to stabilize
     await this.page.waitForTimeout(1000);
 
-    console.log(`Clicking product: ${searchName}`);
+    console.log(`🛒 Clicking product: ${searchName}`);
+
     try {
-      await product.click({ timeout: 10000 });
+
+      // Smart click handles:
+      // overlays
+      // retries
+      // stability
+      // intercepted clicks
+
+      await this.smartClick(product);
+
     } catch (e) {
-      console.log(`⚠️ Standard click failed, trying force click...`);
-      await product.click({ force: true });
+
+      console.log(
+        '⚠️ Smart click failed, trying JS click...'
+      );
+
+      // Final fallback
+      await product.evaluate(el => el.click());
     }
 
-    console.log(`✅ Navigated: ${categoryName ? categoryName + ' → ' : ''}${searchName}`);
+    // Wait navigation complete
+    await this.page.waitForLoadState(
+      'domcontentloaded'
+    );
+
+    console.log(
+      `✅ Navigated Successfully: ${
+        categoryName
+          ? categoryName + ' → '
+          : ''
+      }${searchName}`
+    );
   }
 }
 

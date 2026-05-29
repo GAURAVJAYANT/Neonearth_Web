@@ -11,6 +11,10 @@ class ProductPage extends SmartPage {
     this.uploadYourDesignBtn = page.getByRole('button', { name: /Upload Your Design/i });
     this.uploadFileText = page.getByText('Browse Files');
     this.nextFrontSideBtn = page.getByRole('button', { name: 'Next: Front Side' });
+    // Pillow-only: appears after upload on two-sided products (e.g. Throw Pillows)
+    this.nextBackSideBtn = page
+      .locator('button')
+      .filter({ hasText: /^\s*Next\s*:?\s*Back\s*Side\s*$/i });
     this.previewBtn = page.getByRole('button', { name: 'Preview' });
     this.addToCartBtn = page.getByRole('button', { name: /Add To Cart/i });
     this.priceSpan = page.locator('span.sc-fcdfa9f9-7.fFkMiV');
@@ -49,6 +53,22 @@ class ProductPage extends SmartPage {
     } else {
       console.log('  (Upload Your Design button not visible, skipping click)');
     }
+  // /**
+  //  * Uploads an image file.
+  //  *
+  //  * @param {string} imagePath - Relative path to the image file.
+  //  * @param {object} options
+  //  * @param {boolean} [options.handleNextBackSide=false]
+  //  *   Set to true for two-sided pillow products. After upload, a
+  //  *   "Next: Back Side" button appears and must be clicked before
+  //  *   the Preview button becomes available. Has no effect on other products.
+  //  */
+  // async uploadImage(imagePath = 'data/test_image.png', options = {}) {
+  //   const { handleNextBackSide = false } = options;
+
+  //   console.log('Step: Selecting Upload Your Design choice');
+  //   await this.smartClick(this.uploadYourDesignBtn);
+  //   console.log('✅ Clicked Upload Your Design');
 
     // Wait for the upload area to stabilize
     await this.uploadFileText.waitFor({ state: 'visible', timeout: 20000 });
@@ -66,6 +86,39 @@ class ProductPage extends SmartPage {
     await fileChooser.setFiles(resolvedImagePath);
 
     console.log(`✅ File uploaded successfully from: ${resolvedImagePath}`);
+
+    // ── Pillow-only: "Next: Back Side" step ──────────────────────────
+    // For two-sided products (e.g. Throw Pillows) a "Next: Back Side"
+    // button appears after upload. We must click it before the
+    // Preview button becomes available.
+    // This block is completely skipped for all non-pillow products.
+    if (handleNextBackSide) {
+      console.log('Step: Waiting for "Next: Back Side" button (pillow flow)...');
+      const nextBackSideButton = this.nextBackSideBtn.filter({ visible: true }).first();
+      const nextBackSideVisible = await nextBackSideButton
+        .waitFor({ state: 'visible', timeout: 45000 })
+        .then(() => true)
+        .catch(() => false);
+
+      if (nextBackSideVisible) {
+        console.log('Step: Clicking "Next: Back Side"');
+        await this.waitForStability(nextBackSideButton);
+        await nextBackSideButton.scrollIntoViewIfNeeded();
+        await nextBackSideButton.click({ timeout: 10000 }).catch(async () => {
+          console.log('  ⚠️ Normal click failed for "Next: Back Side", retrying with force');
+          await nextBackSideButton.click({ force: true, timeout: 10000 }).catch(async () => {
+            console.log('  ⚠️ Force click failed for "Next: Back Side", retrying with DOM click');
+            await nextBackSideButton.evaluate((button) => button.click());
+          });
+        });
+        console.log('✅ Clicked "Next: Back Side"');
+        await this.page.waitForTimeout(1000);
+      } else {
+        console.log('  (No "Next: Back Side" button found, continuing to Preview)');
+      }
+    }
+    // ─────────────────────────────────────────────────────────────────
+
     // Wait for the "Preview" button to become active or visible after upload
     // await this.previewBtn.waitFor({ state: 'visible', timeout: 45000 });
     // await this.page.waitForTimeout(2000); 

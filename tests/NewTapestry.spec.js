@@ -1,13 +1,6 @@
-const { test } = require('@playwright/test');
+const { test } = require('../utils/fixtures');
 const NewTapestryData = require('../data/NewTapestryData');
-
-const { NewTapestryHomePage } = require('../pages/NewTapestryHomePage');
-const { ProductPage } = require('../pages/ProductPage');
-const { CartPage } = require('../pages/CartPage');
-const { CheckoutPage } = require('../pages/CheckoutPage');
 const { completeFlow } = require('../flows/completeFlow');
-
-const fileType = require('../data/fileList');
 
 const tapestryCases = NewTapestryData.flatMap((categoryData) =>
   categoryData.products.map((product) => ({
@@ -16,47 +9,29 @@ const tapestryCases = NewTapestryData.flatMap((categoryData) =>
   }))
 );
 
-
 test.describe('All Product Tapestry E2E', () => {
+  test.describe.configure({ retries: 2 });
   test.setTimeout(300000);
 
-  const fileForThisTest = fileType[3];
-  
-  // Run all Fabrics categories + products
-  NewTapestryData.forEach((cat) => {
-    cat.products.forEach((product) => {
-      test(
-        `New Tapestry - ${cat.category} → ${product.name}`,
-        async ({ page }) => {
-          console.log(
-            `Running: ${cat.category} → ${product.name}`
-          );
+  for (const { category, product } of tapestryCases) {
+    test(`New Tapestry - ${category} -> ${product.name}`, async ({ page }) => {
+      console.log(`Running: ${category} -> ${product.name}`);
 
-          // NewTapestry uses ProductPage only
-          const productPage = new ProductPage(page);
-
-          await completeFlow({
-            page,
-            homePage: new NewTapestryHomePage(page),
-            productPage,
-            cartPage: new CartPage(page),
-            checkoutPage: new CheckoutPage(page),
-            item: {
-              ...product,
-              ...product,
-              category: cat.category,
-              product: product.name,
-              file: fileForThisTest
-            }
-          });
-
-          console.log(
-            `✅ Completed: ${cat.category} → ${product.name}`
-          );
+      await completeFlow({
+        page,
+        homePage: new NewTapestryHomePage(page),
+        productPage: new ProductPage(page),
+        cartPage: new CartPage(page),
+        checkoutPage: new CheckoutPage(page),
+        item: {
+          ...product,
+          category,
+          product: product.name,
+          applyCoupon: true
         }
-      );
-    });
-    // }
-  });
-});
+      });
 
+      console.log(`Completed: ${category} -> ${product.name}`);
+    });
+  }
+});

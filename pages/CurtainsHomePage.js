@@ -3,6 +3,7 @@
 const { HomePage } = require('./HomePage');
 
 class CurtainsHomePage extends HomePage {
+
   constructor(page) {
     super(page);
 
@@ -13,53 +14,56 @@ class CurtainsHomePage extends HomePage {
   }
 
   async navigate(categoryName, productName) {
-    // Wait for Curtains menu
+
+    // ----------------------------------
+    // Step 1 → Open Curtains Dropdown
+    // ----------------------------------
+
     await this.menu.waitFor({
       state: 'visible',
       timeout: 15000
     });
 
-    // Step 1 → Open Curtains dropdown
-    await this.menu.hover();
-    await this.page.waitForTimeout(1000);
-    await this.waitForStability(this.menu);
+    // Smart hover main menu
+    await this.smartHover(this.menu);
+
+    console.log('✅ Hovered Curtains menu');
+
+    // IMPORTANT
+    // Allow mega menu animation
+    await this.page.waitForTimeout(2000);
 
     // ----------------------------------
     // Step 2 → Category Handling
     // ----------------------------------
 
-    // Custom Drapes is usually default active
+    // Custom Drapes usually default active
     if (!categoryName.includes('Custom Drapes')) {
-      let category;
 
-      // Special handling for Sheer Curtains
-      // if (categoryName.includes('Sheer')) {
-      //   category = this.page.getByRole('link', {
-      //     name: 'Sheer Curtains'
-      //   });
-      // } else {
-        category = this.page.getByRole('link', {
-          name: categoryName,
-          exact: false
-        }).first();
-      // }
+      const category = this.page.getByRole('link', {
+        name: categoryName,
+        exact: false
+      }).first();
 
       await category.waitFor({
         state: 'visible',
+        state: 'visible',
         timeout: 15000
       });
-      await this.waitForStability(category);
 
-      await category.scrollIntoViewIfNeeded();
+      // Smart hover handles:
+      // visibility
+      // stability
+      // scrolling
+      // retries
 
-      // Only hover, no click
-      await category.hover({
-        force: true
-      });
+      await this.smartHover(category);
 
-      // Wait for submenu products to refresh
-      await this.page.waitForTimeout(1500);
-      await this.waitForStability(category);
+      console.log(`✅ Hovered category: ${categoryName}`);
+
+      // IMPORTANT
+      // Wait for submenu refresh/render
+      await this.page.waitForTimeout(2500);
     }
 
     // ----------------------------------
@@ -75,24 +79,52 @@ class CurtainsHomePage extends HomePage {
       state: 'visible',
       timeout: 15000
     });
+
+    // Wait for stable submenu render
     await this.waitForStability(product);
 
     await product.scrollIntoViewIfNeeded();
+
+    // VERY IMPORTANT
+    // Hover product first
+    // keeps submenu alive
+
+    await this.smartHover(product);
+
+    // Give menu time to stabilize
     await this.page.waitForTimeout(1000);
 
+    console.log(`🛒 Clicking product: ${productName}`);
+
     try {
-      console.log(`🖱️ Attempting click on: ${productName}`);
-      await product.click({ timeout: 10000 });
+
+      // Smart click handles:
+      // overlays
+      // retries
+      // stability
+      // intercepted clicks
+
+      await this.smartClick(product);
+
     } catch (e) {
-      console.log(`⚠️ Standard click failed for ${productName}, trying force click...`);
-      await product.click({ force: true });
+
+      console.log(
+        `⚠️ Smart click failed for ${productName}, trying JS click...`
+      );
+
+      // Final fallback
+      await product.evaluate(el => el.click());
     }
 
+    // Wait navigation complete
+    await this.page.waitForLoadState(
+      'domcontentloaded'
+    );
+
     console.log(
-      `Navigated: ${categoryName} → ${productName}`
+      `✅ Navigated Successfully: ${categoryName} → ${productName}`
     );
   }
 }
 
 module.exports = { CurtainsHomePage };
- 
