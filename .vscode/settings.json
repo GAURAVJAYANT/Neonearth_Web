@@ -3,5 +3,20 @@
     "playwright.reuseBrowser": false,
     "playwright.showTrace": false,
     "playwright.env": {},
-    "playwright.configFile": "playwright.config.js"
+    "playwright.configFile": "playwright.config.js",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/allure-results": true,
+        "**/test-results": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/allure-results": true
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }

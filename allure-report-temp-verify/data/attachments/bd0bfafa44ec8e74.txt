@@ -1,0 +1,61 @@
+Running: By Style → By Style - Polyester
+Hovered category: By Style
+Clicking product: Polyester
+✅ Navigated: By Style → Polyester
+================================================
+Product        : By Style - Polyester
+Initial Price  : $14.74
+================================================
+Step: Clicking Personalize this Design
+✅ Clicked Personalize this Design button
+Step: Selecting Upload Your Design choice
+✅ Clicked Upload Your Design
+Step: Waiting for "Browse Files" button
+Step: Uploading file from: D:\Neonearth_Playwright_Automation\data\test_image.png
+✅ File uploaded successfully from: D:\Neonearth_Playwright_Automation\data\test_image.png
+Step: Adding product to cart (including preview)...
+  (No "Next: Front Side" button found, skipping)
+✅ Clicked preview button
+Step: Waiting for visible Add to Cart button...
+Debug: Found 3 total Add to Cart buttons in DOM.
+Step: Clicking Add to Cart (with API validation and smartClick)...
+[LOG] 2026-05-19T05:31:24.644Z - 🔗 Validating API: [Add To Cart API] — matching: "/cart"
+[LOG] 2026-05-19T05:31:30.019Z -   ✅ [Add To Cart API] HTTP 200 (expected: 200) — 5375ms
+✅ Add to Cart API confirmed (HTTP 200, 5375ms)
+Step 5: Navigating to cart...
+[LOG] 2026-05-19T05:31:41.417Z - 📊 Measuring performance for: Cart Page
+[LOG] 2026-05-19T05:31:42.227Z - 
+┌─── 📊 Performance: Cart Page ─────────────────────────┐
+[LOG] 2026-05-19T05:31:42.227Z - │  TTFB               : 1496ms      🟢 PASS
+[LOG] 2026-05-19T05:31:42.227Z - │  DOM Ready          : 1963ms      🟢 PASS
+[LOG] 2026-05-19T05:31:42.227Z - │  Page Load          : 1971ms      🟢 PASS
+[LOG] 2026-05-19T05:31:42.227Z - │  First Paint (FCP)  : 1680ms      🟢 PASS
+[LOG] 2026-05-19T05:31:42.227Z - │  LCP                : 1680ms      🟢 PASS
+[LOG] 2026-05-19T05:31:42.227Z - └─────────────────────────────────────────────────────┘
+  Cart is populated
+------------------------------------------------
+PDP Price      : $14.74
+Cart Price     : $14.74
+Price Status   : matched
+------------------------------------------------
+Step 6: Clicking Secure Checkout...
+Click attempt #1...
+Navigation confirmed on attempt #1
+Final URL verified: https://www.neonearth.com/onepagecheckout
+Waiting for checkout to stabilize...
+[LOG] 2026-05-19T05:31:59.211Z -   ⏳ Watching for loaders to settle (max 30s)...
+[LOG] 2026-05-19T05:32:02.571Z -   🕐 Active loader detected: .spinner
+[LOG] 2026-05-19T05:32:08.365Z -   ✅ Loaders settled after 9.154s
+✅ Checkout ready (took 11121ms to fully load)
+[LOG] 2026-05-19T05:32:08.365Z - 📊 Measuring performance for: Checkout Page
+[LOG] 2026-05-19T05:32:08.965Z - 
+┌─── 📊 Performance: Checkout Page ─────────────────────┐
+[LOG] 2026-05-19T05:32:08.965Z - │  TTFB               : 1496ms      🟢 PASS
+[LOG] 2026-05-19T05:32:08.965Z - │  DOM Ready          : 1963ms      🟢 PASS
+[LOG] 2026-05-19T05:32:08.965Z - │  Page Load          : 1971ms      🟢 PASS
+[LOG] 2026-05-19T05:32:08.965Z - │  First Paint (FCP)  : 1680ms      🟢 PASS
+[LOG] 2026-05-19T05:32:08.965Z - │  LCP                : 1680ms      🟢 PASS
+[LOG] 2026-05-19T05:32:08.965Z - └─────────────────────────────────────────────────────┘
+
+PRODUCTION ENV DETECTED - Order placement is BLOCKED.
+✅ Completed: By Style → By Style - Polyester

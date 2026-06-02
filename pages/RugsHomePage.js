@@ -137,3 +137,4 @@ class RugsHomePage extends HomePage {
 }
 
 module.exports = { RugsHomePage };
+ 

@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "ms-playwright.playwright",
+    "ms-vscode.extension-pack-for-java",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}

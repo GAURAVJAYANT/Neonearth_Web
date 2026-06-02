@@ -17,100 +17,85 @@ class PillowHomePage extends HomePage {
     this.menu = page.locator('nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Pillows"))');
 
     // --- Pillow Category Locators ---
-    this.categories = {
-      throwPillows: page.getByRole('link', { name: /^Throw Pillows$/ }).first(),
-      cushions: page.locator('a[href="/cushions"]').first(),
-      bedPillows: page.locator('a[href*="/bed-pillows"]').first(),
-    };
+    // this.categories = {
+    //   throwPillows: page.getByRole('link', { name: /^Throw Pillows$/ }).first(),
+    //   cushions: page.locator('a[href="/cushions"]').first(),
+    //   bedPillows: page.locator('a[href*="/bed-pillows"]').first(),
+    // };
 
-    // --- Pillow Product Locators ---
-    this.products = {
-      squareThrowPillow: page.getByRole('link', { name: 'Custom Square Throw Pillow' }).first(),
-      rectangleThrowPillow: page.getByRole('link', { name: 'Custom Rectangle Throw Pillow' }).first(),
-      roundThrowPillow: page.getByRole('link', { name: 'Custom Round Throw Pillow' }).first(),
-      squareSeatCushion: page.locator('a[href*="square-seat"]').first(),
-      roundSeatCushion: page.locator('a[href*="round-seat"]').first(),
-      rectangleSeatCushion: page.locator('a[href*="rectangle-seat"]').first(),
-      bedPillow: page.getByText('Bed Pillow', { exact: true }),
-    };
+    // // --- Pillow Product Locators ---
+    // this.products = {
+    //   squareThrowPillow: page.getByRole('link', { name: 'Custom Square Throw Pillow' }).first(),
+    //   rectangleThrowPillow: page.getByRole('link', { name: 'Custom Rectangle Throw Pillow' }).first(),
+    //   roundThrowPillow: page.getByRole('link', { name: 'Custom Round Throw Pillow' }).first(),
+    //   squareSeatCushion: page.locator('a[href*="square-seat"]').first(),
+    //   roundSeatCushion: page.locator('a[href*="round-seat"]').first(),
+    //   rectangleSeatCushion: page.locator('a[href*="rectangle-seat"]').first(),
+    //   bedPillow: page.getByText('Bed Pillow', { exact: true }),
+    // };
   }
 
-  /** Navigate to: Pillows → Throw Pillows → Custom Square Throw Pillow */
-  async navigateToPillowProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.throwPillows,
-      product: this.products.squareThrowPillow,
-      urlPattern: /throw-pillow-p|pillow-p/i,
-      name: "Square Throw Pillow"
-    });
+  /** Common navigation method for Pillows */
+  async navigate(categoryName, productName) {
+    // Wait for Pillows menu
+    await this.menu.waitFor({ state: 'visible', timeout: 15000 });
+
+    // Step 1: Open Pillows dropdown
+    await this.menu.hover();
+    await this.page.waitForTimeout(1000);
+    await this.waitForStability(this.menu);
+
+    // Step 2: Handle Category if provided
+    if (categoryName) {
+      const category = this.page.getByRole('link', {
+        name: categoryName,
+        exact: false
+      }).first();
+
+      await category.waitFor({ state: 'visible', timeout: 15000 });
+      await this.waitForStability(category);
+      await category.hover({ force: true });
+      console.log(`Hovered category: ${categoryName}`);
+      await this.page.waitForTimeout(1500); // Wait for sub-menu to expand
+    }
+
+    // Step 3: Define Product locator
+    const searchName = productName.includes('-')
+      ? productName.split('-').pop().trim()
+      : productName;
+
+    const isBedPillow = searchName === 'Bed Pillow';
+
+    const product = this.page.getByRole('link', {
+      name: searchName,
+      exact: isBedPillow
+    }).first();
+
+    // Step 4: Wait, Stabilize, and Click
+    await product.waitFor({ state: 'visible', timeout: 15000 });
+    await this.waitForStability(product);
+    await product.scrollIntoViewIfNeeded();
+    await this.page.waitForTimeout(1000);
+
+    console.log(`Clicking product: ${searchName}`);
+    try {
+      await product.click({ timeout: 10000 });
+    } catch (e) {
+      console.log(`⚠️ Standard click failed, trying force click...`);
+      await product.click({ force: true });
+    }
+
+    console.log(`✅ Navigated: ${categoryName ? categoryName + ' → ' : ''}${searchName}`);
   }
 
-  /** Navigate to: Pillows → Throw Pillows → Custom Rectangle Throw Pillow */
-  async navigateToRectangleThrowPillowProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.throwPillows,
-      product: this.products.rectangleThrowPillow,
-      urlPattern: /throw-pillow-p|pillow-p/i,
-      name: "Rectangle Throw Pillow"
-    });
-  }
-
-  /** Navigate to: Pillows → Throw Pillows → Custom Round Throw Pillow */
-  async navigateToRoundThrowPillowProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.throwPillows,
-      product: this.products.roundThrowPillow,
-      urlPattern: /throw-pillow-p|pillow-p/i,
-      name: "Round Throw Pillow"
-    });
-  }
-
-  /** Navigate to: Pillows → Cushions → Square Seat Cushion */
-  async navigateToSquareSeatCushionProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.cushions,
-      product: this.products.squareSeatCushion,
-      urlPattern: /cushion-p|seat-p/i,
-      name: "Square Seat Cushion"
-    });
-  }
-
-  /** Navigate to: Pillows → Cushions → Round Seat Cushion */
-  async navigateToRoundSeatCushionProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.cushions,
-      product: this.products.roundSeatCushion,
-      urlPattern: /cushion-p|seat-p/i,
-      name: "Round Seat Cushion"
-    });
-  }
-
-  /** Navigate to: Pillows → Cushions → Rectangle Seat Cushion */
-  async navigateToRectangleSeatCushionProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.cushions,
-      product: this.products.rectangleSeatCushion,
-      urlPattern: /cushion-p|seat-p/i,
-      name: "Rectangle Seat Cushion"
-    });
-  }
-
-  /** Navigate to: Pillows → Bed Pillows → Bed Pillow */
-  async navigateToBedPillowProduct() {
-    await this._navigate({
-      menu: this.menu,
-      category: this.categories.bedPillows,
-      product: this.products.bedPillow,
-      urlPattern: /bed-pillow-p|pillow-p/i,
-      name: "Bed Pillow"
-    });
-  }
+  /** Legacy wrappers for backward compatibility */
+  // async navigateToPillowProduct() { await this.navigate("Throw Pillows", "Custom Square Throw Pillow"); }
+  // async navigateToRectangleThrowPillowProduct() { await this.navigate("Throw Pillows", "Custom Rectangle Throw Pillow"); }
+  // async navigateToRoundThrowPillowProduct() { await this.navigate("Throw Pillows", "Custom Round Throw Pillow"); }
+  // async navigateToSquareSeatCushionProduct() { await this.navigate("Cushions", "Square Seat Cushion"); }
+  // async navigateToRoundSeatCushionProduct() { await this.navigate("Cushions", "Round Seat Cushion"); }
+  // async navigateToRectangleSeatCushionProduct() { await this.navigate("Cushions", "Rectangle Seat Cushion"); }
+  // async navigateToBedPillowProduct() { await this.navigate("Bed Pillows", "Bed Pillow"); }
 }
 
 module.exports = { PillowHomePage };

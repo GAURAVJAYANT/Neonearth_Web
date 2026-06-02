@@ -1,4 +1,9 @@
 
+# Environment Configuration
+.env
+.env.local
+.env.*.local
+
 # Playwright
 node_modules/
 /test-results/
@@ -12,6 +17,7 @@ _div*
 # Allure
 /allure-results/
 /allure-report/
+/allure-report*.zip
 
 # Performance Reports
 /performance-results/
@@ -26,3 +32,6 @@ videos/
 *.pdf
 /test-results/
 /allure-report-temp/
+
+# env
+.env*
