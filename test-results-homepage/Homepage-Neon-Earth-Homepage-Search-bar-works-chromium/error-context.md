@@ -1,0 +1,888 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - generic:
+      - generic:
+        - generic [ref=e5]:
+          - text:     prev next
+          - generic [ref=e6]:
+            - generic [ref=e7]:
+              - generic [ref=e8]: 
+              - paragraph [ref=e10]: Free Shipping Above $99
+            - generic [ref=e11]:
+              - generic [ref=e12]: 
+              - paragraph [ref=e14]: "20% Off Sitewide.Use Code: SUMMER20"
+        - generic:
+          - generic [ref=e17]:
+            - generic [ref=e18]:
+              - link "NeonEarth" [ref=e20] [cursor=pointer]:
+                - /url: /
+                - img "NeonEarth" [ref=e21]
+              - generic [ref=e23]:
+                - generic:
+                  - generic [ref=e24]:
+                    - textbox "Search" [ref=e25]:
+                      - /placeholder: Find What Brings You Joy
+                      - text: tapestry
+                    - button "Search" [active] [ref=e26] [cursor=pointer]
+                  - generic [ref=e29]:
+                    - generic [ref=e30]:
+                      - heading "Products" [level=4] [ref=e31]
+                      - generic [ref=e33]:
+                        - link "Custom Wall Tapestry Tapestries" [ref=e35] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p
+                          - generic [ref=e37]:
+                            - heading "Custom Wall Tapestry" [level=2] [ref=e38]
+                            - heading "Tapestries" [level=3] [ref=e39]
+                        - link "Custom Panoramic Tapestry Tapestries" [ref=e41] [cursor=pointer]:
+                          - /url: /custom-panoramic-tapestry-p
+                          - generic [ref=e43]:
+                            - heading "Custom Panoramic Tapestry" [level=2] [ref=e44]
+                            - heading "Tapestries" [level=3] [ref=e45]
+                        - link "Custom Hanging Tapestry Tapestries" [ref=e47] [cursor=pointer]:
+                          - /url: /custom-hanging-tapestry-p
+                          - generic [ref=e49]:
+                            - heading "Custom Hanging Tapestry" [level=2] [ref=e50]
+                            - heading "Tapestries" [level=3] [ref=e51]
+                        - link "Custom Triangular Tapestry Tapestries" [ref=e53] [cursor=pointer]:
+                          - /url: /custom-triangular-tapestry-p
+                          - generic [ref=e55]:
+                            - heading "Custom Triangular Tapestry" [level=2] [ref=e56]
+                            - heading "Tapestries" [level=3] [ref=e57]
+                        - link "Celestial Frontier Custom Wall Tapestry - Weave Loom Tapestries" [ref=e59] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-420&design_id=ne_5159&list_material_type=list_mt_striped&size=60x50
+                          - generic [ref=e61]:
+                            - heading "Celestial Frontier Custom Wall Tapestry - Weave Loom" [level=2] [ref=e62]
+                            - heading "Tapestries" [level=3] [ref=e63]
+                        - link "Stay Alive Custom Wall Tapestry - Weave Loom Tapestries" [ref=e65] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-420&design_id=ne_5154&list_material_type=list_mt_striped&size=60x50
+                          - generic [ref=e67]:
+                            - heading "Stay Alive Custom Wall Tapestry - Weave Loom" [level=2] [ref=e68]
+                            - heading "Tapestries" [level=3] [ref=e69]
+                        - link "Cosmic Connection Custom Wall Tapestry - Weave Loom Tapestries" [ref=e71] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-420&design_id=ne_5151&list_material_type=list_mt_striped&size=60x50
+                          - generic [ref=e73]:
+                            - heading "Cosmic Connection Custom Wall Tapestry - Weave Loom" [level=2] [ref=e74]
+                            - heading "Tapestries" [level=3] [ref=e75]
+                        - link "Neural Bloom Custom Wall Tapestry - Weave Loom Tapestries" [ref=e77] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-420&design_id=ne_5149&list_material_type=list_mt_striped&size=60x50
+                          - generic [ref=e79]:
+                            - heading "Neural Bloom Custom Wall Tapestry - Weave Loom" [level=2] [ref=e80]
+                            - heading "Tapestries" [level=3] [ref=e81]
+                        - link "Braille Outer Space Green Custom Wall Tapestry - Weave Loom Tapestries" [ref=e83] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-420&design_id=ne_5146&list_material_type=list_mt_striped&size=60x50
+                          - generic [ref=e85]:
+                            - heading "Braille Outer Space Green Custom Wall Tapestry - Weave Loom" [level=2] [ref=e86]
+                            - heading "Tapestries" [level=3] [ref=e87]
+                        - link "Braille Outer Space Red Custom Wall Tapestry - Weave Loom Tapestries" [ref=e89] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-420&design_id=ne_5145&list_material_type=list_mt_striped&size=60x50
+                          - generic [ref=e91]:
+                            - heading "Braille Outer Space Red Custom Wall Tapestry - Weave Loom" [level=2] [ref=e92]
+                            - heading "Tapestries" [level=3] [ref=e93]
+                        - link "Hyperspace Tunnel Vision Custom Wall Tapestry - Weave Loom Tapestries" [ref=e95] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-420&design_id=ne_5144&list_material_type=list_mt_striped&size=60x50
+                          - generic [ref=e97]:
+                            - heading "Hyperspace Tunnel Vision Custom Wall Tapestry - Weave Loom" [level=2] [ref=e98]
+                            - heading "Tapestries" [level=3] [ref=e99]
+                        - link "Beyond the Possible Custom Wall Tapestry - Weave Loom Tapestries" [ref=e101] [cursor=pointer]:
+                          - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-420&design_id=ne_5123&list_material_type=list_mt_striped&size=60x50
+                          - generic [ref=e103]:
+                            - heading "Beyond the Possible Custom Wall Tapestry - Weave Loom" [level=2] [ref=e104]
+                            - heading "Tapestries" [level=3] [ref=e105]
+                    - generic [ref=e108]:
+                      - heading "Categories" [level=4] [ref=e109]
+                      - list [ref=e111]:
+                        - link "Custom Wall Tapestries" [ref=e112] [cursor=pointer]:
+                          - /url: https://www.neonearth.com/custom-wall-tapestries
+                          - listitem [ref=e113]: Custom Wall Tapestries
+                        - link "Custom Panoramic Tapestries" [ref=e114] [cursor=pointer]:
+                          - /url: https://www.neonearth.com/custom-panoramic-tapestries
+                          - listitem [ref=e115]: Custom Panoramic Tapestries
+                        - link "Custom Triangular Tapestries" [ref=e116] [cursor=pointer]:
+                          - /url: https://www.neonearth.com/custom-triangular-tapestries
+                          - listitem [ref=e117]: Custom Triangular Tapestries
+                        - link "Custom Hanging Tapestries" [ref=e118] [cursor=pointer]:
+                          - /url: https://www.neonearth.com/custom-hanging-tapestries
+                          - listitem [ref=e119]: Custom Hanging Tapestries
+                        - link "Tapestries" [ref=e120] [cursor=pointer]:
+                          - /url: https://www.neonearth.com/tapestries
+                          - listitem [ref=e121]: Tapestries
+                - generic [ref=e122]:
+                  - generic [ref=e123]:
+                    - heading [level=3] [ref=e124]
+                    - button "close" [ref=e126] [cursor=pointer]:
+                      - img "close" [ref=e127]
+                  - generic [ref=e129]:
+                    - textbox "Search" [ref=e130]:
+                      - /placeholder: Find What Brings You Joy
+                    - button "Search" [ref=e131] [cursor=pointer]
+            - generic [ref=e133]:
+              - generic [ref=e135] [cursor=pointer]:
+                - img "fav-icon" [ref=e136]
+                - generic [ref=e137]: "0"
+              - generic [ref=e139] [cursor=pointer]:
+                - generic [ref=e140]: 
+                - generic [ref=e141]: "0"
+              - generic [ref=e143] [cursor=pointer]:
+                - generic [ref=e144]: 
+                - generic [ref=e146]: Join/Login
+          - navigation [ref=e147]:
+            - navigation "Primary navigation" [ref=e150]:
+              - list [ref=e151]:
+                - listitem [ref=e152]:
+                  - link "Go to All" [ref=e153] [cursor=pointer]:
+                    - /url: /create
+                    - generic [ref=e154]: All
+                - listitem [ref=e155]:
+                  - link "Go to Wall Arts" [ref=e156] [cursor=pointer]:
+                    - /url: /wall-arts
+                    - generic [ref=e157]: Wall Arts
+                - listitem [ref=e158]:
+                  - link "Go to Tapestries" [ref=e159] [cursor=pointer]:
+                    - /url: /tapestries
+                    - generic [ref=e160]: Tapestries
+                - listitem [ref=e161]:
+                  - link "Go to Rugs & Mats" [ref=e162] [cursor=pointer]:
+                    - /url: /rugs
+                    - generic [ref=e163]: New
+                    - generic [ref=e164]: Rugs & Mats
+                - listitem [ref=e165]:
+                  - link "Go to Pillows" [ref=e166] [cursor=pointer]:
+                    - /url: /pillows
+                    - generic [ref=e167]: Pillows
+                - listitem [ref=e168]:
+                  - link "Go to Fabrics" [ref=e169] [cursor=pointer]:
+                    - /url: /custom-fabric
+                    - generic [ref=e170]: New
+                    - generic [ref=e171]: Fabrics
+                - listitem [ref=e172]:
+                  - link "Go to Curtains" [ref=e173] [cursor=pointer]:
+                    - /url: /curtains
+                    - generic [ref=e174]: Curtains
+                - listitem [ref=e175]:
+                  - link "Go to Pet Zone" [ref=e176] [cursor=pointer]:
+                    - /url: /pet-zone
+                    - generic [ref=e177]: Pet Zone
+                - listitem [ref=e178]:
+                  - link "View more products on neonearth" [ref=e179] [cursor=pointer]:
+                    - /url: /more
+                    - generic [ref=e180]: More
+                - listitem [ref=e181]:
+                  - link "Go to Theme" [ref=e182] [cursor=pointer]:
+                    - /url: /theme
+                    - generic [ref=e183]: Theme
+      - generic [ref=e184]:
+        - generic [ref=e186]:
+          - generic [ref=e189]:
+            - link "Graduation Day" [ref=e192] [cursor=pointer]:
+              - /url: https://www.neonearth.com/graduation-day
+              - img "Graduation Day" [ref=e193]
+            - link "Summer Campaign" [ref=e196] [cursor=pointer]:
+              - /url: https://neonearth.com/summer-edition
+              - img "Summer Campaign" [ref=e197]
+            - link "Graduation Day" [ref=e200] [cursor=pointer]:
+              - /url: https://www.neonearth.com/graduation-day
+              - img "Graduation Day" [ref=e201]
+            - link "Summer Campaign" [ref=e204] [cursor=pointer]:
+              - /url: https://neonearth.com/summer-edition
+              - img "Summer Campaign" [ref=e205]
+          - generic [ref=e211]:
+            - generic [ref=e213]:
+              - img "UPS_icon_1" [ref=e214]
+              - generic [ref=e215]:
+                - generic [ref=e216]:
+                  - generic [ref=e217]: "4.0"
+                  - generic [ref=e221]: ★★★★★ ★★★★★
+                - generic [ref=e222]: Overall Satisfaction Rating
+            - generic [ref=e223]:
+              - generic [ref=e224]:
+                - img "Tailored Creations" [ref=e225]
+                - generic [ref=e226]: Tailored Creations
+              - generic [ref=e227]:
+                - img "Best-in-Class Printing" [ref=e228]
+                - generic [ref=e229]: Best-in-Class Printing
+              - generic [ref=e230]:
+                - img "Diverse Design Library" [ref=e231]
+                - generic [ref=e232]: Diverse Design Library
+              - generic [ref=e233]:
+                - img "Prompt Delivery" [ref=e234]
+                - generic [ref=e235]: Prompt Delivery
+        - generic [ref=e238]:
+          - generic [ref=e239]:
+            - heading "Personalized Living Starts Here" [level=2] [ref=e240]
+            - generic [ref=e243]:
+              - generic [ref=e245]:
+                - generic [ref=e246]:
+                  - link "Custom Wall Tapestry - Velvet Satin 1" [ref=e248] [cursor=pointer]:
+                    - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-335&list_material_type=list_mt_satin&size=60x50&measurement_unit=in&design_id=ne_5102
+                    - img "Custom Wall Tapestry - Velvet Satin 1" [ref=e251]
+                  - generic "Custom Wall Tapestry - Velvet Satin" [ref=e253]:
+                    - paragraph [ref=e254]:
+                      - link "Custom Wall Tapestry - Velvet Satin" [ref=e255] [cursor=pointer]:
+                        - /url: /custom-wall-tapestry-p?variant_sku=NE-SKU-133-335&list_material_type=list_mt_satin&size=60x50&measurement_unit=in&design_id=ne_5102
+                - generic [ref=e256]:
+                  - text: Starting at
+                  - generic [ref=e257]: $55.04
+              - generic [ref=e259]:
+                - generic [ref=e260]:
+                  - link "Custom Shower Curtain - Hydro Shield - White 2" [ref=e262] [cursor=pointer]:
+                    - /url: /custom-shower-curtain-p?variant_sku=NE-SKU-177-538-539&list_material_type=water_repellent_stripe&list_color=list_color_white&size=48x72&measurement_unit=in&design_id=ne_5110
+                    - img "Custom Shower Curtain - Hydro Shield - White 2" [ref=e265]
+                  - generic "Custom Shower Curtain - Hydro Shield - White" [ref=e267]:
+                    - paragraph [ref=e268]:
+                      - link "Custom Shower Curtain - Hydro Shield - White" [ref=e269] [cursor=pointer]:
+                        - /url: /custom-shower-curtain-p?variant_sku=NE-SKU-177-538-539&list_material_type=water_repellent_stripe&list_color=list_color_white&size=48x72&measurement_unit=in&design_id=ne_5110
+                - generic [ref=e270]:
+                  - text: Starting at
+                  - generic [ref=e271]: $62.95
+              - generic [ref=e273]:
+                - generic [ref=e274]:
+                  - link "Custom Wallpaper - Stone Grain 3" [ref=e276] [cursor=pointer]:
+                    - /url: /custom-wallpaper-p?variant_sku=NE-SKU-275-828&list_textured_type=list_tt_caviar&size=44x60&measurement_unit=in&design_id=ne_4851
+                    - img "Custom Wallpaper - Stone Grain 3" [ref=e279]
+                  - generic "Custom Wallpaper - Stone Grain" [ref=e281]:
+                    - paragraph [ref=e282]:
+                      - link "Custom Wallpaper - Stone Grain" [ref=e283] [cursor=pointer]:
+                        - /url: /custom-wallpaper-p?variant_sku=NE-SKU-275-828&list_textured_type=list_tt_caviar&size=44x60&measurement_unit=in&design_id=ne_4851
+                - generic [ref=e284]:
+                  - text: Starting at
+                  - generic [ref=e285]: $78.79
+              - generic [ref=e287]:
+                - generic [ref=e288]:
+                  - link "Custom Square Throw Pillow - Velvet Satin 4" [ref=e290] [cursor=pointer]:
+                    - /url: /custom-square-throw-pillow-p?variant_sku=NE-SKU-137-357-358&list_material_type=list_mt_satin&size=24x24&measurement_unit=in&design_id=ne_5103
+                    - img "Custom Square Throw Pillow - Velvet Satin 4" [ref=e293]
+                  - generic "Custom Square Throw Pillow - Velvet Satin" [ref=e295]:
+                    - paragraph [ref=e296]:
+                      - link "Custom Square Throw Pillow - Velvet Satin" [ref=e297] [cursor=pointer]:
+                        - /url: /custom-square-throw-pillow-p?variant_sku=NE-SKU-137-357-358&list_material_type=list_mt_satin&size=24x24&measurement_unit=in&design_id=ne_5103
+                - generic [ref=e298]:
+                  - text: Starting at
+                  - generic [ref=e299]: $62.75
+              - generic [ref=e301]:
+                - generic [ref=e302]:
+                  - link "Rug - Rectangle - Luxe Grain 5" [ref=e304] [cursor=pointer]:
+                    - /url: /rug-p?variant_sku=NE-SKU-465-2197-2213&select_shape=rectangle&choose_material_rugs=polyester&size=36x60&measurement_unit=in&design_id=ne_5116
+                    - img "Rug - Rectangle - Luxe Grain 5" [ref=e307]
+                  - generic "Rug - Rectangle - Luxe Grain" [ref=e309]:
+                    - paragraph [ref=e310]:
+                      - link "Rug - Rectangle - Luxe Grain" [ref=e311] [cursor=pointer]:
+                        - /url: /rug-p?variant_sku=NE-SKU-465-2197-2213&select_shape=rectangle&choose_material_rugs=polyester&size=36x60&measurement_unit=in&design_id=ne_5116
+                - generic [ref=e312]:
+                  - text: Starting at
+                  - generic [ref=e313]: $116
+          - link "Start Creating" [ref=e314] [cursor=pointer]:
+            - /url: /products?productNames=Custom%20Wall%20Tapestry,Custom%20Shower%20Curtain,Custom%20Wallpaper,Custom%20Square%20Throw%20Pillow,Rug
+        - generic [ref=e316]:
+          - heading "We Curate, You Create - Explore 60K+ Designs" [level=2] [ref=e317]
+          - generic [ref=e318]:
+            - generic [ref=e320]:
+              - link "Neon Designs" [ref=e321] [cursor=pointer]:
+                - /url: /theme-neon-designs
+                - img "Neon Designs" [ref=e324]
+              - paragraph [ref=e326]:
+                - link "Neon Designs" [ref=e327] [cursor=pointer]:
+                  - /url: /theme-neon-designs
+            - generic [ref=e329]:
+              - link "Graduation Day" [ref=e330] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=174
+                - img "Graduation Day" [ref=e333]
+              - paragraph [ref=e335]:
+                - link "Graduation Day" [ref=e336] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=174
+            - generic [ref=e338]:
+              - link "Summer" [ref=e339] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=163
+                - img "Summer" [ref=e342]
+              - paragraph [ref=e344]:
+                - link "Summer" [ref=e345] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=163
+            - generic [ref=e347]:
+              - link "Arthouse" [ref=e348] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=173
+                - img "Arthouse" [ref=e351]
+              - paragraph [ref=e353]:
+                - link "Arthouse" [ref=e354] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=173
+            - generic [ref=e356]:
+              - link "Sci-Fi Age" [ref=e357] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=175
+                - img "Sci-Fi Age" [ref=e360]
+              - paragraph [ref=e362]:
+                - link "Sci-Fi Age" [ref=e363] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=175
+            - generic [ref=e365]:
+              - link "Moto Sports" [ref=e366] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=172
+                - img "Moto Sports" [ref=e369]
+              - paragraph [ref=e371]:
+                - link "Moto Sports" [ref=e372] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=172
+            - generic [ref=e374]:
+              - link "Homeflix" [ref=e375] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=132
+                - img "Homeflix" [ref=e378]
+              - paragraph [ref=e380]:
+                - link "Homeflix" [ref=e381] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=132
+            - generic [ref=e383]:
+              - link "Cats & Dogs Day" [ref=e384] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=145
+                - img "Cats & Dogs Day" [ref=e387]
+              - paragraph [ref=e389]:
+                - link "Cats & Dogs Day" [ref=e390] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=145
+            - generic [ref=e392]:
+              - link "Checks & Stripes" [ref=e393] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=131
+                - img "Checks & Stripes" [ref=e396]
+              - paragraph [ref=e398]:
+                - link "Checks & Stripes" [ref=e399] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=131
+            - generic [ref=e401]:
+              - link "Fluid Art" [ref=e402] [cursor=pointer]:
+                - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=139
+                - img "Fluid Art" [ref=e405]
+              - paragraph [ref=e407]:
+                - link "Fluid Art" [ref=e408] [cursor=pointer]:
+                  - /url: /theme-neon-designs?theme_subc_id=-1&theme_ne_curated_id=139
+          - link "Explore More Designs" [ref=e410] [cursor=pointer]:
+            - /url: /theme
+        - region "Interactive Product Banner" [ref=e413]
+        - generic [ref=e416]:
+          - heading "Top Personalization Picks" [level=2] [ref=e418]
+          - list [ref=e419]:
+            - listitem [ref=e420]:
+              - link "Area Rugs 1 Area Rugs" [ref=e421] [cursor=pointer]:
+                - /url: /area-rugs
+                - button "Area Rugs 1" [ref=e422]:
+                  - img "Area Rugs 1" [ref=e423]
+                - generic [ref=e424]: Area Rugs
+            - listitem [ref=e425]:
+              - link "Photo And Art Prints 2 Photo And Art Prints" [ref=e426] [cursor=pointer]:
+                - /url: /photo-and-art-prints
+                - button "Photo And Art Prints 2" [ref=e427]:
+                  - img "Photo And Art Prints 2" [ref=e428]
+                - generic [ref=e429]: Photo And Art Prints
+            - listitem [ref=e430]:
+              - link "Poster Prints 3 Poster Prints" [ref=e431] [cursor=pointer]:
+                - /url: /poster-prints
+                - button "Poster Prints 3" [ref=e432]:
+                  - img "Poster Prints 3" [ref=e433]
+                - generic [ref=e434]: Poster Prints
+            - listitem [ref=e435]:
+              - link "Acrylic Prints 4 Acrylic Prints" [ref=e436] [cursor=pointer]:
+                - /url: /acrylic-prints
+                - button "Acrylic Prints 4" [ref=e437]:
+                  - img "Acrylic Prints 4" [ref=e438]
+                - generic [ref=e439]: Acrylic Prints
+            - listitem [ref=e440]:
+              - link "Canvas Prints 5 Canvas Prints" [ref=e441] [cursor=pointer]:
+                - /url: /canvas-prints
+                - button "Canvas Prints 5" [ref=e442]:
+                  - img "Canvas Prints 5" [ref=e443]
+                - generic [ref=e444]: Canvas Prints
+            - listitem [ref=e445]:
+              - link "Tapestries 6 Tapestries" [ref=e446] [cursor=pointer]:
+                - /url: /tapestries
+                - button "Tapestries 6" [ref=e447]:
+                  - img "Tapestries 6" [ref=e448]
+                - generic [ref=e449]: Tapestries
+        - region "Create a Picture Perfect Home offer with sitewide discount" [ref=e451]:
+          - generic [ref=e455]:
+            - heading "Create a Picture-Perfect Home With Exclusive Savings" [level=4] [ref=e456]:
+              - text: Create a Picture-Perfect Home
+              - text: With Exclusive Savings
+            - heading "15% OFF Sitewide" [level=3] [ref=e457]
+            - paragraph [ref=e458]: + $15 Worth Wallet Points For Next Purchase
+            - region "Special discount offer" [ref=e459]:
+              - generic [ref=e460]:
+                - text: "Code:"
+                - generic "Promo code NEON15" [ref=e461]: NEON15
+              - link "Claim the offer" [ref=e462] [cursor=pointer]:
+                - /url: promotions/launch-offer
+                - text: Claim Offer
+        - generic [ref=e463]:
+          - heading "Trending Custom Home Decor" [level=2] [ref=e466]
+          - generic [ref=e467]:
+            - generic [ref=e469]:
+              - generic [ref=e471]:
+                - generic [ref=e472]:
+                  - link "Custom Panoramic Tapestry - Velvet Satin 1" [ref=e474] [cursor=pointer]:
+                    - /url: /custom-panoramic-tapestry-p?variant_sku=NE-SKU-274-821&list_material_type=list_mt_satin&size=60x30&measurement_unit=in&design_id=ne_5104
+                    - img "Custom Panoramic Tapestry - Velvet Satin 1" [ref=e477]
+                  - generic "Custom Panoramic Tapestry - Velvet Satin" [ref=e479]:
+                    - paragraph [ref=e480]:
+                      - link "Custom Panoramic Tapestry - Velvet Satin" [ref=e481] [cursor=pointer]:
+                        - /url: /custom-panoramic-tapestry-p?variant_sku=NE-SKU-274-821&list_material_type=list_mt_satin&size=60x30&measurement_unit=in&design_id=ne_5104
+                - generic [ref=e483]: $33.03
+              - generic [ref=e485]:
+                - generic [ref=e486]:
+                  - link "Custom Sheer Curtain - Linen Weave 2" [ref=e488] [cursor=pointer]:
+                    - /url: /custom-sheer-curtain-p?variant_sku=NE-SKU-178-545&list_material_type=polyester_linen&size=46x84&measurement_unit=in&design_id=ne_4869
+                    - img "Custom Sheer Curtain - Linen Weave 2" [ref=e491]
+                  - generic "Custom Sheer Curtain - Linen Weave" [ref=e493]:
+                    - paragraph [ref=e494]:
+                      - link "Custom Sheer Curtain - Linen Weave" [ref=e495] [cursor=pointer]:
+                        - /url: /custom-sheer-curtain-p?variant_sku=NE-SKU-178-545&list_material_type=polyester_linen&size=46x84&measurement_unit=in&design_id=ne_4869
+                - generic [ref=e497]: $156.46
+              - generic [ref=e499]:
+                - generic [ref=e500]:
+                  - link "Rug - Round - Silken Plush 3" [ref=e502] [cursor=pointer]:
+                    - /url: /rug-p?variant_sku=NE-SKU-56-960-956&select_shape=circle&choose_material_rugs=plush_velvet&size=24x24&measurement_unit=in&design_id=ne_5113
+                    - img "Rug - Round - Silken Plush 3" [ref=e505]
+                  - generic "Rug - Round - Silken Plush" [ref=e507]:
+                    - paragraph [ref=e508]:
+                      - link "Rug - Round - Silken Plush" [ref=e509] [cursor=pointer]:
+                        - /url: /rug-p?variant_sku=NE-SKU-56-960-956&select_shape=circle&choose_material_rugs=plush_velvet&size=24x24&measurement_unit=in&design_id=ne_5113
+                - generic [ref=e511]: $35.42
+              - generic [ref=e513]:
+                - generic [ref=e514]:
+                  - link "Custom Wallpaper - Stone Grain 4" [ref=e516] [cursor=pointer]:
+                    - /url: /custom-wallpaper-p?variant_sku=NE-SKU-275-828&list_textured_type=list_tt_caviar&size=44x60&measurement_unit=in&design_id=ne_5112
+                    - img "Custom Wallpaper - Stone Grain 4" [ref=e519]
+                  - generic "Custom Wallpaper - Stone Grain" [ref=e521]:
+                    - paragraph [ref=e522]:
+                      - link "Custom Wallpaper - Stone Grain" [ref=e523] [cursor=pointer]:
+                        - /url: /custom-wallpaper-p?variant_sku=NE-SKU-275-828&list_textured_type=list_tt_caviar&size=44x60&measurement_unit=in&design_id=ne_5112
+                - generic [ref=e525]: $78.79
+              - generic [ref=e527]:
+                - generic [ref=e528]:
+                  - link "Doormat - Rectangle 5" [ref=e530] [cursor=pointer]:
+                    - /url: /doormat-p?variant_sku=NE-SKU-450-1955&select_shape=rectangle&size=18x12&measurement_unit=in&design_id=ne_4876
+                    - img "Doormat - Rectangle 5" [ref=e533]
+                  - generic "Doormat - Rectangle" [ref=e535]:
+                    - paragraph [ref=e536]:
+                      - link "Doormat - Rectangle" [ref=e537] [cursor=pointer]:
+                        - /url: /doormat-p?variant_sku=NE-SKU-450-1955&select_shape=rectangle&size=18x12&measurement_unit=in&design_id=ne_4876
+                - generic [ref=e539]: $12.22
+              - generic [ref=e541]:
+                - generic [ref=e542]:
+                  - link "Custom Wall Mural - Luxe Smooth 6" [ref=e544] [cursor=pointer]:
+                    - /url: /custom-wall-mural-p?variant_sku=NE-SKU-276-2593&list_textured_type=luxe_smooth&size=44x60&measurement_unit=in&design_id=ne_4852
+                    - img "Custom Wall Mural - Luxe Smooth 6" [ref=e547]
+                  - generic "Custom Wall Mural - Luxe Smooth" [ref=e549]:
+                    - paragraph [ref=e550]:
+                      - link "Custom Wall Mural - Luxe Smooth" [ref=e551] [cursor=pointer]:
+                        - /url: /custom-wall-mural-p?variant_sku=NE-SKU-276-2593&list_textured_type=luxe_smooth&size=44x60&measurement_unit=in&design_id=ne_4852
+                - generic [ref=e553]: $61.38
+              - generic [ref=e555]:
+                - generic [ref=e556]:
+                  - link "Custom 70% Blackout Curtain 7" [ref=e558] [cursor=pointer]:
+                    - /url: /custom-blackout-curtain-p?variant_sku=NE-SKU-176-537&list_material_type=list_mt_satin&size=46x84&measurement_unit=in&design_id=ne_4867
+                    - img "Custom 70% Blackout Curtain 7" [ref=e561]
+                  - generic "Custom 70% Blackout Curtain" [ref=e563]:
+                    - paragraph [ref=e564]:
+                      - link "Custom 70% Blackout Curtain" [ref=e565] [cursor=pointer]:
+                        - /url: /custom-blackout-curtain-p?variant_sku=NE-SKU-176-537&list_material_type=list_mt_satin&size=46x84&measurement_unit=in&design_id=ne_4867
+                - generic [ref=e567]: $217.63
+              - generic [ref=e569]:
+                - generic [ref=e570]:
+                  - link "Custom Roller Shade - Mesh 8" [ref=e572] [cursor=pointer]:
+                    - /url: /custom-roller-shade-p?variant_sku=NE-SKU-452-1972&list_roller_shade_material=roller_shade_mesh&size=24x36&measurement_unit=in&design_id=ne_4855
+                    - img "Custom Roller Shade - Mesh 8" [ref=e575]
+                  - generic "Custom Roller Shade - Mesh" [ref=e577]:
+                    - paragraph [ref=e578]:
+                      - link "Custom Roller Shade - Mesh" [ref=e579] [cursor=pointer]:
+                        - /url: /custom-roller-shade-p?variant_sku=NE-SKU-452-1972&list_roller_shade_material=roller_shade_mesh&size=24x36&measurement_unit=in&design_id=ne_4855
+                - generic [ref=e581]: $54.16
+              - generic [ref=e583]:
+                - generic [ref=e584]:
+                  - link "Custom Square Throw Pillow - Canvas 9" [ref=e586] [cursor=pointer]:
+                    - /url: /custom-square-throw-pillow-p?variant_sku=NE-SKU-137-353-358&list_material_type=list_mt_canvas&size=24x24&measurement_unit=in&design_id=ne_5101
+                    - img "Custom Square Throw Pillow - Canvas 9" [ref=e589]
+                  - generic "Custom Square Throw Pillow - Canvas" [ref=e591]:
+                    - paragraph [ref=e592]:
+                      - link "Custom Square Throw Pillow - Canvas" [ref=e593] [cursor=pointer]:
+                        - /url: /custom-square-throw-pillow-p?variant_sku=NE-SKU-137-353-358&list_material_type=list_mt_canvas&size=24x24&measurement_unit=in&design_id=ne_5101
+                - generic [ref=e595]: $63.1
+              - generic [ref=e597]:
+                - generic [ref=e598]:
+                  - link "Privacy Film - Frosted 10" [ref=e600] [cursor=pointer]:
+                    - /url: /privacy-film-p?variant_sku=NE-SKU-467-2237&material_privacy_film=frosted&design_id=ne_5093
+                    - img "Privacy Film - Frosted 10" [ref=e603]
+                  - generic "Privacy Film - Frosted" [ref=e605]:
+                    - paragraph [ref=e606]:
+                      - link "Privacy Film - Frosted" [ref=e607] [cursor=pointer]:
+                        - /url: /privacy-film-p?variant_sku=NE-SKU-467-2237&material_privacy_film=frosted&design_id=ne_5093
+                - generic [ref=e609]: $21
+            - link "Create a New Trend" [ref=e610] [cursor=pointer]:
+              - /url: /products?productNames=Custom%20Panoramic%20Tapestry,Custom%20Sheer%20Curtain,Rug,Custom%20Wallpaper,Doormat,Custom%20Wall%20Mural,Custom%20Blackout%20Curtain,Custom%20Roller%20Shade,Custom%20Square%20Throw%20Pillow,Privacy%20Film
+        - generic [ref=e611]:
+          - generic [ref=e613]:
+            - img "Curtain Creations" [ref=e615]
+            - generic [ref=e616]:
+              - generic [ref=e617]:
+                - heading "Curtain Creations" [level=2] [ref=e618]
+                - paragraph [ref=e619]: Personalized Drapes to Set the Ambience
+              - generic [ref=e620]:
+                - generic [ref=e621]:
+                  - link "Custom Drapes – product 1" [ref=e623] [cursor=pointer]:
+                    - /url: /custom-drapes
+                    - img "Custom Drapes – product 1" [ref=e624]
+                  - link "Custom Drapes" [ref=e626] [cursor=pointer]:
+                    - /url: /custom-drapes
+                - generic [ref=e627]:
+                  - link "Blackout Curtains – product 2" [ref=e629] [cursor=pointer]:
+                    - /url: /blackout-curtains
+                    - img "Blackout Curtains – product 2" [ref=e630]
+                  - link "Blackout Curtains" [ref=e632] [cursor=pointer]:
+                    - /url: /blackout-curtains
+                - generic [ref=e633]:
+                  - link "Shower Curtains – product 3" [ref=e635] [cursor=pointer]:
+                    - /url: /shower-curtains
+                    - img "Shower Curtains – product 3" [ref=e636]
+                  - link "Shower Curtains" [ref=e638] [cursor=pointer]:
+                    - /url: /shower-curtains
+                - generic [ref=e639]:
+                  - link "Sheer Curtains – product 4" [ref=e641] [cursor=pointer]:
+                    - /url: /sheer-curtains
+                    - img "Sheer Curtains – product 4" [ref=e642]
+                  - link "Sheer Curtains" [ref=e644] [cursor=pointer]:
+                    - /url: /sheer-curtains
+              - link "Show Me More" [ref=e646] [cursor=pointer]:
+                - /url: /products?categoryIds=5%2C40%2C42%2C43%2C44
+          - generic [ref=e648]:
+            - img "Walls of Wonder" [ref=e650]
+            - generic [ref=e651]:
+              - generic [ref=e652]:
+                - heading "Walls of Wonder" [level=2] [ref=e653]
+                - paragraph [ref=e654]: Discover Your Wall's Perfect Vibe
+              - generic [ref=e655]:
+                - generic [ref=e656]:
+                  - link "Custom Wallpapers – product 1" [ref=e658] [cursor=pointer]:
+                    - /url: /custom-wallpapers
+                    - img "Custom Wallpapers – product 1" [ref=e659]
+                  - link "Custom Wallpapers" [ref=e661] [cursor=pointer]:
+                    - /url: /custom-wallpapers
+                - generic [ref=e662]:
+                  - link "Custom Wall Murals – product 2" [ref=e664] [cursor=pointer]:
+                    - /url: /custom-wall-murals
+                    - img "Custom Wall Murals – product 2" [ref=e665]
+                  - link "Custom Wall Murals" [ref=e667] [cursor=pointer]:
+                    - /url: /custom-wall-murals
+                - generic [ref=e668]:
+                  - link "Photo And Art Prints – product 3" [ref=e670] [cursor=pointer]:
+                    - /url: /photo-and-art-prints
+                    - img "Photo And Art Prints – product 3" [ref=e671]
+                  - link "Photo And Art Prints" [ref=e673] [cursor=pointer]:
+                    - /url: /photo-and-art-prints
+                - generic [ref=e674]:
+                  - link "Canvas Prints – product 4" [ref=e676] [cursor=pointer]:
+                    - /url: /canvas-prints
+                    - img "Canvas Prints – product 4" [ref=e677]
+                  - link "Canvas Prints" [ref=e679] [cursor=pointer]:
+                    - /url: /canvas-prints
+              - link "Show Me More" [ref=e681] [cursor=pointer]:
+                - /url: /products?categoryIds=10%2C27%2C28%2C29%2C30
+          - generic [ref=e683]:
+            - img "Pillow Palette" [ref=e685]
+            - generic [ref=e686]:
+              - generic [ref=e687]:
+                - heading "Pillow Palette" [level=2] [ref=e688]
+                - paragraph [ref=e689]: Create Your Corner of Plushy Comfort
+              - generic [ref=e690]:
+                - generic [ref=e691]:
+                  - link "Throw Pillows – product 1" [ref=e693] [cursor=pointer]:
+                    - /url: /throw-pillows
+                    - img "Throw Pillows – product 1" [ref=e694]
+                  - link "Throw Pillows" [ref=e696] [cursor=pointer]:
+                    - /url: /throw-pillows
+                - generic [ref=e697]:
+                  - link "Cushions – product 2" [ref=e699] [cursor=pointer]:
+                    - /url: /cushions
+                    - img "Cushions – product 2" [ref=e700]
+                  - link "Cushions" [ref=e702] [cursor=pointer]:
+                    - /url: /cushions
+                - generic [ref=e703]:
+                  - link "Bed Pillows – product 3" [ref=e705] [cursor=pointer]:
+                    - /url: /bed-pillows
+                    - img "Bed Pillows – product 3" [ref=e706]
+                  - link "Bed Pillows" [ref=e708] [cursor=pointer]:
+                    - /url: /bed-pillows
+              - link "Show Me More" [ref=e710] [cursor=pointer]:
+                - /url: /products?categoryIds=6%2C36%2C37%2C38
+          - generic [ref=e712]:
+            - img "Timeless Tapestries" [ref=e714]
+            - generic [ref=e715]:
+              - generic [ref=e716]:
+                - heading "Timeless Tapestries" [level=2] [ref=e717]
+                - paragraph [ref=e718]: Personalized Tapestries to Reflect Your Essence
+              - generic [ref=e719]:
+                - generic [ref=e720]:
+                  - link "Custom Wall Tapestries – product 1" [ref=e722] [cursor=pointer]:
+                    - /url: /custom-wall-tapestries
+                    - img "Custom Wall Tapestries – product 1" [ref=e723]
+                  - link "Custom Wall Tapestries" [ref=e725] [cursor=pointer]:
+                    - /url: /custom-wall-tapestries
+                - generic [ref=e726]:
+                  - link "Custom Panoramic Tapestries – product 2" [ref=e728] [cursor=pointer]:
+                    - /url: /custom-panoramic-tapestries
+                    - img "Custom Panoramic Tapestries – product 2" [ref=e729]
+                  - link "Custom Panoramic Tapestries" [ref=e731] [cursor=pointer]:
+                    - /url: /custom-panoramic-tapestries
+                - generic [ref=e732]:
+                  - link "Custom Triangular Tapestries – product 3" [ref=e734] [cursor=pointer]:
+                    - /url: /custom-triangular-tapestries
+                    - img "Custom Triangular Tapestries – product 3" [ref=e735]
+                  - link "Custom Triangular Tapestries" [ref=e737] [cursor=pointer]:
+                    - /url: /custom-triangular-tapestries
+                - generic [ref=e738]:
+                  - link "Custom Hanging Tapestries – product 4" [ref=e740] [cursor=pointer]:
+                    - /url: /custom-hanging-tapestries
+                    - img "Custom Hanging Tapestries – product 4" [ref=e741]
+                  - link "Custom Hanging Tapestries" [ref=e743] [cursor=pointer]:
+                    - /url: /custom-hanging-tapestries
+              - link "Show Me More" [ref=e745] [cursor=pointer]:
+                - /url: /products?categoryIds=8%2C32%2C33%2C34%2C35
+        - generic [ref=e746]:
+          - heading "Our Blogs in the Buzz" [level=2] [ref=e747]
+          - generic [ref=e748]:
+            - generic [ref=e749]:
+              - link [ref=e751] [cursor=pointer]:
+                - /url: https://www.neonearth.com/blog/bed-linen-printing-how-custom-prints-transform-bedrooms/
+              - paragraph [ref=e753]: May 15th, 2026
+              - 'link "Bed Linen Printing: How Custom Prints Transform Bedrooms" [ref=e754] [cursor=pointer]':
+                - /url: https://www.neonearth.com/blog/bed-linen-printing-how-custom-prints-transform-bedrooms/
+                - 'heading "Bed Linen Printing: How Custom Prints Transform Bedrooms" [level=3] [ref=e755]'
+              - paragraph [ref=e756]: Modern bedroom with soft yellow patterned printed bed sheets, wooden bedside tables, indoor plants, and warm natural sunlight creating ...
+              - link "Tell Me More" [ref=e757] [cursor=pointer]:
+                - /url: https://www.neonearth.com/blog/bed-linen-printing-how-custom-prints-transform-bedrooms/
+                - generic [ref=e758]: Tell Me More
+            - generic [ref=e759]:
+              - link [ref=e761] [cursor=pointer]:
+                - /url: https://www.neonearth.com/blog/graduation-day-decor-ideas-to-make-your-celebration-unforgettable/
+              - paragraph [ref=e763]: May 11th, 2026
+              - link "Graduation day decor ideas to make your celebration unforgettable" [ref=e764] [cursor=pointer]:
+                - /url: https://www.neonearth.com/blog/graduation-day-decor-ideas-to-make-your-celebration-unforgettable/
+                - heading "Graduation day decor ideas to make your celebration unforgettable" [level=3] [ref=e765]
+              - paragraph [ref=e766]: Graduation isn’t just another party – it’s a milestone worth celebrating properly. And if your setup looks like a last-minute balloon situation, people notice. ...
+              - link "Tell Me More" [ref=e767] [cursor=pointer]:
+                - /url: https://www.neonearth.com/blog/graduation-day-decor-ideas-to-make-your-celebration-unforgettable/
+                - generic [ref=e768]: Tell Me More
+            - generic [ref=e769]:
+              - link [ref=e771] [cursor=pointer]:
+                - /url: https://www.neonearth.com/blog/personalized-photo-pillow-gift-ideas-for-birthdays-anniversaries/
+              - paragraph [ref=e773]: May 8th, 2026
+              - link "Personalized Photo Pillow Gift Ideas for Birthdays & Anniversaries" [ref=e774] [cursor=pointer]:
+                - /url: https://www.neonearth.com/blog/personalized-photo-pillow-gift-ideas-for-birthdays-anniversaries/
+                - heading "Personalized Photo Pillow Gift Ideas for Birthdays & Anniversaries" [level=3] [ref=e775]
+              - paragraph [ref=e776]: "Most gifts fall into two categories: Useful but forgettable. Emotional but impractical. A personalized photo pillow or even a simple custom pillow with picture lands ..."
+              - link "Tell Me More" [ref=e777] [cursor=pointer]:
+                - /url: https://www.neonearth.com/blog/personalized-photo-pillow-gift-ideas-for-birthdays-anniversaries/
+                - generic [ref=e778]: Tell Me More
+          - link "Read All" [ref=e779] [cursor=pointer]:
+            - /url: " https://www.neonearth.com/blog"
+            - button "Read All" [ref=e780]
+        - generic [ref=e786]:
+          - heading "Buy Customized Home Decor for Every Corner of Your Living Space" [level=1] [ref=e787]
+          - paragraph [ref=e788]:
+            - text: Neon Earth, a leading US-based e-commerce company, specializes in selling customized and personalized
+            - link "Read more about wall arts" [ref=e789] [cursor=pointer]:
+              - /url: https://www.neonearth.com/wall-arts/
+              - text: Wall Arts,
+            - text: wallpapers,
+            - link [ref=e790] [cursor=pointer]:
+              - /url: https://www.neonearth.com/custom-wallpapers/
+            - link "Rugs," [ref=e791] [cursor=pointer]:
+              - /url: https://www.neonearth.com/rugs/
+            - link "Read more about throw pillows" [ref=e792] [cursor=pointer]:
+              - /url: https://www.neonearth.com/custom-wall-murals/
+            - link "Pillows," [ref=e793] [cursor=pointer]:
+              - /url: https://www.neonearth.com/pillows/
+            - link "Read more about tapestries" [ref=e794] [cursor=pointer]:
+              - /url: https://www.neonearth.com/tapestries/
+              - text: Tapestries,
+            - link "Read more about curtains" [ref=e795] [cursor=pointer]:
+              - /url: https://www.neonearth.com/curtains/
+              - text: Curtains,
+            - text: wall prints & frames,
+            - link "Read more about pet supplies" [ref=e796] [cursor=pointer]:
+              - /url: https://www.neonearth.com
+            - link "Pet Zone" [ref=e797] [cursor=pointer]:
+              - /url: https://www.neonearth.com/pet-zone/
+            - link "Read more about Bags" [ref=e798] [cursor=pointer]:
+              - /url: https://www.neonearth.com/bags/
+              - text: ","
+            - text: and many
+            - link "More" [ref=e799] [cursor=pointer]:
+              - /url: https://www.neonearth.com/more/
+            - text: .
+          - paragraph [ref=e800]:
+            - text: Shape your design just the way you want. Whether it's an image, picture, or text, just upload your choice, scale it as you like, and we'll print it for you. Plus, for even more options,
+            - link "Explore range of templates" [ref=e801] [cursor=pointer]:
+              - /url: https://www.neonearth.com/theme/
+              - text: explore
+            - text: our range of templates. Everything can be personalized to fit your style – choose the size, fabric and color that suits you best.
+          - heading "Customizable Products offered by Neon Earth" [level=2] [ref=e802]
+          - paragraph [ref=e803]: Explore our wide selection of customizable home decor and lifestyle products, catering to your preferred theme – be it kids, vintage, abstract, minimalist, traditional, space, nature, food and drink, trending, or more.
+          - generic [ref=e804]:
+            - strong [ref=e805]: "Wall Murals:"
+            - text: Choose
+            - link "Read more about custom wall murals" [ref=e806] [cursor=pointer]:
+              - /url: https://www.neonearth.com/custom-wall-murals/
+              - text: custom wall murals
+            - text: that evoke positive emotions or reflect the ambiance you want to create in a particular space.
+          - generic [ref=e807]:
+            - strong [ref=e808]: "Wallpapers:"
+            - text: Tailor each
+            - link "Read more about custom wallpapers" [ref=e809] [cursor=pointer]:
+              - /url: https://www.neonearth.com/custom-wallpapers/
+              - text: custom wallpapers
+            - text: to complement the specific decor of individual rooms, ensuring a cohesive and well-coordinated overall aesthetic.
+          - generic [ref=e810]:
+            - strong [ref=e811]: "Tapestries:"
+            - link "Read more about Custom tapestries" [ref=e812] [cursor=pointer]:
+              - /url: https://www.neonearth.com/tapestries/
+              - text: Custom tapestries
+            - text: elevate your home, serving as personalized wall hangings or beach blankets.
+          - generic [ref=e813]:
+            - strong [ref=e814]: "Pillows:"
+            - text: Elevate your comfort and décor with our
+            - link "throw pillows" [ref=e815] [cursor=pointer]:
+              - /url: https://www.neonearth.com/throw-pillows/
+            - text: ", perfect for adding a cozy touch to any space."
+          - generic [ref=e816]:
+            - strong [ref=e817]: "Cushion Pillows & Covers:"
+            - text: Refresh and protect your
+            - link "cushion pillows" [ref=e818] [cursor=pointer]:
+              - /url: https://www.neonearth.com/cushions/
+            - text: effortlessly with our stylish covers, ensuring both comfort and durability.
+          - generic [ref=e819]:
+            - strong [ref=e820]: "Curtains:"
+            - text: Design curtains that complement your interior decor.
+            - link "Read more about Custom curtains" [ref=e821] [cursor=pointer]:
+              - /url: https://www.neonearth.com/curtains/
+              - text: Custom curtains
+            - text: allow you to control light, showcase unique patterns, and create a cohesive design theme in your space.
+          - generic [ref=e822]:
+            - strong [ref=e823]: "Custom Door Mats:"
+            - link "Read more about Personalized door mats" [ref=e824] [cursor=pointer]:
+              - /url: https://www.neonearth.com/doormats/
+              - text: Personalized door mats
+            - text: welcome guests with a touch of your personality. They can be customized with names, quotes, or images, adding a warm and inviting touch to your entrance.
+          - text: Read more
+        - img [ref=e827]
+    - generic [ref=e832]:
+      - generic [ref=e834]:
+        - heading "Avail 15% OFF Your First Order" [level=2] [ref=e835]
+        - generic [ref=e836]: Subscribe to our text updates for exclusive deals.
+      - generic [ref=e837]:
+        - generic [ref=e838]:
+          - textbox "Email" [ref=e840]
+          - generic [ref=e842]:
+            - generic [ref=e843] [cursor=pointer]:
+              - img "flag" [ref=e844]
+              - generic [ref=e845]: "+1"
+              - img "downArrow" [ref=e847]
+            - textbox "Phone Number" [ref=e848]
+          - button "Subscribe Now" [ref=e849] [cursor=pointer]
+        - paragraph [ref=e850]:
+          - text: By subscribing, you agree to receive marketing texts from NeonEarth. You can opt out anytime. See our
+          - link "Privacy Policy" [ref=e851] [cursor=pointer]:
+            - /url: /privacy-policy
+          - text: "&"
+          - link "Terms of Use" [ref=e852] [cursor=pointer]:
+            - /url: /terms-of-use
+          - text: .
+    - contentinfo [ref=e853]:
+      - generic [ref=e855]:
+        - generic [ref=e856]:
+          - heading "Designs Come True!" [level=6] [ref=e857]
+          - paragraph [ref=e858]: "At the heart of Neon Earth lies the belief that your home is more than just a physical space; it's a canvas for self-expression. Neon Earth acts as an enabler, providing comfort, and the freedom to 'Create Your New'. Visualize It - Design it - Bring It to life: because the final product belongs to you."
+        - generic [ref=e860]:
+          - heading "Quick Link" [level=6] [ref=e861]
+          - list [ref=e862]:
+            - listitem [ref=e863] [cursor=pointer]:
+              - link "Order a Swatch Kit" [ref=e864]:
+                - /url: /fabric-swatch-kit-p
+            - listitem [ref=e865] [cursor=pointer]:
+              - link "Bulk Quote" [ref=e866]:
+                - /url: /quote_create
+            - listitem [ref=e867] [cursor=pointer]:
+              - link "Track Your Order" [ref=e868]:
+                - /url: /customer/account/track_order
+        - generic [ref=e870]:
+          - heading "Help" [level=6] [ref=e871]
+          - list [ref=e872]:
+            - listitem [ref=e873] [cursor=pointer]:
+              - link "FAQ" [ref=e874]:
+                - /url: /faq
+            - listitem [ref=e875] [cursor=pointer]:
+              - link "Refund" [ref=e876]:
+                - /url: /faq#54
+            - listitem [ref=e877] [cursor=pointer]:
+              - link "Shipping" [ref=e878]:
+                - /url: /faq#45
+            - listitem [ref=e879] [cursor=pointer]:
+              - link "Sitemap" [ref=e880]:
+                - /url: /sitemap
+            - listitem [ref=e881] [cursor=pointer]:
+              - link "Privacy Policy" [ref=e882]:
+                - /url: /privacy-policy
+            - listitem [ref=e883] [cursor=pointer]:
+              - link "Contact Us" [ref=e884]:
+                - /url: /contact-us
+        - generic [ref=e886]:
+          - heading "Your Account" [level=6] [ref=e887]
+          - list [ref=e888]:
+            - listitem [ref=e889] [cursor=pointer]:
+              - link "Your Orders" [ref=e890]:
+                - /url: /customer/account/login
+            - listitem [ref=e891] [cursor=pointer]:
+              - link "Your Wallet" [ref=e892]:
+                - /url: /wallet
+            - listitem [ref=e893] [cursor=pointer]:
+              - link "Saved Designs" [ref=e894]:
+                - /url: /customer/account/login?redirect=17
+        - generic [ref=e896]:
+          - heading "The Company" [level=6] [ref=e897]
+          - list [ref=e898]:
+            - listitem [ref=e899] [cursor=pointer]:
+              - link "About us" [ref=e900]:
+                - /url: /about-us
+            - listitem [ref=e901] [cursor=pointer]:
+              - link "User Agreement" [ref=e902]:
+                - /url: /terms-of-use
+            - listitem [ref=e903] [cursor=pointer]:
+              - link "Blog" [ref=e904]:
+                - /url: https://www.neonearth.com/blog/
+        - generic [ref=e905]:
+          - heading "Get in touch" [level=6] [ref=e906]
+          - paragraph [ref=e907]:
+            - link "wecare@neonearth.com" [ref=e908] [cursor=pointer]:
+              - /url: mailto:wecare@neonearth.com
+          - generic "Neon Earth social media links" [ref=e909]:
+            - link "Visit Neon Earth on Facebook (opens in a new tab)" [ref=e910] [cursor=pointer]:
+              - /url: https://www.facebook.com/NeonEarth.Life
+              - generic [ref=e911]: 
+            - link "Visit Neon Earth on Instagram (opens in a new tab)" [ref=e912] [cursor=pointer]:
+              - /url: https://www.instagram.com/neonearth.life/
+              - generic [ref=e913]: 
+            - link "Visit Neon Earth on Pinterest (opens in a new tab)" [ref=e914] [cursor=pointer]:
+              - /url: https://in.pinterest.com/neonearth/
+              - generic [ref=e915]: 
+            - link "Visit Neon Earth on TikTok (opens in a new tab)" [ref=e916] [cursor=pointer]:
+              - /url: https://www.tiktok.com/@neonearth
+              - generic [ref=e917]: 
+          - paragraph [ref=e918]:
+            - link "(855) 349-6366" [ref=e919] [cursor=pointer]:
+              - /url: tel:+8553496366
+      - generic [ref=e922]:
+        - generic [ref=e923]: Copyright ©2026 neonearth. All Rights Reserved.
+        - generic [ref=e924]:
+          - generic [ref=e925]: Payment Methods
+          - generic [ref=e926]:
+            - img "Visa-icon" [ref=e927]
+            - img "MasterCard-icon" [ref=e928]
+            - img "Discover-icon" [ref=e929]
+            - img "AmEx-icon" [ref=e930]
+            - img "PayPal-icon" [ref=e931]
+            - img "ApplePay-icon" [ref=e932]
+          - generic [ref=e933]:
+            - generic [ref=e934]: Secured by
+            - img "Norton" [ref=e935]
+  - alert [ref=e936]
+```

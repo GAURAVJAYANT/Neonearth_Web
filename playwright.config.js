@@ -33,7 +33,7 @@ module.exports = defineConfig({
         Project: 'Neonearth',
         Application: 'Playwright Automation JS',
         QA: 'QA Gaurav Jayant',
-        BaseURL: process.env.BASE_URL || 'https://ne.signsigma.com/',
+        BaseURL: siteConfig.baseUrl,
         Browser: 'Chromium',
       },
     }],

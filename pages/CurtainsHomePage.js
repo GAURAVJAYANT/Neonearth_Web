@@ -47,6 +47,7 @@ class CurtainsHomePage extends HomePage {
 
       await category.waitFor({
         state: 'visible',
+        state: 'visible',
         timeout: 15000
       });
 

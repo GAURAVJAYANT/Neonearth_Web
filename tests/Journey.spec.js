@@ -39,8 +39,8 @@ test('E2E Journey - Custom Wall Tapestry Velvet Satin', async ({ page }) => {
 
   // Step 9: Fill Stripe Payment
   await checkoutPage.fillStripePayment({
-//   cardNumber: '4111 1111 1111 1111',
-//   expiry: '12 / 27',
+    // cardNumber: '4111 1111 1111 1111',
+    // expiry: '12 / 27',
     cvc: '123'
   });
 

@@ -6,6 +6,7 @@ const { ProductPage } = require('../pages/ProductPage');
 const { CartPage } = require('../pages/CartPage');
 const { CheckoutPage } = require('../pages/CheckoutPage');
 const { completeFlow } = require('../flows/completeFlow');
+const fileList = require('../data/fileList');
 
 const wallArtsCases = NewWallArtsData.flatMap((categoryData, categoryIndex) =>
   categoryData.products.map((product, productIndex) => ({
@@ -18,7 +19,10 @@ const wallArtsCases = NewWallArtsData.flatMap((categoryData, categoryIndex) =>
 
 test.describe('All New Wall Arts E2E', () => {
   test.describe.configure({ retries: 2 });
-  test.setTimeout(300000);
+  test.setTimeout(350000);
+
+  const fileForThisTest = fileList[2];
+  
 
   for (const { category, product, categoryIndex, productIndex } of wallArtsCases) {
     test(`New Wall Arts - ${category} -> ${product.name} #${categoryIndex + 1}.${productIndex + 1}`, async ({ page }) => {
@@ -34,7 +38,8 @@ test.describe('All New Wall Arts E2E', () => {
           ...product,
           category,
           product: product.name
-        }
+        },
+        file: fileForThisTest
       });
 
       console.log(`Completed: ${category} -> ${product.name}`);

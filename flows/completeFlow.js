@@ -1,4 +1,4 @@
-const BASE_URL = process.env.BASE_URL || 'https://ne.signsigma.com/';
+const BASE_URL = process.env.BASE_URL;
 const IS_PRODUCTION = BASE_URL.includes('www.neonearth.com');
 const FLOW_TIMEOUT_MS = 10 * 60 * 1000;
 
@@ -43,7 +43,7 @@ async function logDiscountSnapshot(cartPage, qty, baseUnitPrice = 0) {
   }
 }
 
-async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item }) {
+async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item, file }) {
   await homePage.open();
   await homePage.navigate(item.category, item.product);
 
@@ -78,9 +78,12 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
     }
 
     await productPage.personalizeDesign();
-    await productPage.uploadImage('data/test_image.png', {
-      handleNextBackSide: !!item.handleNextBackSide
-    });
+    await productPage.uploadImage(file);
+
+    await productPage.skipNextSideButton();
+    // await productPage.uploadImage('data/test_image.png', {
+    //   handleNextBackSide: !!item.handleNextBackSide
+    // });
   }
 
   if (!item.skipAddToCart) {
@@ -95,6 +98,15 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
   if (item.applyCoupon) {
     await cartPage.handleCoupons();
     await logDiscountSnapshot(cartPage, 1, baseUnitPrice);
+    
+    // Log shipping price for quantity 1 (only if checking shipping)
+    if (item.selectStandardShippingAfterQuantity) {
+      const shippingPrice1 = await cartPage.getShippingPrice();
+      const subtotalStr1 = await cartPage.getSubtotalPrice();
+      const subtotal1 = cartPage.parseMoney(subtotalStr1);
+      const displayPrice1 = subtotal1 > 99 ? 'Free' : shippingPrice1;
+      console.log(`Qty: 1 | Shipping: ${displayPrice1}`);
+    }
 
     const targetQuantities = [2, 4, 6, 8];
     console.log('--- STARTING QUANTITY TEST LOOP ---');
@@ -102,9 +114,30 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
     for (const qty of targetQuantities) {
       await cartPage.updateQuantity(qty);
       await logDiscountSnapshot(cartPage, qty, baseUnitPrice);
+      
+      // Log shipping price for each quantity (only if checking shipping)
+      if (item.selectStandardShippingAfterQuantity) {
+        const shippingPrice = await cartPage.getShippingPrice();
+        const subtotalStr = await cartPage.getSubtotalPrice();
+        const subtotal = cartPage.parseMoney(subtotalStr);
+        const displayPrice = subtotal > 99 ? 'Free' : shippingPrice;
+        const status = subtotal > 99 ? '✓ FREE' : '✗ NOT FREE';
+        console.log(`Qty: ${qty} | Shipping: ${displayPrice} | Status: ${status} (Total: $${subtotal})`);
+      }
     }
 
     console.log('--- ENDING QUANTITY TEST LOOP ---');
+
+    // Final summary check at quantity 8
+    if (item.selectStandardShippingAfterQuantity) {
+      const subtotalStr = await cartPage.getSubtotalPrice();
+      const subtotal = cartPage.parseMoney(subtotalStr);
+      if (subtotal > 99) {
+        console.log(`  ✓ FREE SHIPPING - Total ($${subtotal}) exceeds $99`);
+      } else {
+        console.log(`  ✗ SHIPPING IS NOT FREE - Total ($${subtotal}) does not exceed $99`);
+      }
+    }
   }
 
   await cartPage.secureCheckout();
@@ -123,7 +156,7 @@ async function _runFlow({ page, homePage, productPage, cartPage, checkoutPage, i
   console.log(`Done: ${item.category} -> ${item.product}`);
 }
 
-async function completeFlow({ page, homePage, productPage, cartPage, checkoutPage, item }) {
+async function completeFlow({ page, homePage, productPage, cartPage, checkoutPage, item, file }) {
   const watchdog = new Promise((_, reject) =>
     setTimeout(
       () => reject(new Error(
@@ -134,7 +167,7 @@ async function completeFlow({ page, homePage, productPage, cartPage, checkoutPag
   );
 
   await Promise.race([
-    _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item }),
+    _runFlow({ page, homePage, productPage, cartPage, checkoutPage, item, file }),
     watchdog
   ]);
 }

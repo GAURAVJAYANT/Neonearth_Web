@@ -10,9 +10,14 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 
 const { completeFlow } = require('../flows/completeFlow');
 
+const fileType = require('../data/fileList');
+
+
 test.describe('Fabrics E2E', () => {
   test.describe.configure({ retries: 2 });
   test.setTimeout(300000);
+
+  const fileForThisTest = fileType[1];
 
   // Run all Fabrics categories + products
   fabricsData.forEach((cat) => {
@@ -21,7 +26,7 @@ test.describe('Fabrics E2E', () => {
         `Fabric - ${cat.category} → ${product}`,
         async ({ page }) => {
           console.log(
-            `Running: ${cat.category} → ${product}`
+            `Running: ${cat.category} → ${product} (file: ${fileForThisTest})`
           );
 
           // Fabrics uses ProductPage only
@@ -36,11 +41,12 @@ test.describe('Fabrics E2E', () => {
             item: {
               category: cat.category,
               product: product
-            }
+            },
+            file: fileForThisTest,
           });
 
           console.log(
-            `✅ Completed: ${cat.category} → ${product}`
+            `✅ Completed: ${cat.category} → ${product} (file: ${fileForThisTest})`
           );
         }
       );

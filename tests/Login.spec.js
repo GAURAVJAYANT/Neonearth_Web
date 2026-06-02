@@ -9,7 +9,7 @@ const sheet = workbook.Sheets[sheetName];
 const loginData = xlsx.utils.sheet_to_json(sheet);
 
 test('Open NeonEarth Website - Login and Hover Tapestries', async ({ page }) => {
-  const { username, password } = loginData[0];
+  const { username, password } = loginData[3];
   test.setTimeout(300000);
 
   // ─── Step 1: Open Website ───────────────────────────────────────

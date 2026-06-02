@@ -17,22 +17,22 @@ class PillowHomePage extends HomePage {
     this.menu = page.locator('nav.header-navigation-bar li.top-level-item:has(span.label-text:has-text("Pillows"))');
 
     // --- Pillow Category Locators ---
-    this.categories = {
-      throwPillows: page.getByRole('link', { name: /^Throw Pillows$/ }).first(),
-      cushions: page.locator('a[href="/cushions"]').first(),
-      bedPillows: page.locator('a[href*="/bed-pillows"]').first(),
-    };
+    // this.categories = {
+    //   throwPillows: page.getByRole('link', { name: /^Throw Pillows$/ }).first(),
+    //   cushions: page.locator('a[href="/cushions"]').first(),
+    //   bedPillows: page.locator('a[href*="/bed-pillows"]').first(),
+    // };
 
-    // --- Pillow Product Locators ---
-    this.products = {
-      squareThrowPillow: page.getByRole('link', { name: 'Custom Square Throw Pillow' }).first(),
-      rectangleThrowPillow: page.getByRole('link', { name: 'Custom Rectangle Throw Pillow' }).first(),
-      roundThrowPillow: page.getByRole('link', { name: 'Custom Round Throw Pillow' }).first(),
-      squareSeatCushion: page.locator('a[href*="square-seat"]').first(),
-      roundSeatCushion: page.locator('a[href*="round-seat"]').first(),
-      rectangleSeatCushion: page.locator('a[href*="rectangle-seat"]').first(),
-      bedPillow: page.getByText('Bed Pillow', { exact: true }),
-    };
+    // // --- Pillow Product Locators ---
+    // this.products = {
+    //   squareThrowPillow: page.getByRole('link', { name: 'Custom Square Throw Pillow' }).first(),
+    //   rectangleThrowPillow: page.getByRole('link', { name: 'Custom Rectangle Throw Pillow' }).first(),
+    //   roundThrowPillow: page.getByRole('link', { name: 'Custom Round Throw Pillow' }).first(),
+    //   squareSeatCushion: page.locator('a[href*="square-seat"]').first(),
+    //   roundSeatCushion: page.locator('a[href*="round-seat"]').first(),
+    //   rectangleSeatCushion: page.locator('a[href*="rectangle-seat"]').first(),
+    //   bedPillow: page.getByText('Bed Pillow', { exact: true }),
+    // };
   }
 
   /** Common navigation method for Pillows */
@@ -64,9 +64,11 @@ class PillowHomePage extends HomePage {
       ? productName.split('-').pop().trim()
       : productName;
 
+    const isBedPillow = searchName === 'Bed Pillow';
+
     const product = this.page.getByRole('link', {
       name: searchName,
-      exact: false
+      exact: isBedPillow
     }).first();
 
     // Step 4: Wait, Stabilize, and Click
@@ -87,13 +89,13 @@ class PillowHomePage extends HomePage {
   }
 
   /** Legacy wrappers for backward compatibility */
-  async navigateToPillowProduct() { await this.navigate("Throw Pillows", "Custom Square Throw Pillow"); }
-  async navigateToRectangleThrowPillowProduct() { await this.navigate("Throw Pillows", "Custom Rectangle Throw Pillow"); }
-  async navigateToRoundThrowPillowProduct() { await this.navigate("Throw Pillows", "Custom Round Throw Pillow"); }
-  async navigateToSquareSeatCushionProduct() { await this.navigate("Cushions", "Square Seat Cushion"); }
-  async navigateToRoundSeatCushionProduct() { await this.navigate("Cushions", "Round Seat Cushion"); }
-  async navigateToRectangleSeatCushionProduct() { await this.navigate("Cushions", "Rectangle Seat Cushion"); }
-  async navigateToBedPillowProduct() { await this.navigate("Bed Pillows", "Bed Pillow"); }
+  // async navigateToPillowProduct() { await this.navigate("Throw Pillows", "Custom Square Throw Pillow"); }
+  // async navigateToRectangleThrowPillowProduct() { await this.navigate("Throw Pillows", "Custom Rectangle Throw Pillow"); }
+  // async navigateToRoundThrowPillowProduct() { await this.navigate("Throw Pillows", "Custom Round Throw Pillow"); }
+  // async navigateToSquareSeatCushionProduct() { await this.navigate("Cushions", "Square Seat Cushion"); }
+  // async navigateToRoundSeatCushionProduct() { await this.navigate("Cushions", "Round Seat Cushion"); }
+  // async navigateToRectangleSeatCushionProduct() { await this.navigate("Cushions", "Rectangle Seat Cushion"); }
+  // async navigateToBedPillowProduct() { await this.navigate("Bed Pillows", "Bed Pillow"); }
 }
 
 module.exports = { PillowHomePage };
